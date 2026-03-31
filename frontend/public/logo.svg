@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 64" fill="none">
+  <!-- Icon: 4-petal cross, blue + teal interlocked -->
+  <!-- Top petal: blue -->
+  <path d="M28 6 C28 6 20 6 20 14 C20 22 28 22 28 22 C28 22 36 22 36 14 C36 6 28 6 28 6Z" fill="#1d5fa4"/>
+  <!-- Bottom petal: teal -->
+  <path d="M28 30 C28 30 20 30 20 38 C20 46 28 46 28 46 C28 46 36 46 36 38 C36 30 28 30 28 30Z" fill="#2db89e"/>
+  <!-- Left petal: teal -->
+  <path d="M6 26 C6 26 6 18 14 18 C22 18 22 26 22 26 C22 26 22 34 14 34 C6 34 6 26 6 26Z" fill="#2db89e"/>
+  <!-- Right petal: blue -->
+  <path d="M34 26 C34 26 34 18 42 18 C50 18 50 26 50 26 C50 26 50 34 42 34 C34 34 34 26 34 26Z" fill="#1d5fa4"/>
+  <!-- Center overlap teal -->
+  <rect x="20" y="22" width="16" height="8" rx="1" fill="#2db89e" opacity="0.7"/>
+  <!-- Center overlap blue -->
+  <rect x="22" y="18" width="12" height="16" rx="1" fill="#1d5fa4" opacity="0.7"/>
+  <!-- Center dot -->
+  <circle cx="28" cy="26" r="5" fill="#1a4f88"/>
+
+  <!-- "Leela" text -->
+  <text x="60" y="32" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800" fill="#1d5fa4">Leela</text>
+  <!-- "HOSPITAL" text -->
+  <text x="61" y="50" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#2db89e" letter-spacing="3">HOSPITAL</text>
+</svg>
