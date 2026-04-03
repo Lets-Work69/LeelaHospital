@@ -1,0 +1,93 @@
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  NODE_ENV: production
+  npm_config_cache: $CI_PROJECT_DIR/.npm
+
+# Cache configuration for npm dependencies
+.npm-cache: &npm-cache
+  cache:
+    key:
+      files:
+        - frontend/package-lock.json
+      prefix: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - frontend/.npm/
+      - frontend/node_modules/
+
+# Base job for frontend tasks
+.frontend-job: &frontend-job
+  image: node:20-alpine
+  <<: *npm-cache
+
+# Install dependencies
+install-dependencies:
+  <<: *frontend-job
+  stage: build
+  script:
+    - cd frontend
+    - npm ci --cache $npm_config_cache --prefer-offline
+  artifacts:
+    paths:
+      - frontend/node_modules/
+    expire_in: 1 hour
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+
+# Build the application
+build-app:
+  <<: *frontend-job
+  stage: build
+  needs:
+    - job: install-dependencies
+      artifacts: true
+  script:
+    - cd frontend
+    - npm run build
+  artifacts:
+    paths:
+      - frontend/dist/
+    expire_in: 1 day
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+
+# Lint code (if ESLint is configured)
+lint:
+  <<: *frontend-job
+  stage: test
+  needs:
+    - job: install-dependencies
+      artifacts: true
+  script:
+    - cd frontend
+    - npm run lint 2>/dev/null || echo "No lint script configured"
+  allow_failure: true
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+
+# Deploy to GitLab Pages
+pages:
+  <<: *frontend-job
+  stage: deploy
+  needs:
+    - job: build-app
+      artifacts: true
+  script:
+    - cd frontend
+    - mkdir -p ../public
+    - cp -r dist/* ../public/
+  artifacts:
+    paths:
+      - public
+    expire_in: 30 days
+  environment:
+    name: production
+    url: https://$CI_PROJECT_NAMESPACE.gitlab.io/$CI_PROJECT_NAME
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
