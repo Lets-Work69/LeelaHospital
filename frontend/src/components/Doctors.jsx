@@ -2,18 +2,19 @@ import React, { useRef, useEffect, useState } from 'react'
 import { Star, Clock, Users, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
 
 const doctors = [
-  { name: 'Dr. Rajan Mehta',     specialty: 'Neurologist',           exp: '15 Yrs', rating: 4.8, patients: '2.8K', photo: '/doctors/doctor1.PNG',  initials: 'RM', accent: '#0969b1', tag: 'Brain & Spine',   available: true },
-  { name: 'Dr. Anita Rao',       specialty: 'Paediatrician',         exp: '12 Yrs', rating: 4.9, patients: '4.1K', photo: '/doctors/doctor2.PNG',  initials: 'AR', accent: '#17ae95', tag: 'Child Care',      available: false },
-  { name: 'Dr. Suresh Kumar',    specialty: 'Orthopaedic Surgeon',   exp: '20 Yrs', rating: 4.7, patients: '2.5K', photo: '/doctors/doctor3.PNG',  initials: 'SK', accent: '#17ae95', tag: 'Joint & Bone',    available: true },
-  { name: 'Dr. Meena Iyer',      specialty: 'Gynaecologist',         exp: '14 Yrs', rating: 4.8, patients: '3.0K', photo: '/doctors/doctor4.PNG',  initials: 'MI', accent: '#0969b1', tag: 'Obstetrics',      available: true },
-  { name: 'Dr. Arun Nair',       specialty: 'General Surgeon',       exp: '16 Yrs', rating: 4.7, patients: '2.2K', photo: '/doctors/doctor5.PNG',  initials: 'AN', accent: '#17ae95', tag: 'General Surgery', available: true },
-  { name: 'Dr. Kavitha Reddy',   specialty: 'Dermatologist',         exp: '10 Yrs', rating: 4.9, patients: '3.8K', photo: '/doctors/doctor6.PNG',  initials: 'KR', accent: '#0969b1', tag: 'Skin Care',       available: false },
-  { name: 'Dr. Sanjay Patel',    specialty: 'Urologist',             exp: '18 Yrs', rating: 4.6, patients: '1.9K', photo: '/doctors/doctor7.PNG',  initials: 'SP', accent: '#17ae95', tag: 'Urology',         available: true },
-  { name: 'Dr. Lakshmi Devi',    specialty: 'Ophthalmologist',       exp: '13 Yrs', rating: 4.8, patients: '2.7K', photo: '/doctors/doctor8.PNG',  initials: 'LD', accent: '#0969b1', tag: 'Eye Care',        available: true },
-  { name: 'Dr. Vijay Krishnan',  specialty: 'ENT Specialist',        exp: '11 Yrs', rating: 4.7, patients: '2.1K', photo: '/doctors/dc10.png',     initials: 'VK', accent: '#0969b1', tag: 'ENT',             available: false },
-  { name: 'Dr. Pooja Sharma',    specialty: 'Psychiatrist',          exp: '9 Yrs',  rating: 4.8, patients: '1.8K', photo: '/doctors/11.PNG',       initials: 'PS', accent: '#17ae95', tag: 'Mental Health',   available: true },
-  { name: 'Dr. Naresh Babu',     specialty: 'Nephrologist',          exp: '17 Yrs', rating: 4.7, patients: '2.0K', photo: '/doctors/12.PNG',       initials: 'NB', accent: '#0969b1', tag: 'Kidney Care',     available: true },
-]
+  { name: 'Dr. Vishwas Bugati',specialty: 'Obstetrician & Gynocologist',exp: '15 Yrs', rating: 4.8, patients: '2.8K', photo: '/doctors/doctor1.PNG',  initials: 'RM', accent: '#0969b1', tag: 'Brain & Spine',   available: true },
+  { name: 'Dr. Praveen Dambal',specialty: 'Urosurgeon & Andrologist',exp: '12 Yrs', rating: 4.9, patients: '4.1K', photo: '/doctors/doctor2.PNG',  initials: 'AR', accent: '#17ae95', tag: 'Child Care',      available: false },
+  { name: 'Dr. Sarvesh Khakandaki',    specialty: 'Orthopaedic Surgeon',   exp: '20 Yrs', rating: 4.7, patients: '2.5K', photo: '/doctors/doctor3.PNG',  initials: 'SK', accent: '#17ae95', tag: 'Joint & Bone',    available: true },
+  { name: 'Dr. Vinayak Kurudagi',      specialty: 'ENT Specialist',         exp: '14 Yrs', rating: 4.8, patients: '3.0K', photo: '/doctors/doctor4.PNG',  initials: 'MI', accent: '#0969b1', tag: 'Obstetrics',      available: true },
+  { name: 'Dr. Timmaraddi Hosamani',       specialty: 'Pediatrics',       exp: '16 Yrs', rating: 4.7, patients: '2.2K', photo: '/doctors/doctor5.PNG',  initials: 'AN', accent: '#17ae95', tag: 'General Surgery', available: true },
+  { name: 'Dr. Soumya Dambal',   specialty: 'Ophthalmologist',         exp: '10 Yrs', rating: 4.9, patients: '3.8K', photo: '/doctors/doctor6.PNG',  initials: 'KR', accent: '#0969b1', tag: 'Skin Care',       available: false },
+  { name: 'Dr. Saroja Patil',    specialty: 'Dermatologist ',             exp: '18 Yrs', rating: 4.6, patients: '1.9K', photo: '/doctors/doctor7.PNG',  initials: 'SP', accent: '#17ae95', tag: 'Urology',         available: true },
+  { name: 'Dr. Vinay Teradal',    specialty: '',       exp: '13 Yrs', rating: 4.8, patients: '2.7K', photo: '/doctors/doctor8.PNG',  initials: 'LD', accent: '#0969b1', tag: 'Eye Care',        available: true },
+  { name: 'Dr. Vijaya Kattimani',  specialty: 'Pediatrics',        exp: '11 Yrs', rating: 4.7, patients: '2.1K', photo: '/doctors/dc10.png',     initials: 'VK', accent: '#0969b1', tag: 'ENT',             available: false },
+  { name: 'Dr. Anitha P Dharana',    specialty: 'Obstetrician & Gynocologist',          exp: '9 Yrs',  rating: 4.8, patients: '1.8K', photo: '/doctors/11.PNG',       initials: 'PS', accent: '#17ae95', tag: 'Mental Health',   available: true },
+  { name: 'Dr. Basavaraj Yanagi',     specialty: '',          exp: '17 Yrs', rating: 4.7, patients: '2.0K', photo: '/doctors/12.PNG',       initials: 'NB', accent: '#0969b1', tag: 'Kidney Care',     available: true },  
+  { name: 'Dr. Tippanna Nagar ',     specialty: 'General Physician',          exp: '17 Yrs', rating: 4.7, patients: '2.0K', photo: '/doctors/doctor9.jpeg',       initials: 'NB', accent: '#0969b1', tag: 'Kidney Care',     available: true },  
+] 
 
 function DoctorCard({ doc, index }) {
   const ref = useRef(null)
