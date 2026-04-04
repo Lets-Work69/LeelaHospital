@@ -178,12 +178,7 @@ export default function WhyUs() {
             ))}
           </div>
 
-          <a href="#appointment"
-            className="btn-primary inline-flex items-center gap-2 group">
-            Book a Consultation
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </a>
-        </div>
+                  </div>
 
         {/* ── RIGHT ── */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

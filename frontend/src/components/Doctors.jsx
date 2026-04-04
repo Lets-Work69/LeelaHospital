@@ -9,10 +9,10 @@ const doctors = [
   { name: 'Dr. Timmaraddi Hosamani',       specialty: 'Pediatrics',       exp: '16 Yrs', rating: 4.7, patients: '2.2K', photo: '/doctors/doctor5.PNG',  initials: 'AN', accent: '#17ae95', tag: 'General Surgery', available: true },
   { name: 'Dr. Soumya Dambal',   specialty: 'Ophthalmologist',         exp: '10 Yrs', rating: 4.9, patients: '3.8K', photo: '/doctors/doctor6.PNG',  initials: 'KR', accent: '#0969b1', tag: 'Skin Care',       available: false },
   { name: 'Dr. Saroja Patil',    specialty: 'Dermatologist ',             exp: '18 Yrs', rating: 4.6, patients: '1.9K', photo: '/doctors/doctor7.PNG',  initials: 'SP', accent: '#17ae95', tag: 'Urology',         available: true },
-  { name: 'Dr. Vinay Teradal',    specialty: '',       exp: '13 Yrs', rating: 4.8, patients: '2.7K', photo: '/doctors/doctor8.PNG',  initials: 'LD', accent: '#0969b1', tag: 'Eye Care',        available: true },
+  { name: 'Dr. Vinay Teradal',    specialty: 'Sample',       exp: '13 Yrs', rating: 4.8, patients: '2.7K', photo: '/doctors/doctor8.PNG',  initials: 'LD', accent: '#0969b1', tag: 'Eye Care',        available: true },
   { name: 'Dr. Vijaya Kattimani',  specialty: 'Pediatrics',        exp: '11 Yrs', rating: 4.7, patients: '2.1K', photo: '/doctors/dc10.png',     initials: 'VK', accent: '#0969b1', tag: 'ENT',             available: false },
   { name: 'Dr. Anitha P Dharana',    specialty: 'Obstetrician & Gynocologist',          exp: '9 Yrs',  rating: 4.8, patients: '1.8K', photo: '/doctors/11.PNG',       initials: 'PS', accent: '#17ae95', tag: 'Mental Health',   available: true },
-  { name: 'Dr. Basavaraj Yanagi',     specialty: '',          exp: '17 Yrs', rating: 4.7, patients: '2.0K', photo: '/doctors/12.PNG',       initials: 'NB', accent: '#0969b1', tag: 'Kidney Care',     available: true },  
+  { name: 'Dr. Basavaraj Yanagi',     specialty: 'Sample',          exp: '17 Yrs', rating: 4.7, patients: '2.0K', photo: '/doctors/12.PNG',       initials: 'NB', accent: '#0969b1', tag: 'Kidney Care',     available: true },  
   { name: 'Dr. Tippanna Nagar ',     specialty: 'General Physician',          exp: '17 Yrs', rating: 4.7, patients: '2.0K', photo: '/doctors/doctor9.PNG',       initials: 'NB', accent: '#0969b1', tag: 'Kidney Care',     available: true },  
 ] 
 
@@ -68,22 +68,14 @@ function DoctorCard({ doc, index }) {
         <div className="absolute inset-0 transition-opacity duration-500"
           style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.1) 60%, transparent 100%)', opacity: hovered ? 1 : 0.7 }} />
 
-        <div className="absolute top-4 right-4 flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full text-white"
-          style={{ background: 'rgba(0,0,0,0.35)', backdropFilter: 'blur(8px)' }}>
-          <span className="w-1.5 h-1.5 rounded-full"
-            style={{ background: doc.available ? '#4ade80' : '#9ca3af', boxShadow: doc.available ? '0 0 6px #4ade80' : 'none' }} />
-          {doc.available ? 'Available' : 'Busy'}
-        </div>
-
+        
         <div className="absolute bottom-3 left-4 flex items-center gap-1 transition-all duration-300"
           style={{ transform: hovered ? 'translateY(-2px)' : 'translateY(0)' }}>
           <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
           <span className="text-white text-sm font-bold">{doc.rating}</span>
         </div>
 
-        <div className="absolute bottom-3 right-4 text-xs font-medium text-white transition-all duration-300"
-          style={{ opacity: hovered ? 1 : 0.6 }}>{doc.tag}</div>
-      </div>
+              </div>
 
       {/* Info */}
       <div className="p-5 relative overflow-hidden">
@@ -91,7 +83,7 @@ function DoctorCard({ doc, index }) {
           style={{ background: `linear-gradient(135deg, ${doc.accent}08, transparent)`, opacity: hovered ? 1 : 0 }} />
         <div className="relative z-10">
           <h3 className="font-bold text-gray-900 text-base">{doc.name}</h3>
-          <p className="text-sm font-semibold mt-0.5" style={{ color: doc.accent }}>{doc.specialty}</p>
+          <p className="text-sm font-semibold mt-0.5" style={{ color: '#0969b1' }}>{doc.specialty}</p>
 
           <div className="flex gap-4 mt-4 pt-4 border-t border-gray-100">
             <div className="flex items-center gap-1.5 text-xs text-gray-500">
@@ -106,10 +98,10 @@ function DoctorCard({ doc, index }) {
 
           <button className="w-full mt-4 py-2.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 overflow-hidden relative"
             style={{
-              background: hovered ? doc.accent : 'transparent',
-              color: hovered ? 'white' : doc.accent,
-              border: `1.5px solid ${doc.accent}`,
-              boxShadow: hovered ? `0 8px 24px ${doc.accent}45` : 'none',
+              background: hovered ? '#0969b1' : 'transparent',
+              color: hovered ? 'white' : '#0969b1',
+              border: `1.5px solid #0969b1`,
+              boxShadow: hovered ? `0 8px 24px #0969b145` : 'none',
               transition: 'all 0.35s cubic-bezier(0.4,0,0.2,1)',
             }}>
             <span className="absolute inset-0 pointer-events-none"

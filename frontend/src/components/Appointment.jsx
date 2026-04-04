@@ -191,8 +191,34 @@ export default function Appointment() {
               </div>
 
               <div className="relative z-10">
-                <div className="flex items-center gap-3 mb-2">
-                  <span className="w-3 h-3 bg-white rounded-full animate-pulse" />
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="relative">
+                    <svg width="48" height="32" viewBox="0 0 48 32" className="animate-drive">
+                      {/* Ambulance body */}
+                      <g>
+                        <rect x="4" y="12" width="28" height="12" fill="#f8fafc" rx="2"/>
+                        <rect x="22" y="6" width="12" height="18" fill="#f8fafc" rx="2"/>
+                        {/* Windows */}
+                        <rect x="24" y="8" width="8" height="8" fill="#0969b1"/>
+                        {/* Medical cross */}
+                        <rect x="26" y="11" width="4" height="2" fill="white"/>
+                        <rect x="27" y="10" width="2" height="4" fill="white"/>
+                      </g>
+                      {/* Wheels */}
+                      <circle cx="10" cy="26" r="3" fill="#1f2937"/>
+                      <circle cx="24" cy="26" r="3" fill="#1f2937"/>
+                      <circle cx="32" cy="26" r="3" fill="#1f2937"/>
+                      {/* Siren lights */}
+                      <rect x="34" y="8" width="3" height="5" fill="#ef4444" className="animate-flash-red"/>
+                      <rect x="38" y="8" width="3" height="5" fill="#3b82f6" className="animate-flash-blue"/>
+                      {/* Road motion lines */}
+                      <g className="animate-road-lines">
+                        <rect x="0" y="30" width="6" height="2" fill="white" opacity="0.6"/>
+                        <rect x="20" y="30" width="4" height="2" fill="white" opacity="0.6"/>
+                        <rect x="40" y="30" width="8" height="2" fill="white" opacity="0.6"/>
+                      </g>
+                    </svg>
+                  </div>
                   <p className="font-bold text-sm uppercase tracking-widest">24/7 Emergency</p>
                 </div>
                 <p className="text-3xl font-bold tracking-wide">+91 12345 67890</p>

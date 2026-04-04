@@ -17,15 +17,25 @@ export default function Footer() {
       <div className="relative max-w-7xl mx-auto px-4 pt-20 pb-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
         {/* Brand */}
         <div>
-          <img src="/Leela Hospital Final Logo👍-1.png" alt="Leela Hospital" className="h-16 w-auto mb-5"
-            style={{ mixBlendMode: 'screen' }}
-            onError={e => { e.target.onerror = null; e.target.src = '/logo.svg' }} />
+          <div className="relative inline-block mb-5 group">
+            {/* Glow background */}
+            <div className="absolute inset-0 bg-gradient-to-r from-teal-500/30 to-blue-600/30 rounded-xl blur-xl group-hover:blur-2xl transition-all duration-500 opacity-0 group-hover:opacity-100" />
+            
+            {/* Logo container with gradient border */}
+            <div className="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl p-3 border border-white/20 hover:border-teal-400/50 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-teal-500/20">
+              <img src="/Leela Hospital Final Logo👍-1.png" alt="Leela Hospital" className="h-12 w-auto relative z-10"
+                onError={e => { e.target.onerror = null; e.target.src = '/logo.svg' }} />
+            </div>
+          </div>
+          
           <p className="text-sm leading-relaxed text-blue-200 mb-6">
             Committed to delivering compassionate, world-class healthcare to every patient, every day.
           </p>
           <div className="flex gap-3">
             {[Facebook, Instagram, Twitter, Youtube].map((Icon, i) => (
-              <a key={i} href="#"
+              <a key={i} href={i === 1 ? 'https://www.instagram.com/leela.hospital/?hl=en' : '#'}
+                target={i === 1 ? '_blank' : undefined}
+                rel={i === 1 ? 'noopener noreferrer' : undefined}
                 className="w-9 h-9 glass rounded-lg flex items-center justify-center text-white hover:bg-teal-500 hover:border-teal-500 transition-all duration-300 hover:scale-110">
                 <Icon className="w-4 h-4" />
               </a>

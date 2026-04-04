@@ -74,6 +74,28 @@
   100% { transform: translateX(-50%); }
 }
 
+@keyframes drive {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  25% { transform: translateY(-2px) translateX(1px); }
+  50% { transform: translateY(0) translateX(0); }
+  75% { transform: translateY(-1px) translateX(-1px); }
+}
+
+@keyframes road-lines {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-20px); }
+}
+
+@keyframes flash-red {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0.3; }
+}
+
+@keyframes flash-blue {
+  0%, 50%, 100% { opacity: 0.3; }
+  25%, 75% { opacity: 1; }
+}
+
 .animate-float { animation: float 4s ease-in-out infinite; }
 .animate-float2 { animation: float2 5s ease-in-out infinite; }
 .animate-float-delay { animation: float 4s ease-in-out infinite 1.5s; }
@@ -85,6 +107,10 @@
 .animate-blob-delay { animation: blob 8s ease-in-out infinite 3s; }
 .animate-marquee { animation: marquee 35s linear infinite; }
 .animate-marquee:hover { animation-play-state: paused; }
+.animate-drive { animation: drive 1.5s ease-in-out infinite; }
+.animate-road-lines { animation: road-lines 0.8s linear infinite; }
+.animate-flash-red { animation: flash-red 0.6s ease-in-out infinite; }
+.animate-flash-blue { animation: flash-blue 0.6s ease-in-out infinite; }
 
 .btn-primary {
   @apply relative overflow-hidden font-semibold px-7 py-3 rounded-full transition-all duration-300 shadow-lg;
