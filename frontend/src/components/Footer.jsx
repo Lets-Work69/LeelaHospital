@@ -78,9 +78,9 @@ export default function Footer() {
           <h4 className="text-white font-bold mb-5 text-sm uppercase tracking-wider">Contact Us</h4>
           <div className="space-y-4">
             {[
-              { icon: <MapPin className="w-4 h-4" />, text: '123 Health Avenue, Bangalore - 560001', link: 'https://share.google/9NBUx8SYRl2Cy391l' },
-              { icon: <Phone className="w-4 h-4" />, text: '+91 12345 67890', link: 'tel:+911234567890' },
-              { icon: <Mail className="w-4 h-4" />, text: 'care@leelahosp.com', link: 'mailto:care@leelahosp.com' },
+              { icon: <MapPin className="w-4 h-4" />, text: 'Leela Hospital, near new bus stand, Mundaragi road, Gadag, Karnataka - 582101', link: 'https://share.google/9NBUx8SYRl2Cy391l' },
+              { icon: <Phone className="w-4 h-4" />, text: '+91 08372234599, 9008371817, 9483467777', link: 'tel:+9108372234599' },
+              { icon: <Mail className="w-4 h-4" />, text: 'care@leelahospitals.in', link: 'mailto:care@leelahospitals.in' },
             ].map((item, i) => (
               <a key={i} href={item.link} target="_blank" rel="noopener noreferrer"
                 className="flex items-start gap-3 hover:opacity-80 transition-opacity">
@@ -99,7 +99,7 @@ export default function Footer() {
               <span className="w-2 h-2 bg-red-400 rounded-full animate-pulse" />
               <p className="text-red-300 text-xs font-bold uppercase tracking-wide">Emergency</p>
             </div>
-            <p className="text-white font-bold text-xl">+91 12345 67890</p>
+            <p className="text-white font-bold text-xl">+91 9008371817</p>
             <p className="text-red-300 text-xs mt-1">Available 24 hours / 7 days</p>
           </div>
         </div>
