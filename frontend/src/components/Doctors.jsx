@@ -13,7 +13,7 @@ const doctors = [
   { name: 'Dr. Vijaya Kattimani',  specialty: 'Pediatrics',        exp: '11 Yrs', rating: 4.7, patients: '2.1K', photo: '/doctors/dc10.png',     initials: 'VK', accent: '#0969b1', tag: 'ENT',             available: false },
   { name: 'Dr. Anitha P Dharana',    specialty: 'Obstetrician & Gynocologist',          exp: '9 Yrs',  rating: 4.8, patients: '1.8K', photo: '/doctors/11.PNG',       initials: 'PS', accent: '#17ae95', tag: 'Mental Health',   available: true },
   { name: 'Dr. Basavaraj Yanagi',     specialty: '',          exp: '17 Yrs', rating: 4.7, patients: '2.0K', photo: '/doctors/12.PNG',       initials: 'NB', accent: '#0969b1', tag: 'Kidney Care',     available: true },  
-  { name: 'Dr. Tippanna Nagar ',     specialty: 'General Physician',          exp: '17 Yrs', rating: 4.7, patients: '2.0K', photo: '/doctors/doctor9.jpeg',       initials: 'NB', accent: '#0969b1', tag: 'Kidney Care',     available: true },  
+  { name: 'Dr. Tippanna Nagar ',     specialty: 'General Physician',          exp: '17 Yrs', rating: 4.7, patients: '2.0K', photo: '/doctors/doctor9.PNG',       initials: 'NB', accent: '#0969b1', tag: 'Kidney Care',     available: true },  
 ] 
 
 function DoctorCard({ doc, index }) {
