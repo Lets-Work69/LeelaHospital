@@ -14,11 +14,7 @@ const reviews = [
     "review": "“We had a very good experience at Leela Hospital, Gadag. Our patient was admitted here and received excellent treatment. The doctors are highly skilled and explain everything in detail, ensuring that we understand the treatment process.  The hospital staff is very caring and attentive, always available to help whenever needed. The hospital is clean, well-managed, and provides a comfortable environment for patients and their families. The billing was also reasonable, making quality healthcare accessible.  We are very happy with the services at Leela Hospital. A special thanks to the doctors and the entire medical team for their dedication and excellent care. Highly recommended for anyone looking for the best treatment!”",
     "rating": 5
   },
-  {
-    "name": "Kumar Kambar",
-    "review": "Dr prakasha .he is bp doctor. I not recommended this hospital If you have headache or  chest pain go to neurologist because in this hospital they treat without blood test or other tests no BP I took BP pill for few days it made me numb then showed to neurologist now I am cured",
-    "rating": 1
-  },
+  
   {
     "name": "Ganesh rathod Rathod",
     "review": "My mother, Paravva from Rajur, was admitted to Leela Hospital, Gadag, under the care of Dr. Prakash Dharana for blood deficiency. He is one of the best doctors in Gadag, highly knowledgeable, and conducted a thorough examination. Thanks to his excellent treatment, my mother is now stable. We are very happy with the hospital’s services, and the facility is well-maintained and clean.”",
@@ -249,11 +245,7 @@ const reviews = [
     "review": "Best hospital in Gadag Best staff ever.The staff is always on hand and ready for anything. They are kind and efficient .",
     "rating": 5
   },
-  {
-    "name": "ARUNAKUMAR HOSALLI",
-    "review": "All check up amount also Very expensive charges in leela hospital",
-    "rating": 1
-  },
+  
   {
     "name": "Shrikant Shri",
     "review": "I would like to express my heartfelt gratitude to Leela Hospital, Gadag, for the exceptional care provided to my mother, Smt. Shantavva, who was recently admitted with severe pain and fever. From the moment of admission, the entire hospital team ensured she received timely and compassionate care. Thank you so much for all the staff 🙏 …",
