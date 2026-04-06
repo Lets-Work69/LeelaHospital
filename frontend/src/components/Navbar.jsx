@@ -90,7 +90,7 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-4">
           <a href="tel:+911234567890"
             className={`flex items-center gap-2 text-sm font-semibold transition-colors text-primary-600`}>
-            <Phone className="w-4 h-4" /> +91 12345 67890
+            <Phone className="w-4 h-4" /> +91 9008371817
           </a>
           <a href="#appointment" className="btn-primary text-sm py-2.5 px-5">Book Appointment</a>
         </div>

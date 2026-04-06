@@ -7,9 +7,9 @@ const departments = [
 ]
 
 const contactInfo = [
-  { icon: <MapPin className="w-5 h-5" />, label: 'Address', value: '123 Health Avenue, Bangalore - 560001', color: '#17ae95', link: 'https://share.google/9NBUx8SYRl2Cy391l' },
-  { icon: <Phone className="w-5 h-5" />, label: 'Phone', value: '+91 12345 67890', color: '#17ae95', link: null },
-  { icon: <Mail className="w-5 h-5" />, label: 'Email', value: 'care@leelahosp.com', color: '#17ae95', link: null },
+  { icon: <MapPin className="w-5 h-5" />, label: 'Address', value: 'Leela Hospital, Near New Bus Stand, Mundaragi road, Gadag, Karnataka - 582101', color: '#17ae95', link: 'https://share.google/9NBUx8SYRl2Cy391l' },
+  { icon: <Phone className="w-5 h-5" />, label: 'Phone', value: '+91 08372234599, 9008371817, 9483467777', color: '#17ae95', link: null },
+  { icon: <Mail className="w-5 h-5" />, label: 'Email', value: 'care@leelahospitals.in', color: '#17ae95', link: null },
   { icon: <Clock className="w-5 h-5" />, label: 'Hours', value: 'Mon–Sat: 8AM–8PM | Emergency: 24/7', color: '#17ae95', link: null },
 ]
 
@@ -221,7 +221,7 @@ export default function Appointment() {
                   </div>
                   <p className="font-bold text-sm uppercase tracking-widest">24/7 Emergency</p>
                 </div>
-                <p className="text-3xl font-bold tracking-wide">+91 12345 67890</p>
+                <p className="text-3xl font-bold tracking-wide">+91 9008371817</p>
                 <p className="text-blue-100 text-sm mt-1">Immediate response guaranteed</p>
               </div>
             </div>
