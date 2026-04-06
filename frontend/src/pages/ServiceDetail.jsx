@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { CheckCircle, ArrowRight, ArrowLeft, Phone } from 'lucide-react'
+import { CheckCircle, ArrowRight, ArrowLeft, Phone, HeartHandshake } from 'lucide-react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 
@@ -291,9 +291,8 @@ export default function ServiceDetail() {
           <div className="bg-white rounded-3xl p-8 text-center shadow-sm relative overflow-hidden"
             style={{ opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(20px)', transition: 'all 0.6s ease 0.6s' }}>
             <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, #0969b1, #17ae95)' }} />
-            <div className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center overflow-hidden border border-gray-100">
-              <img src="/services%20icons/handshake-outline-icon-free-vector.jpg" alt="Our Promise"
-                className="w-full h-full object-cover" />
+            <div className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center overflow-hidden border border-gray-100 bg-gradient-to-br from-blue-50 to-teal-50">
+              <HeartHandshake className="w-10 h-10" style={{ color: '#0969b1' }} />
             </div>
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#17ae95' }}>Our Promise</p>
             <p className="text-2xl font-semibold italic text-gray-800">"{service.promise}"</p>
