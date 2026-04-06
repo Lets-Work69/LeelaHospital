@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Hero from './components/Hero'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Stats from './components/Stats'
@@ -30,11 +29,8 @@ function Home() {
 }
 
 export default function App() {
-  const [introDone, setIntroDone] = useState(false)
-
   return (
     <BrowserRouter>
-      {!introDone && <Intro onDone={() => setIntroDone(true)} />}
       <div className="min-h-screen bg-white">
         <Routes>
           <Route path="/" element={<Home />} />
