@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
-import Hero from './components/Hero'
 import Stats from './components/Stats'
 import Services from './components/Services'
 import WhyUs from './components/WhyUs'
