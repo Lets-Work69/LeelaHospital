@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Intro from './components/Intro'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Stats from './components/Stats'
@@ -8,10 +10,12 @@ import Doctors from './components/Doctors'
 import Testimonials from './components/Testimonials'
 import Appointment from './components/Appointment'
 import Footer from './components/Footer'
+import ServiceDetail from './pages/ServiceDetail'
+import Specialities from './pages/Specialities'
 
-export default function App() {
+function Home() {
   return (
-    <div className="min-h-screen bg-white">
+    <>
       <Navbar />
       <Hero />
       <Stats />
@@ -21,6 +25,23 @@ export default function App() {
       <Testimonials />
       <Appointment />
       <Footer />
-    </div>
+    </>
+  )
+}
+
+export default function App() {
+  const [introDone, setIntroDone] = useState(false)
+
+  return (
+    <BrowserRouter>
+      {!introDone && <Intro onDone={() => setIntroDone(true)} />}
+      <div className="min-h-screen bg-white">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/specialities" element={<Specialities />} />
+          <Route path="/specialities/:slug" element={<ServiceDetail />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   )
 }
