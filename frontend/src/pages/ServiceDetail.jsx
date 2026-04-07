@@ -211,9 +211,9 @@ export default function ServiceDetail() {
               )}
 
               {/* Quick stats */}
-              <div className="flex gap-6 mt-6">
+              <div className="flex flex-wrap gap-3 sm:gap-6 mt-6">
                 {[['Expert', 'Specialists'], ['24/7', 'Available'], ['Modern', 'Equipment']].map(([v, l]) => (
-                  <div key={l} className="text-center px-4 py-2 rounded-xl"
+                  <div key={l} className="text-center px-3 sm:px-4 py-2 rounded-xl min-w-[96px] sm:min-w-0"
                     style={{ background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(10px)' }}>
                     <p className="text-white font-bold text-sm">{v}</p>
                     <p className="text-white opacity-60 text-xs">{l}</p>

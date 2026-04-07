@@ -7,7 +7,7 @@ const departments = [
 ]
 
 const contactInfo = [
-  { icon: <MapPin className="w-5 h-5" />, label: 'Address', value: 'Leela Hospital, Near New Bus Stand, Mundaragi road, Gadag, Karnataka - 582101', color: '#17ae95', link: 'https://share.google/9NBUx8SYRl2Cy391l' },
+  { icon: <MapPin className="w-5 h-5" />, label: 'Address', value: 'Leela Hospital, Near New Bus Stand, Mundaragi road, Gadag, Karnataka - 582101', color: '#17ae95' },
   { icon: <Phone className="w-5 h-5" />, label: 'Phone', value: '+91 08372234599, 9008371817, 9483467777', color: '#17ae95', link: null },
   { icon: <Mail className="w-5 h-5" />, label: 'Email', value: 'care@leelahospitals.in', color: '#17ae95', link: null },
   { icon: <Clock className="w-5 h-5" />, label: 'Hours', value: 'Mon–Sat: 8AM–8PM | Emergency: 24/7', color: '#17ae95', link: null },
@@ -73,13 +73,6 @@ function ContactCard({ item, index }) {
       <div>
         <p className="text-xs text-gray-400 font-semibold uppercase tracking-wide">{item.label}</p>
         <p className="text-gray-700 font-semibold mt-0.5">{item.value}</p>
-        {item.link && (
-          <a href={item.link} target="_blank" rel="noopener noreferrer"
-            className="text-xs font-semibold mt-1 inline-flex items-center gap-1 hover:underline"
-            style={{ color: '#0969b1' }}>
-            📍 Get Directions
-          </a>
-        )}
       </div>
 
       {/* Ripple dot on hover */}
