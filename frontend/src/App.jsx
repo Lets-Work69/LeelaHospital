@@ -12,6 +12,8 @@ import Appointment from './components/Appointment'
 import Footer from './components/Footer'
 import ServiceDetail from './pages/ServiceDetail'
 import Specialities from './pages/Specialities'
+import About from './pages/About'
+import DoctorsPage from './pages/DoctorsPage'
 
 function Home() {
   return (
@@ -40,6 +42,8 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/specialities" element={<Specialities />} />
           <Route path="/specialities/:slug" element={<ServiceDetail />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/doctors" element={<DoctorsPage />} />
         </Routes>
       </div>
     </BrowserRouter>

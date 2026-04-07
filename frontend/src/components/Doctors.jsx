@@ -40,7 +40,7 @@ function DoctorCard({ doc, index }) {
         width: '260px',
         opacity: visible ? 1 : 0,
         transform: visible
-          ? hovered ? 'scale(1.02)' : 'scale(1)'
+          ? 'scale(1)'
           : 'translateY(40px) scale(0.97)',
         transition: `opacity 0.6s cubic-bezier(0.4,0,0.2,1) ${index * 0.08}s,
                      transform 0.4s cubic-bezier(0.4,0,0.2,1),
@@ -70,7 +70,7 @@ function DoctorCard({ doc, index }) {
 
         
         <div className="absolute bottom-3 left-4 flex items-center gap-1 transition-all duration-300"
-          style={{ transform: hovered ? 'translateY(-2px)' : 'translateY(0)' }}>
+          style={{ transform: 'translateY(0)' }}>
           <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
           <span className="text-white text-sm font-bold">{doc.rating}</span>
         </div>
@@ -96,24 +96,7 @@ function DoctorCard({ doc, index }) {
             </div>
           </div>
 
-          <button className="w-full mt-4 py-2.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 overflow-hidden relative"
-            style={{
-              background: hovered ? '#0969b1' : 'transparent',
-              color: hovered ? 'white' : '#0969b1',
-              border: `1.5px solid #0969b1`,
-              boxShadow: hovered ? `0 8px 24px #0969b145` : 'none',
-              transition: 'all 0.35s cubic-bezier(0.4,0,0.2,1)',
-            }}>
-            <span className="absolute inset-0 pointer-events-none"
-              style={{
-                background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.18) 50%, transparent 100%)',
-                transform: hovered ? 'translateX(100%)' : 'translateX(-100%)',
-                transition: 'transform 0.6s ease',
-              }} />
-            <span className="relative z-10">Book Appointment</span>
-            <ArrowRight className="w-3.5 h-3.5 relative z-10"
-              style={{ transform: hovered ? 'translateX(4px)' : 'translateX(0)', transition: 'transform 0.3s ease' }} />
-          </button>
+
         </div>
       </div>
     </div>
@@ -164,55 +147,37 @@ export default function Doctors() {
         {/* Header */}
         <div ref={titleRef}
           className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-
           <div>
             <span className="inline-flex items-center gap-2 font-semibold text-xs uppercase tracking-widest px-4 py-2 rounded-full mb-4"
               style={{ background: 'rgba(255,255,255,0.2)', color: 'white', border: '1px solid rgba(255,255,255,0.3)' }}>
               <span className="w-1.5 h-1.5 rounded-full animate-pulse bg-white" />
               Our Medical Team
             </span>
-            <h2 className="text-4xl md:text-5xl font-black text-white">
-              Meet Our Specialists
-            </h2>
-            <p className="text-white mt-3 text-lg max-w-lg opacity-80">
-              Experienced doctors dedicated to your health and recovery.
-            </p>
+            <h2 className="text-4xl md:text-5xl font-black text-white">Meet Our Specialists</h2>
+            <p className="text-white mt-3 text-lg max-w-lg opacity-80">Experienced doctors dedicated to your health and recovery.</p>
           </div>
-
           {/* Scroll controls */}
           <div className="flex gap-3">
             <button onClick={() => scroll('left')} disabled={!canLeft}
               className="w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300"
-              style={{
-                background: 'rgba(255,255,255,0.2)',
-                border: '2px solid rgba(255,255,255,0.5)',
-                color: 'white',
-                opacity: canLeft ? 1 : 0.4,
-                backdropFilter: 'blur(8px)',
-              }}>
+              style={{ background: 'rgba(255,255,255,0.2)', border: '2px solid rgba(255,255,255,0.5)', color: 'white', opacity: canLeft ? 1 : 0.4, backdropFilter: 'blur(8px)' }}>
               <ChevronLeft className="w-5 h-5" />
             </button>
             <button onClick={() => scroll('right')} disabled={!canRight}
               className="w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300"
-              style={{
-                background: 'rgba(255,255,255,0.9)',
-                border: '2px solid white',
-                color: '#0969b1',
-                opacity: canRight ? 1 : 0.4,
-                boxShadow: canRight ? '0 4px 15px rgba(0,0,0,0.2)' : 'none',
-              }}>
+              style={{ background: 'rgba(255,255,255,0.9)', border: '2px solid white', color: '#0969b1', opacity: canRight ? 1 : 0.4, boxShadow: canRight ? '0 4px 15px rgba(0,0,0,0.2)' : 'none' }}>
               <ChevronRight className="w-5 h-5" />
             </button>
           </div>
         </div>
 
-        {/* Cards */}
+        {/* Cards — horizontal scroll */}
         <div ref={scrollRef} onScroll={checkScroll}
-          className="flex gap-5 overflow-x-auto pb-4"
-          style={{ scrollbarWidth: 'none' }}>
+          className="flex gap-5 pb-4"
+          style={{ overflowX: 'auto', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+          <style>{`.doctors-scroll::-webkit-scrollbar { display: none; }`}</style>
           {doctors.map((doc, i) => <DoctorCard key={doc.name} doc={doc} index={i} />)}
         </div>
-        <style>{`#doctors .overflow-x-auto::-webkit-scrollbar { display: none; }`}</style>
       </div>
     </section>
   )

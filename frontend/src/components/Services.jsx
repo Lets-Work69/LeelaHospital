@@ -149,7 +149,13 @@ function ServiceCard({ service, index, onClick }) {
 export default function Services() {
   const titleRef = useRef(null)
   const [titleVisible, setTitleVisible] = useState(false)
+  const [page, setPage] = useState(0)
+  const [animDir, setAnimDir] = useState(null)
   const navigate = useNavigate()
+
+  const ITEMS_PER_PAGE = 4
+  const totalPages = Math.ceil(services.length / ITEMS_PER_PAGE)
+  const pageItems = services.slice(page * ITEMS_PER_PAGE, (page + 1) * ITEMS_PER_PAGE)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -160,66 +166,109 @@ export default function Services() {
     return () => observer.disconnect()
   }, [])
 
+  const goTo = (dir) => {
+    setAnimDir(dir)
+    setTimeout(() => {
+      setPage(p => dir === 'next' ? Math.min(p + 1, totalPages - 1) : Math.max(p - 1, 0))
+      setAnimDir(null)
+    }, 250)
+  }
+
+  // Touch swipe support
+  const touchStart = useRef(null)
+  const handleTouchStart = (e) => { touchStart.current = e.touches[0].clientX }
+  const handleTouchEnd = (e) => {
+    if (!touchStart.current) return
+    const diff = touchStart.current - e.changedTouches[0].clientX
+    if (Math.abs(diff) > 50) diff > 0 ? page < totalPages - 1 && goTo('next') : page > 0 && goTo('prev')
+    touchStart.current = null
+  }
+
   return (
     <section id="services" className="py-24 relative overflow-hidden">
 
-      {/* Background — matches the image: light grey/white with teal/blue wave shapes */}
-      <div className="absolute inset-0" style={{ background: 'linear-gradient(160deg, #f0f4f8 0%, #e8f4fd 50%, #f0f4f8 100%)' }} />
-
-      {/* Top-right teal blob */}
+      <div className="absolute inset-0" style={{ background: 'linear-gradient(160deg,#f0f4f8 0%,#e8f4fd 50%,#f0f4f8 100%)' }} />
       <div className="absolute top-0 right-0 w-72 h-72 pointer-events-none"
-        style={{ background: 'radial-gradient(circle at top right, rgba(45,184,158,0.25), transparent 70%)' }} />
-
-      {/* Bottom-left blue blob */}
+        style={{ background: 'radial-gradient(circle at top right,rgba(45,184,158,0.25),transparent 70%)' }} />
       <div className="absolute bottom-0 left-0 w-80 h-60 pointer-events-none"
-        style={{ background: 'radial-gradient(circle at bottom left, rgba(29,111,164,0.2), transparent 70%)' }} />
-
-      {/* Subtle wave shape bottom */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
-        style={{ background: 'linear-gradient(to top, rgba(29,111,164,0.08), transparent)' }} />
+        style={{ background: 'radial-gradient(circle at bottom left,rgba(29,111,164,0.2),transparent 70%)' }} />
 
       <div className="relative max-w-5xl mx-auto px-4">
 
         {/* Header */}
         <div ref={titleRef} className="text-center mb-10"
           style={{ opacity: titleVisible ? 1 : 0, transform: titleVisible ? 'translateY(0)' : 'translateY(20px)', transition: 'all 0.6s ease' }}>
-
-          {/* Title pill — matches the image style */}
           <div className="inline-block mb-8">
             <div className="px-10 py-3 rounded-full text-white font-black text-2xl tracking-widest uppercase"
-              style={{ background: 'linear-gradient(135deg, #17ae95, #0969b1)', boxShadow: '0 8px 30px rgba(29,111,164,0.3)' }}>
+              style={{ background: 'linear-gradient(135deg,#17ae95,#0969b1)', boxShadow: '0 8px 30px rgba(29,111,164,0.3)' }}>
               Specialities
             </div>
           </div>
         </div>
 
-        {/* Services grid inside a card — matches the bordered box in the image */}
+        {/* Card container */}
         <div className="rounded-3xl p-8 md:p-10"
           style={{
-            background: 'rgba(255,255,255,0.7)',
-            backdropFilter: 'blur(20px)',
-            border: '2px solid rgba(29,111,164,0.15)',
-            boxShadow: '0 20px 60px rgba(29,111,164,0.1)',
-            opacity: titleVisible ? 1 : 0,
-            transform: titleVisible ? 'translateY(0)' : 'translateY(20px)',
+            background: 'rgba(255,255,255,0.7)', backdropFilter: 'blur(20px)',
+            border: '2px solid rgba(29,111,164,0.15)', boxShadow: '0 20px 60px rgba(29,111,164,0.1)',
+            opacity: titleVisible ? 1 : 0, transform: titleVisible ? 'translateY(0)' : 'translateY(20px)',
             transition: 'all 0.7s ease 0.2s',
-          }}>
+          }}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {/* Desktop — all items in 3-col grid */}
+          <div className="hidden md:grid md:grid-cols-3 gap-3">
             {services.map((s, i) => (
               <ServiceCard key={s.title} service={s} index={i}
                 onClick={() => navigate(`/specialities/${slugMap[s.title]}`)} />
             ))}
           </div>
+
+          {/* Mobile — paginated 2-col grid */}
+          <div className="md:hidden">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 transition-all duration-300"
+              style={{
+                opacity: animDir ? 0 : 1,
+                transform: animDir === 'next' ? 'translateX(-30px)' : animDir === 'prev' ? 'translateX(30px)' : 'translateX(0)',
+                transition: 'all 0.25s ease',
+              }}>
+              {pageItems.map((s, i) => (
+                <ServiceCard key={s.title} service={s} index={i}
+                  onClick={() => navigate(`/specialities/${slugMap[s.title]}`)} />
+              ))}
+            </div>
+
+            {/* Pagination controls */}
+            <div className="flex items-center justify-between mt-8 pt-6 border-t border-gray-100">
+              <div className="flex items-center gap-2">
+                {Array.from({ length: totalPages }).map((_, i) => (
+                  <button key={i} onClick={() => { setAnimDir(i > page ? 'next' : 'prev'); setTimeout(() => { setPage(i); setAnimDir(null) }, 250) }}
+                    className="rounded-full transition-all duration-300"
+                    style={{ width: page === i ? '24px' : '8px', height: '8px', background: page === i ? 'linear-gradient(90deg,#0969b1,#17ae95)' : '#cbd5e1' }} />
+                ))}
+              </div>
+              <span className="text-xs text-gray-400 font-medium">
+                {page * ITEMS_PER_PAGE + 1}–{Math.min((page + 1) * ITEMS_PER_PAGE, services.length)} of {services.length}
+              </span>
+              <div className="flex gap-2">
+                <button onClick={() => goTo('prev')} disabled={page === 0}
+                  className="w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300"
+                  style={{ background: page === 0 ? '#f1f5f9' : 'linear-gradient(135deg,#0969b1,#17ae95)', color: page === 0 ? '#94a3b8' : 'white', boxShadow: page === 0 ? 'none' : '0 4px 12px rgba(9,105,177,0.3)' }}>
+                  <ArrowRight className="w-4 h-4 rotate-180" />
+                </button>
+                <button onClick={() => goTo('next')} disabled={page === totalPages - 1}
+                  className="w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300"
+                  style={{ background: page === totalPages - 1 ? '#f1f5f9' : 'linear-gradient(135deg,#0969b1,#17ae95)', color: page === totalPages - 1 ? '#94a3b8' : 'white', boxShadow: page === totalPages - 1 ? 'none' : '0 4px 12px rgba(9,105,177,0.3)' }}>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* CTA */}
         <div className="text-center mt-10"
-          style={{ opacity: titleVisible ? 1 : 0, transition: 'opacity 0.6s ease 0.8s' }}>
-          <a href="#appointment" className="btn-primary inline-flex items-center gap-2">
-            Book a Consultation <ArrowRight className="w-4 h-4" />
-          </a>
-        </div>
+          style={{ opacity: titleVisible ? 1 : 0, transition: 'opacity 0.6s ease 0.8s' }} />
       </div>
     </section>
   )

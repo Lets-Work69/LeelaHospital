@@ -56,14 +56,7 @@ export default function Hero() {
             cutting-edge technology, and a patient-first approach — all under one roof.
           </p>
 
-          <div className="flex flex-wrap gap-4 mb-10">
-            <a href="#appointment" className="btn-primary flex items-center gap-2 text-sm">
-              Book Appointment <ArrowRight className="w-4 h-4" />
-            </a>
-            <a href="tel:+911234567890" className="btn-outline border-white text-white hover:bg-white hover:text-primary-700 flex items-center gap-2 text-sm">
-              <Phone className="w-4 h-4" /> Emergency Call
-            </a>
-          </div>
+
 
           <div className="flex flex-wrap gap-6">
             {['Expert Specialists', 'Modern Equipment', 'Affordable Care'].map(item => (
