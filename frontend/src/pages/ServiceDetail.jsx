@@ -299,19 +299,7 @@ export default function ServiceDetail() {
           </div>
         )}
 
-        {/* CTA */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4"
-          style={{ opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(20px)', transition: 'all 0.6s ease 0.7s' }}>
-          <a href="/#appointment"
-            className="btn-primary flex items-center justify-center gap-2 py-4 text-base rounded-2xl">
-            Book an Appointment <ArrowRight className="w-5 h-5" />
-          </a>
-          <a href="tel:+911234567890"
-            className="flex items-center justify-center gap-2 py-4 text-base rounded-2xl font-semibold transition-all duration-300 hover:shadow-lg"
-            style={{ background: 'white', color: '#0969b1', border: '2px solid #0969b1' }}>
-            <Phone className="w-5 h-5" /> Call Us Now
-          </a>
-        </div>
+
       </div>
 
       <Footer />

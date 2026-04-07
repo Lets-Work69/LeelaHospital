@@ -123,46 +123,90 @@ export default function Specialities() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {specialities.map((s, i) => (
             <div key={s.slug}
-              onMouseEnter={() => setHovered(i)}
-              onMouseLeave={() => setHovered(null)}
               onClick={() => navigate(`/specialities/${s.slug}`)}
-              className="bg-white rounded-3xl p-8 cursor-pointer flex flex-col items-center text-center gap-5 transition-all duration-300"
-              style={{
-                boxShadow: hovered === i ? '0 20px 50px rgba(9,105,177,0.15)' : '0 2px 16px rgba(0,0,0,0.06)',
-                transform: hovered === i ? 'translateY(-6px)' : 'translateY(0)',
-                border: hovered === i ? '2px solid #17ae95' : '2px solid transparent',
-                animation: `slideUp 0.5s ease ${i * 0.05}s both`,
-              }}>
+              className="cursor-pointer"
+              style={{ perspective: '1000px', height: '280px', animation: `slideUp 0.5s ease ${i * 0.05}s both` }}>
 
-              {/* Big icon circle */}
-              <div className="w-24 h-24 rounded-full flex items-center justify-center transition-all duration-300"
+              {/* Flip container */}
+              <div
+                onMouseEnter={() => setHovered(i)}
+                onMouseLeave={() => setHovered(null)}
                 style={{
-                  background: hovered === i
-                    ? 'linear-gradient(135deg, #0969b1, #17ae95)'
-                    : 'linear-gradient(135deg, #17ae95, #17ae95)',
-                  boxShadow: hovered === i ? '0 8px 24px rgba(9,105,177,0.35)' : '0 4px 14px rgba(23,174,149,0.25)',
-                  transform: hovered === i ? 'scale(1.1)' : 'scale(1)',
+                  position: 'relative', width: '100%', height: '100%',
+                  transformStyle: 'preserve-3d',
+                  transform: hovered === i ? 'rotateY(180deg)' : 'rotateY(0deg)',
+                  transition: 'transform 0.65s cubic-bezier(0.4,0,0.2,1)',
                 }}>
-                {s.icon ? (
-                  <img src={s.icon} alt={s.title} className="w-12 h-12"
-                    style={{ filter: 'brightness(0) invert(1)' }} />
-                ) : (
-                  <Brain className="w-12 h-12" stroke="white" strokeWidth={1.5} />
-                )}
-              </div>
 
-              {/* Title */}
-              <h3 className="font-bold text-gray-900 text-lg leading-tight">{s.title}</h3>
+                {/* ── FRONT ── */}
+                <div className="absolute inset-0 rounded-3xl flex flex-col items-center justify-center gap-4 p-8 text-center"
+                  style={{
+                    backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden',
+                    background: 'white',
+                    boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
+                    border: '2px solid rgba(23,174,149,0.1)',
+                  }}>
 
-              {/* Desc */}
-              <p className="text-gray-500 text-sm leading-relaxed">{s.desc}</p>
+                  {/* Icon circle */}
+                  <div className="w-20 h-20 rounded-full flex items-center justify-center shadow-lg"
+                    style={{ background: 'linear-gradient(135deg,#0969b1,#17ae95)' }}>
+                    {s.icon ? (
+                      <img src={s.icon} alt={s.title} className="w-10 h-10"
+                        style={{ filter: 'brightness(0) invert(1)' }} />
+                    ) : (
+                      <Brain className="w-10 h-10" stroke="white" strokeWidth={1.5} />
+                    )}
+                  </div>
 
-              {/* Learn more */}
-              <div className="flex items-center gap-1 text-sm font-semibold mt-auto transition-all duration-300"
-                style={{ color: hovered === i ? '#0969b1' : '#17ae95' }}>
-                Learn More
-                <ArrowRight className="w-4 h-4 transition-transform duration-300"
-                  style={{ transform: hovered === i ? 'translateX(4px)' : 'translateX(0)' }} />
+                  <h3 className="font-bold text-gray-900 text-lg leading-tight">{s.title}</h3>
+
+                  {/* Flip hint */}
+                  <div className="flex items-center gap-1 text-xs font-semibold text-teal-500 mt-auto">
+                    <span>Hover to explore</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </div>
+
+                  {/* Bottom accent */}
+                  <div className="absolute bottom-0 left-6 right-6 h-0.5 rounded-full"
+                    style={{ background: 'linear-gradient(90deg,#0969b1,#17ae95)' }} />
+                </div>
+
+                {/* ── BACK ── */}
+                <div className="absolute inset-0 rounded-3xl flex flex-col items-center justify-center gap-4 p-8 text-center overflow-hidden"
+                  style={{
+                    backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden',
+                    transform: 'rotateY(180deg)',
+                    background: 'linear-gradient(135deg,#022441,#0969b1,#17ae95)',
+                  }}>
+
+                  {/* Dot grid */}
+                  <div className="absolute inset-0 opacity-10"
+                    style={{ backgroundImage: 'radial-gradient(circle at 1px 1px,rgba(255,255,255,0.8) 1px,transparent 0)', backgroundSize: '20px 20px' }} />
+
+                  {/* Orb */}
+                  <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full blur-2xl opacity-30"
+                    style={{ background: '#17ae95' }} />
+
+                  <div className="relative z-10 flex flex-col items-center gap-3">
+                    <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-white/15 border border-white/20">
+                      {s.icon ? (
+                        <img src={s.icon} alt={s.title} className="w-8 h-8"
+                          style={{ filter: 'brightness(0) invert(1)' }} />
+                      ) : (
+                        <Brain className="w-8 h-8" stroke="white" strokeWidth={1.5} />
+                      )}
+                    </div>
+
+                    <h3 className="font-extrabold text-white text-lg leading-tight"
+                      style={{ fontFamily: "'Nunito',sans-serif" }}>{s.title}</h3>
+
+                    <p className="text-white/75 text-xs leading-relaxed line-clamp-3">{s.desc}</p>
+
+                    <div className="flex items-center gap-1.5 bg-white/15 border border-white/20 text-white text-xs font-semibold px-4 py-2 rounded-full mt-1 backdrop-blur-sm">
+                      Learn More <ArrowRight className="w-3.5 h-3.5" />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           ))}
