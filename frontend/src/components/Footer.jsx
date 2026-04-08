@@ -78,19 +78,31 @@ export default function Footer() {
           <h4 className="text-white font-bold mb-5 text-sm uppercase tracking-wider">Contact Us</h4>
           <div className="space-y-4">
             {[
-              { icon: <MapPin className="w-4 h-4" />, text: 'Leela Hospital, near new bus stand, Mundaragi road, Gadag, Karnataka - 582101', link: 'https://share.google/9NBUx8SYRl2Cy391l' },
+              { icon: <MapPin className="w-4 h-4" />, text: 'Leela Hospital, Near New Bus stand, Mundaragi road, Gadag, Karnataka - 582101' },
               { icon: <Phone className="w-4 h-4" />, text: '+91 08372234599, 9008371817, 9483467777', link: 'tel:+9108372234599' },
               { icon: <Mail className="w-4 h-4" />, text: 'care@leelahospitals.in', link: 'mailto:care@leelahospitals.in' },
-            ].map((item, i) => (
-              <a key={i} href={item.link} target="_blank" rel="noopener noreferrer"
-                className="flex items-start gap-3 hover:opacity-80 transition-opacity">
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
-                  style={{ background: 'linear-gradient(135deg, #0969b1, #17ae95)' }}>
-                  <span className="text-white">{item.icon}</span>
-                </div>
-                <p className="text-sm text-blue-200">{item.text}</p>
-              </a>
-            ))}
+            ].map((item, i) => {
+              const content = (
+                <>
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
+                    style={{ background: 'linear-gradient(135deg, #0969b1, #17ae95)' }}>
+                    <span className="text-white">{item.icon}</span>
+                  </div>
+                  <p className="text-sm text-blue-200">{item.text}</p>
+                </>
+              )
+
+              if (i === 0) {
+                return <div key={i} className="flex items-start gap-3">{content}</div>
+              }
+
+              return (
+                <a key={i} href={item.link} target="_blank" rel="noopener noreferrer"
+                  className="flex items-start gap-3 hover:opacity-80 transition-opacity">
+                  {content}
+                </a>
+              )
+            })}
           </div>
 
           <div className="mt-6 p-4 rounded-2xl border border-red-500 border-opacity-40"

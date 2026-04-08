@@ -102,28 +102,28 @@ const founders = [
     name: 'Mahesh Magari',
     role: 'Managing Director',
     color: '#0969b1',
-    photo: null,
+    photo: '/leadership_team/p1.jpeg',
     bio: 'Mahesh Magari serves as the Managing Director of Magari Healthcare, leading Leela Hospital with exceptional leadership, vision, and a deep commitment to patient care. With an MBA in Management and valuable experience in the healthcare sector, he brings strong strategic thinking and next-level management skills. His leadership reflects trust, responsibility, and a passion to make a meaningful impact in healthcare.',
   },
   {
     name: 'Mantesh Magari',
     role: 'Director – Administration & Finance',
     color: '#17ae95',
-    photo: null,
+    photo: '/leadership_team/p2.jpeg',
     bio: 'Mantesh Magari manages the financial and administrative backbone of the hospital, ensuring smooth day-to-day operations. With an M.Com in Finance and healthcare experience, he brings discipline, transparency, and responsibility. He is consistently present in the hospital, supporting patients, staff, and operations with dedication and care.',
   },
   {
     name: 'Siddu Magari',
     role: 'Director – Patient Services & Administration',
     color: '#0969b1',
-    photo: null,
+    photo: '/leadership_team/p3.jpeg',
     bio: 'Siddu Magari plays a key role in patient coordination, billing, and overall patient experience. With a B.Com background, he manages the entire patient journey from entry to discharge, ensuring smooth communication between patients and doctors. His dedication and personal involvement create a supportive and patient-friendly environment.',
   },
   {
     name: 'Kumar Magari',
     role: 'Director – Operations, Marketing & Patient Support',
     color: '#17ae95',
-    photo: null,
+    photo: '/leadership_team/p4.jpeg',
     bio: 'Kumar Magari contributes across marketing, operations, and patient care with exceptional dedication. He manages outreach, hospital maintenance, and OT coordination while ensuring patients feel cared for and comfortable. Known for his kindness and availability, he supports patients 24/7 with compassion and responsibility.',
   },
   {
@@ -463,6 +463,19 @@ export default function About() {
   const [patientRef, patientVisible] = useReveal()
   const [missionRef, missionVisible] = useReveal()
   const [visionRef, visionVisible] = useReveal()
+  const [isMobileOrbit, setIsMobileOrbit] = useState(false)
+
+  useEffect(() => {
+    const updateOrbitLayout = () => setIsMobileOrbit(window.innerWidth < 640)
+    updateOrbitLayout()
+    window.addEventListener('resize', updateOrbitLayout)
+    return () => window.removeEventListener('resize', updateOrbitLayout)
+  }, [])
+
+  const orbitSize = isMobileOrbit ? 300 : 380
+  const innerOrbitSize = isMobileOrbit ? 220 : 280
+  const orbitRadius = isMobileOrbit ? 145 : 190
+  const orbitHeight = isMobileOrbit ? 390 : 480
 
   return (
     <div className="min-h-screen bg-gray-50 overflow-x-hidden">
@@ -600,7 +613,7 @@ export default function About() {
 
             {/* Left — visual */}
             <div style={{ opacity: whoVisible ? 1 : 0, transform: whoVisible ? 'translateX(0)' : 'translateX(-50px)', transition: 'all 0.9s cubic-bezier(0.4,0,0.2,1) 0.1s' }}>
-              <div className="relative flex items-center justify-center" style={{ height: '480px' }}>
+              <div className="relative flex items-center justify-center mx-auto w-full" style={{ height: `${orbitHeight}px`, maxWidth: isMobileOrbit ? '360px' : '100%' }}>
 
                 {/* Glow */}
                 <div className="absolute w-72 h-72 rounded-full animate-blob"
@@ -608,11 +621,11 @@ export default function About() {
 
                 {/* Outer orbit ring */}
                 <div className="absolute rounded-full border-2 border-dashed animate-spin-slow"
-                  style={{ width: '380px', height: '380px', borderColor: 'rgba(23,174,149,0.2)' }} />
+                  style={{ width: `${orbitSize}px`, height: `${orbitSize}px`, borderColor: 'rgba(23,174,149,0.2)' }} />
 
                 {/* Inner orbit ring */}
                 <div className="absolute rounded-full border border-dashed"
-                  style={{ width: '280px', height: '280px', borderColor: 'rgba(9,105,177,0.15)', animation: 'spin-slow 15s linear infinite reverse' }} />
+                  style={{ width: `${innerOrbitSize}px`, height: `${innerOrbitSize}px`, borderColor: 'rgba(9,105,177,0.15)', animation: 'spin-slow 15s linear infinite reverse' }} />
 
                 {/* Center circle */}
                 <div className="relative z-10 w-36 h-36 flex items-center justify-center flex-shrink-0">
@@ -626,7 +639,7 @@ export default function About() {
                   </div>
                 </div>
 
-                {/* Chips placed evenly around the outer ring (r=190px from center) */}
+                {/* Chips placed evenly around the outer ring */}
                 {[
                   { icon: CheckCircle2, text: 'Multi-Specialty',       color: '#0969b1', angle: -90  },
                   { icon: Heart,        text: 'Patient-First',          color: '#17ae95', angle: -30  },
@@ -636,23 +649,25 @@ export default function About() {
                   { icon: Stethoscope,  text: '13+ Specialities',       color: '#17ae95', angle: 210  },
                 ].map(({ icon: Icon, text, color, angle }, i) => {
                   const rad = (angle * Math.PI) / 180
-                  const r = 190
+                  const r = orbitRadius
                   const x = Math.round(r * Math.cos(rad))
                   const y = Math.round(r * Math.sin(rad))
                   return (
                     <div key={i}
-                      className="absolute flex items-center gap-2 bg-white rounded-xl shadow-md px-3 py-2 border border-gray-100 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 cursor-default z-20"
+                      className="absolute flex items-center bg-white rounded-xl shadow-md border border-gray-100 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 cursor-default z-20"
                       style={{
                         left: '50%',
                         top: '50%',
                         transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
                         whiteSpace: 'nowrap',
+                        gap: isMobileOrbit ? '6px' : '8px',
+                        padding: isMobileOrbit ? '6px 10px' : '8px 12px',
                       }}>
                       <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0"
                         style={{ background: `${color}18` }}>
                         <Icon className="w-3.5 h-3.5" style={{ color }} />
                       </div>
-                      <span className="text-xs font-semibold text-gray-700">{text}</span>
+                      <span className="font-semibold text-gray-700" style={{ fontSize: isMobileOrbit ? '11px' : '12px' }}>{text}</span>
                     </div>
                   )
                 })}
