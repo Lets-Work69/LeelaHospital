@@ -130,7 +130,7 @@ const founders = [
     name: 'Rajesh Magari',
     role: 'Director – Clinical Support & Patient Care',
     color: '#0969b1',
-    photo: null,
+    photo: '/leadership_team/p5.PNG',
     bio: 'Rajesh Magari, a Pharm.D graduate, brings strong medical knowledge to the hospital. He supports both OPD and IPD care, guiding patients from admission to discharge. He explains conditions, treatments, and recovery clearly, helping patients feel informed and confident throughout their healthcare journey.',
   },
 ]
