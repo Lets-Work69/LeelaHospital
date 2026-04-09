@@ -2,7 +2,6 @@ import React from 'react'
 import { Phone, Mail, MapPin, Facebook, Instagram, Twitter, Youtube, ArrowRight } from 'lucide-react'
 
 const quickLinks = ['Home', 'About Us', 'Services', 'Doctors', 'Careers', 'Contact']
-const services = ['Cardiology', 'Neurology', 'Orthopaedics', 'Paediatrics', 'Oncology', 'Dental Care']
 
 export default function Footer() {
   return (
@@ -14,14 +13,13 @@ export default function Footer() {
         </svg>
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 pt-20 pb-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+      <div className="relative max-w-7xl mx-auto px-4 pt-20 pb-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        
         {/* Brand */}
         <div>
           <div className="relative inline-block mb-5 group">
-            {/* Glow background */}
             <div className="absolute inset-0 bg-gradient-to-r from-teal-500/30 to-blue-600/30 rounded-xl blur-xl group-hover:blur-2xl transition-all duration-500 opacity-0 group-hover:opacity-100" />
             
-            {/* Logo container with gradient border */}
             <div className="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl p-3 border border-white/20 hover:border-teal-400/50 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-teal-500/20">
               <img src="/Leela Hospital Final Logo👍-1.png" alt="Leela Hospital" className="h-12 w-auto relative z-10"
                 onError={e => { e.target.onerror = null; e.target.src = '/logo.svg' }} />
@@ -31,6 +29,7 @@ export default function Footer() {
           <p className="text-sm leading-relaxed text-blue-200 mb-6">
             Committed to delivering compassionate, world-class healthcare to every patient, every day.
           </p>
+
           <div className="flex gap-3">
             {[Facebook, Instagram, Twitter, Youtube].map((Icon, i) => (
               <a key={i} href={i === 1 ? 'https://www.instagram.com/leela.hospital/?hl=en' : '#'}
@@ -52,21 +51,6 @@ export default function Footer() {
                 <a href="#" className="text-sm text-blue-200 hover:text-teal-400 transition-colors flex items-center gap-2 group">
                   <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -ml-5 group-hover:ml-0 transition-all duration-300" />
                   {link}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Services */}
-        <div>
-          <h4 className="text-white font-bold mb-5 text-sm uppercase tracking-wider">Our Services</h4>
-          <ul className="space-y-3">
-            {services.map(s => (
-              <li key={s}>
-                <a href="#" className="text-sm text-blue-200 hover:text-teal-400 transition-colors flex items-center gap-2 group">
-                  <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -ml-5 group-hover:ml-0 transition-all duration-300" />
-                  {s}
                 </a>
               </li>
             ))}
@@ -123,5 +107,3 @@ export default function Footer() {
     </footer>
   )
 }
-
-
