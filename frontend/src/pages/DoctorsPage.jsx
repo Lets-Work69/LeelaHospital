@@ -1,22 +1,9 @@
 import React, { useRef, useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-import { Star, Clock, Users } from 'lucide-react'
+import { Clock, Users } from 'lucide-react'
 
-const doctors = [
-  { name: 'Dr. Vishwas Bugati',       specialty: 'Obstetrician & Gynocologist', exp: '15 Yrs', rating: 4.8, patients: '2.8K', photo: '/doctors/doctor1.PNG',  accent: '#0969b1' },
-  { name: 'Dr. Praveen Dambal',       specialty: 'Urosurgeon & Andrologist',    exp: '12 Yrs', rating: 4.9, patients: '4.1K', photo: '/doctors/doctor2.PNG',  accent: '#17ae95' },
-  { name: 'Dr. Sarvesh Khakandaki',   specialty: 'Orthopaedic Surgeon',         exp: '20 Yrs', rating: 4.7, patients: '2.5K', photo: '/doctors/doctor3.PNG',  accent: '#17ae95' },
-  { name: 'Dr. Vinayak Kurudagi',     specialty: 'ENT Specialist',              exp: '14 Yrs', rating: 4.8, patients: '3.0K', photo: '/doctors/doctor4.PNG',  accent: '#0969b1' },
-  { name: 'Dr. Timmaraddi Hosamani',  specialty: 'Pediatrics',                  exp: '16 Yrs', rating: 4.7, patients: '2.2K', photo: '/doctors/doctor5.PNG',  accent: '#17ae95' },
-  { name: 'Dr. Soumya Dambal',        specialty: 'Ophthalmologist',             exp: '10 Yrs', rating: 4.9, patients: '3.8K', photo: '/doctors/doctor6.PNG',  accent: '#0969b1' },
-  { name: 'Dr. Saroja Patil',         specialty: 'Dermatologist',               exp: '18 Yrs', rating: 4.6, patients: '1.9K', photo: '/doctors/doctor7.PNG',  accent: '#17ae95' },
-  { name: 'Dr. Vinay Teradal',        specialty: 'General Surgeon',             exp: '13 Yrs', rating: 4.8, patients: '2.7K', photo: '/doctors/doctor8.PNG',  accent: '#0969b1' },
-  { name: 'Dr. Vijaya Kattimani',     specialty: 'Pediatrics',                  exp: '11 Yrs', rating: 4.7, patients: '2.1K', photo: '/doctors/dc10.png',     accent: '#0969b1' },
-  { name: 'Dr. Anitha P Dharana',     specialty: 'Obstetrician & Gynocologist', exp: '9 Yrs',  rating: 4.8, patients: '1.8K', photo: '/doctors/11.PNG',       accent: '#17ae95' },
-  { name: 'Dr. Basavaraj Yanagi',     specialty: 'General Physician',           exp: '17 Yrs', rating: 4.7, patients: '2.0K', photo: '/doctors/12.PNG',       accent: '#0969b1' },
-  { name: 'Dr. Tippanna Nagar',       specialty: 'General Physician',           exp: '17 Yrs', rating: 4.7, patients: '2.0K', photo: '/doctors/doctor9.PNG',  accent: '#0969b1' },
-]
+const hardcodedDoctors = []
 
 function DoctorCard({ doc, index }) {
   const ref = useRef(null)
@@ -115,9 +102,27 @@ function DoctorCard({ doc, index }) {
 export default function DoctorsPage() {
   const [heroVisible, setHeroVisible] = useState(false)
   const heroRef = useRef(null)
+  const [doctors, setDoctors] = useState(hardcodedDoctors)
 
   useEffect(() => {
     const t = setTimeout(() => setHeroVisible(true), 100)
+    fetch('http://localhost:5000/api/doctors')
+      .then(r => r.json())
+      .then(data => {
+        if (data.success && data.doctors.length) {
+          const dbDocs = data.doctors.map(d => ({
+            name: d.name,
+            specialty: d.specialty,
+            exp: d.experience || '',
+            rating: parseFloat(d.rating) || 4.5,
+            patients: d.patients || '0',
+            photo: d.profileImage || '',
+            accent: '#0969b1'
+          }))
+          setDoctors([...hardcodedDoctors, ...dbDocs])
+        }
+      })
+      .catch(() => {})
     return () => clearTimeout(t)
   }, [])
 
@@ -191,7 +196,7 @@ export default function DoctorsPage() {
       <div className="max-w-6xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {doctors.map((doc, i) => (
-            <DoctorCard key={doc.name} doc={doc} index={i} />
+            <DoctorCard key={doc.name + i} doc={doc} index={i} />
           ))}
         </div>
       </div>

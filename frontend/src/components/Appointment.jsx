@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Calendar, User, Phone, Stethoscope, Send, MapPin, Mail, Clock } from 'lucide-react'
+import { Calendar, User, Phone, Stethoscope, Send, MapPin, Mail, Clock, ChevronLeft, ChevronRight, Check } from 'lucide-react'
 
 const departments = [
   'Cardiology', 'Neurology', 'Orthopaedics', 'Paediatrics',
@@ -12,6 +12,130 @@ const contactInfo = [
   { icon: <Mail className="w-5 h-5" />, label: 'Email', value: 'care@leelahospitals.in', color: '#17ae95', link: null },
   { icon: <Clock className="w-5 h-5" />, label: 'Hours', value: 'Mon–Sat: 8AM–8PM | Emergency: 24/7', color: '#17ae95', link: null },
 ]
+
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December']
+const DAYS = ['Su','Mo','Tu','We','Th','Fr','Sa']
+
+function DatePicker({ value, onChange, focused, onFocus, onBlur }) {
+  const [open, setOpen] = useState(false)
+  const ref = useRef(null)
+  const today = new Date()
+  const [viewDate, setViewDate] = useState(() => value ? new Date(value) : new Date())
+
+  useEffect(() => {
+    const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false) }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [])
+
+  const selected = value ? new Date(value + 'T00:00:00') : null
+  const year = viewDate.getFullYear()
+  const month = viewDate.getMonth()
+
+  const firstDay = new Date(year, month, 1).getDay()
+  const daysInMonth = new Date(year, month + 1, 0).getDate()
+  const daysInPrev = new Date(year, month, 0).getDate()
+
+  const cells = []
+  for (let i = firstDay - 1; i >= 0; i--) cells.push({ day: daysInPrev - i, cur: false })
+  for (let i = 1; i <= daysInMonth; i++) cells.push({ day: i, cur: true })
+  while (cells.length % 7 !== 0) cells.push({ day: cells.length - daysInMonth - firstDay + 1, cur: false })
+
+  const selectDay = (day, cur) => {
+    if (!cur) return
+    const d = new Date(year, month, day)
+    const iso = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`
+    onChange(iso)
+    setOpen(false)
+  }
+
+  const isSelected = (day, cur) => {
+    if (!cur || !selected) return false
+    return selected.getFullYear() === year && selected.getMonth() === month && selected.getDate() === day
+  }
+
+  const isToday = (day, cur) => {
+    if (!cur) return false
+    return today.getFullYear() === year && today.getMonth() === month && today.getDate() === day
+  }
+
+  const displayValue = selected
+    ? selected.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })
+    : ''
+
+  return (
+    <div ref={ref} className="relative">
+      <div className={`absolute left-3 top-4 z-10 transition-colors duration-300 ${focused || open ? 'text-primary-500' : 'text-gray-400'}`}>
+        <Calendar className="w-4 h-4" />
+      </div>
+      <button type="button"
+        onClick={() => { setOpen(o => !o); onFocus() }}
+        onBlur={onBlur}
+        className={`w-full pl-10 pr-4 py-3.5 rounded-xl text-sm text-left transition-all duration-300 outline-none bg-gray-50 ${
+          open || focused
+            ? 'border-2 border-primary-400 shadow-lg shadow-primary-100 bg-white'
+            : 'border-2 border-gray-100 hover:border-gray-200'
+        } ${!displayValue ? 'text-gray-400' : 'text-gray-800'}`}>
+        {displayValue || 'Select Date'}
+      </button>
+
+      {open && (
+        <div className="absolute bottom-full mb-2 left-0 right-0 bg-white rounded-2xl p-4 z-50"
+          style={{ boxShadow: '0 -8px 32px rgba(0,0,0,0.12)', border: '1px solid #f1f5f9' }}>
+
+          {/* Month/Year nav */}
+          <div className="flex items-center justify-between mb-3">
+            <button type="button" onClick={() => setViewDate(new Date(year, month - 1, 1))}
+              className="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center transition-colors">
+              <ChevronLeft className="w-4 h-4 text-gray-500" />
+            </button>
+            <span className="text-sm font-semibold text-gray-800">{MONTHS[month]} {year}</span>
+            <button type="button" onClick={() => setViewDate(new Date(year, month + 1, 1))}
+              className="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center transition-colors">
+              <ChevronRight className="w-4 h-4 text-gray-500" />
+            </button>
+          </div>
+
+          {/* Day headers */}
+          <div className="grid grid-cols-7 mb-1">
+            {DAYS.map(d => (
+              <div key={d} className="text-center text-xs font-semibold text-gray-400 py-1">{d}</div>
+            ))}
+          </div>
+
+          {/* Calendar grid */}
+          <div className="grid grid-cols-7 gap-y-1">
+            {cells.map((cell, i) => (
+              <button key={i} type="button"
+                onClick={() => selectDay(cell.day, cell.cur)}
+                className={`h-8 w-full rounded-lg text-xs font-medium transition-all ${
+                  !cell.cur ? 'text-gray-300 cursor-default' :
+                  isSelected(cell.day, cell.cur)
+                    ? 'text-white font-bold'
+                    : isToday(cell.day, cell.cur)
+                    ? 'border border-primary-400 text-primary-500 hover:bg-primary-50'
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+                style={isSelected(cell.day, cell.cur) ? { background: 'linear-gradient(135deg, #0969b1, #17ae95)' } : {}}>
+                {cell.day}
+              </button>
+            ))}
+          </div>
+
+          {/* Today shortcut */}
+          <div className="mt-3 pt-3 border-t border-gray-100 flex justify-end">
+            <button type="button"
+              onClick={() => { const t = today; const iso = `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`; onChange(iso); setOpen(false) }}
+              className="text-xs font-semibold text-primary-500 hover:text-primary-600 transition-colors">
+              Today
+            </button>
+          </div>
+        </div>
+      )}
+      <input type="text" value={value} required readOnly className="sr-only" tabIndex={-1} />
+    </div>
+  )
+}
 
 const floatingIcons = ['💊', '🩺', '🩻', '❤️', '🧬', '💉', '🔬', '🩹']
 
@@ -89,7 +213,9 @@ export default function Appointment() {
   const [submitted, setSubmitted] = useState(false)
   const [focused, setFocused] = useState('')
   const [formVisible, setFormVisible] = useState(false)
+  const [deptOpen, setDeptOpen] = useState(false)
   const formRef = useRef(null)
+  const deptRef = useRef(null)
 
   useEffect(() => {
     const observer = new IntersectionObserver(([e]) => { if (e.isIntersecting) setFormVisible(true) }, { threshold: 0.1 })
@@ -97,13 +223,30 @@ export default function Appointment() {
     return () => observer.disconnect()
   }, [])
 
+  useEffect(() => {
+    const handler = (e) => { if (deptRef.current && !deptRef.current.contains(e.target)) setDeptOpen(false) }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [])
+
   const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value })
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault()
-    setSubmitted(true)
-    setTimeout(() => setSubmitted(false), 5000)
-    setForm({ name: '', phone: '', department: '', date: '', message: '' })
+    try {
+      const res = await fetch('http://localhost:5000/api/appointments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form)
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.message || 'Failed to book')
+      setSubmitted(true)
+      setTimeout(() => setSubmitted(false), 5000)
+      setForm({ name: '', phone: '', department: '', date: '', message: '' })
+    } catch (err) {
+      alert(err.message)
+    }
   }
 
   const inputClass = (name) =>
@@ -222,7 +365,7 @@ export default function Appointment() {
 
           {/* Right — form */}
           <div ref={formRef}
-            className="bg-white rounded-3xl p-8 relative overflow-hidden"
+            className="bg-white rounded-3xl p-8 relative"
             style={{
               opacity: formVisible ? 1 : 0,
               transform: formVisible ? 'translateY(0)' : 'translateY(40px)',
@@ -240,15 +383,40 @@ export default function Appointment() {
               style={{ background: 'radial-gradient(circle, #17ae95, transparent)' }} />
 
             {submitted ? (
-              <div className="text-center py-12">
-                <div className="relative w-20 h-20 mx-auto mb-4">
-                  <div className="absolute inset-0 rounded-full animate-ping opacity-30"
+              <div className="text-center py-8">
+                {/* Animated success ring */}
+                <div className="relative w-24 h-24 mx-auto mb-6">
+                  <div className="absolute inset-0 rounded-full animate-ping opacity-20"
                     style={{ background: 'linear-gradient(135deg, #0969b1, #17ae95)' }} />
-                  <div className="relative w-20 h-20 rounded-full flex items-center justify-center text-3xl shadow-xl"
-                    style={{ background: 'linear-gradient(135deg, #0969b1, #17ae95)' }}>✅</div>
+                  <div className="absolute inset-2 rounded-full animate-ping opacity-10 animation-delay-150"
+                    style={{ background: 'linear-gradient(135deg, #17ae95, #0969b1)' }} />
+                  <div className="relative w-24 h-24 rounded-full flex items-center justify-center shadow-2xl"
+                    style={{ background: 'linear-gradient(135deg, #0969b1, #17ae95)' }}>
+                    <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-800 mb-2">Appointment Requested!</h3>
-                <p className="text-gray-500">We'll contact you shortly to confirm your booking.</p>
+
+                <h3 className="text-2xl font-extrabold text-gray-900 mb-2">Appointment Requested!</h3>
+                <p className="text-gray-500 mb-6">We'll contact you shortly to confirm your booking.</p>
+
+                {/* Info pills */}
+                <div className="flex flex-wrap justify-center gap-2 mb-6">
+                  {[
+                    { icon: '📞', text: 'Confirmation call within 2 hrs' },
+                    { icon: '🏥', text: 'Leela Hospital, Gadag' },
+                  ].map(p => (
+                    <span key={p.text} className="flex items-center gap-1.5 text-xs font-medium text-gray-600 bg-gray-50 border border-gray-100 px-3 py-1.5 rounded-full">
+                      {p.icon} {p.text}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Divider */}
+                <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent mb-5" />
+
+                <p className="text-xs text-gray-400">Need help? Call us at <span className="font-semibold text-gray-600">+91 9008371817</span></p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4 relative z-10">
@@ -262,9 +430,22 @@ export default function Appointment() {
                     <div className={`absolute left-3 top-4 transition-colors duration-300 ${focused === field.name ? 'text-primary-500' : 'text-gray-400'}`}>
                       {field.icon}
                     </div>
-                    <input name={field.name} value={form[field.name]} onChange={handleChange} required
+                    <input name={field.name} value={form[field.name]}
+                      onChange={e => {
+                        if (field.name === 'phone') {
+                          const val = e.target.value.replace(/\D/g, '').slice(0, 10)
+                          setForm({ ...form, phone: val })
+                        } else {
+                          handleChange(e)
+                        }
+                      }}
+                      required
                       type={field.type} placeholder={field.placeholder}
                       onFocus={() => setFocused(field.name)} onBlur={() => setFocused('')}
+                      inputMode={field.name === 'phone' ? 'numeric' : undefined}
+                      pattern={field.name === 'phone' ? '[0-9]{10}' : undefined}
+                      minLength={field.name === 'phone' ? 10 : undefined}
+                      maxLength={field.name === 'phone' ? 10 : undefined}
                       className={inputClass(field.name)} />
                     {/* Glow line at bottom on focus */}
                     <div className="absolute bottom-0 left-4 right-4 h-px rounded-full transition-all duration-300"
@@ -272,26 +453,52 @@ export default function Appointment() {
                   </div>
                 ))}
 
-                <div className="relative">
-                  <div className={`absolute left-3 top-4 transition-colors duration-300 ${focused === 'department' ? 'text-primary-500' : 'text-gray-400'}`}>
+                <div ref={deptRef} className="relative">
+                  <div className={`absolute left-3 top-4 z-10 transition-colors duration-300 ${deptOpen || form.department ? 'text-primary-500' : 'text-gray-400'}`}>
                     <Stethoscope className="w-4 h-4" />
                   </div>
-                  <select name="department" value={form.department} onChange={handleChange} required
-                    onFocus={() => setFocused('department')} onBlur={() => setFocused('')}
-                    className={inputClass('department') + ' bg-white appearance-none'}>
-                    <option value="">Select Department</option>
-                    {departments.map(d => <option key={d}>{d}</option>)}
-                  </select>
+                  <button type="button"
+                    onClick={() => setDeptOpen(o => !o)}
+                    className={`w-full pl-10 pr-4 py-3.5 rounded-xl text-sm text-left transition-all duration-300 outline-none bg-gray-50 focus:bg-white ${
+                      deptOpen
+                        ? 'border-2 border-primary-400 shadow-lg shadow-primary-100 bg-white'
+                        : 'border-2 border-gray-100 hover:border-gray-200'
+                    } ${!form.department ? 'text-gray-400' : 'text-gray-800'}`}>
+                    {form.department || 'Select Department'}
+                    <svg className={`absolute right-3 top-4 w-4 h-4 text-gray-400 transition-transform ${deptOpen ? 'rotate-180' : ''}`}
+                      fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  {deptOpen && (
+                    <div className="absolute bottom-full mb-2 left-0 right-0 bg-white rounded-2xl py-2 z-50 max-h-64 overflow-y-auto"
+                      style={{ boxShadow: '0 -8px 32px rgba(0,0,0,0.12)', border: '1px solid #f1f5f9' }}>
+                      {departments.map(d => (
+                        <button key={d} type="button"
+                          onClick={() => { setForm(f => ({ ...f, department: d })); setDeptOpen(false) }}
+                          className="flex items-center justify-between w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                          style={{ borderRadius: '10px', margin: '0 4px', width: 'calc(100% - 8px)' }}>
+                          <span className={form.department === d ? 'font-semibold text-primary-500' : ''}>{d}</span>
+                          {form.department === d && (
+                            <svg className="w-4 h-4 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                            </svg>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                  {/* hidden input for form validation */}
+                  <input type="text" name="department" value={form.department} required readOnly className="sr-only" tabIndex={-1} />
                 </div>
 
-                <div className="relative">
-                  <div className={`absolute left-3 top-4 transition-colors duration-300 ${focused === 'date' ? 'text-primary-500' : 'text-gray-400'}`}>
-                    <Calendar className="w-4 h-4" />
-                  </div>
-                  <input name="date" value={form.date} onChange={handleChange} required type="date"
-                    onFocus={() => setFocused('date')} onBlur={() => setFocused('')}
-                    className={inputClass('date')} />
-                </div>
+                <DatePicker
+                  value={form.date}
+                  onChange={date => setForm(f => ({ ...f, date }))}
+                  focused={focused === 'date'}
+                  onFocus={() => setFocused('date')}
+                  onBlur={() => setFocused('')}
+                />
 
                 <div className="relative">
                   <textarea name="message" value={form.message} onChange={handleChange}

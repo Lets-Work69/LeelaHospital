@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Phone, Menu, X } from 'lucide-react'
+import { Phone, Menu, X, LogOut } from 'lucide-react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 
 const navLinks = [
@@ -15,8 +15,21 @@ const navLinks = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false)
   const navigate = useNavigate()
   const location = useLocation()
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user') || '{}')
+    setIsSuperAdmin(user.role === 'superadmin')
+  }, [location])
+
+  const handleLogout = () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    setIsSuperAdmin(false)
+    navigate('/')
+  }
 
   useEffect(() => {
     const onScroll = () => {
@@ -56,31 +69,52 @@ export default function Navbar() {
             onError={e => { e.target.onerror = null; e.target.src = '/logo.svg' }} />
         </a>
 
-        <nav className="hidden md:flex items-center gap-8">
-          {navLinks.map(link => (
-            link.href.startsWith('/') ? (
+        {isSuperAdmin ? (
+          <nav className="hidden md:flex items-center gap-8">
+            {[{ label: 'Doctors', href: '/doctors-admin' }, { label: 'Appointments', href: '/appointments' }, { label: 'Logs', href: '/logs' }].map(link => (
               <Link key={link.label} to={link.href}
-                className="text-sm font-medium transition-all duration-300 hover:text-teal-500 relative group text-gray-700">
+                className={`text-sm font-medium transition-all duration-300 hover:text-teal-500 relative group ${location.pathname === link.href ? 'text-teal-500' : 'text-gray-700'}`}>
                 {link.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-teal-400 group-hover:w-full transition-all duration-300 rounded-full" />
+                <span className={`absolute -bottom-1 left-0 h-0.5 bg-teal-400 transition-all duration-300 rounded-full ${location.pathname === link.href ? 'w-full' : 'w-0 group-hover:w-full'}`} />
               </Link>
-            ) : (
-              <a key={link.label} href={link.href}
-                onClick={e => handleAnchorClick(e, link.href)}
-                className="text-sm font-medium transition-all duration-300 hover:text-teal-500 relative group text-gray-700">
-                {link.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-teal-400 group-hover:w-full transition-all duration-300 rounded-full" />
-              </a>
-            )
-          ))}
-        </nav>
+            ))}
+          </nav>
+        ) : (
+          <nav className="hidden md:flex items-center gap-8">
+            {navLinks.map(link => (
+              link.href.startsWith('/') ? (
+                <Link key={link.label} to={link.href}
+                  className="text-sm font-medium transition-all duration-300 hover:text-teal-500 relative group text-gray-700">
+                  {link.label}
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-teal-400 group-hover:w-full transition-all duration-300 rounded-full" />
+                </Link>
+              ) : (
+                <a key={link.label} href={link.href}
+                  onClick={e => handleAnchorClick(e, link.href)}
+                  className="text-sm font-medium transition-all duration-300 hover:text-teal-500 relative group text-gray-700">
+                  {link.label}
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-teal-400 group-hover:w-full transition-all duration-300 rounded-full" />
+                </a>
+              )
+            ))}
+          </nav>
+        )}
 
         <div className="hidden md:flex items-center gap-4">
-          <a href="tel:+911234567890"
-            className="flex items-center gap-2 text-sm font-semibold transition-colors text-primary-600">
-            <Phone className="w-4 h-4" /> +91 9008371817
-          </a>
-          <a href="#appointment" className="btn-primary text-sm py-2.5 px-5">Book Appointment</a>
+          {isSuperAdmin ? (
+            <button onClick={handleLogout}
+              className="flex items-center gap-1 text-sm font-medium text-red-500 hover:text-red-700 transition-colors">
+              <LogOut className="w-4 h-4" /> Logout
+            </button>
+          ) : (
+            <>
+              <a href="tel:+919008371817"
+                className="flex items-center gap-2 text-sm font-semibold transition-colors text-primary-600">
+                <Phone className="w-4 h-4" /> +91 9008371817
+              </a>
+              <a href="#appointment" className="btn-primary text-sm py-2.5 px-5">Book Appointment</a>
+            </>
+          )}
         </div>
 
         <button className="md:hidden transition-colors text-gray-700"
@@ -89,25 +123,46 @@ export default function Navbar() {
         </button>
       </div>
 
-      {menuOpen && (
-        <div className="md:hidden bg-white shadow-2xl px-4 pb-6 pt-2 border-t border-gray-100">
-          {navLinks.map(link => (
-            link.href.startsWith('/') ? (
-              <Link key={link.label} to={link.href} onClick={() => setMenuOpen(false)}
-                className="block py-3 text-gray-700 font-medium border-b border-gray-50 hover:text-primary-500 transition-colors">
-                {link.label}
+      {menuOpen && <div className="md:hidden bg-white shadow-2xl px-4 pb-6 pt-2 border-t border-gray-100">
+          {isSuperAdmin ? (
+            <>
+              <Link to="/doctors-admin" onClick={() => setMenuOpen(false)}
+                className="block py-3 text-gray-700 font-medium border-b border-gray-50 hover:text-teal-500 transition-colors">
+                Doctors
               </Link>
-            ) : (
-              <a key={link.label} href={link.href}
-                onClick={e => handleAnchorClick(e, link.href)}
-                className="block py-3 text-gray-700 font-medium border-b border-gray-50 hover:text-primary-500 transition-colors">
-                {link.label}
-              </a>
-            )
-          ))}
-          <a href="#appointment" className="btn-primary block text-center mt-4">Book Appointment</a>
-        </div>
-      )}
+              <Link to="/appointments" onClick={() => setMenuOpen(false)}
+                className="block py-3 text-gray-700 font-medium border-b border-gray-50 hover:text-teal-500 transition-colors">
+                Appointments
+              </Link>
+              <Link to="/logs" onClick={() => setMenuOpen(false)}
+                className="block py-3 text-gray-700 font-medium border-b border-gray-50 hover:text-teal-500 transition-colors">
+                Logs
+              </Link>
+              <button onClick={handleLogout}
+                className="block w-full text-left py-3 text-red-500 font-medium mt-2">
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              {navLinks.map(link => (
+                link.href.startsWith('/') ? (
+                  <Link key={link.label} to={link.href} onClick={() => setMenuOpen(false)}
+                    className="block py-3 text-gray-700 font-medium border-b border-gray-50 hover:text-primary-500 transition-colors">
+                    {link.label}
+                  </Link>
+                ) : (
+                  <a key={link.label} href={link.href}
+                    onClick={e => handleAnchorClick(e, link.href)}
+                    className="block py-3 text-gray-700 font-medium border-b border-gray-50 hover:text-primary-500 transition-colors">
+                    {link.label}
+                  </a>
+                )
+              ))}
+              <a href="#appointment" className="btn-primary block text-center mt-4">Book Appointment</a>
+            </>
+          )}
+        </div>}
     </header>
   )
 }
