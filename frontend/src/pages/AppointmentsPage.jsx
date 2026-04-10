@@ -6,6 +6,17 @@ import Navbar from '../components/Navbar'
 
 const API_URL = 'http://localhost:5000/api'
 
+/** Open bookings: still "new" until status is completed or cancelled. */
+function isNewAppointment(a) {
+  const s = a?.status
+  return s !== 'completed' && s !== 'cancelled'
+}
+
+const FILTER_PRESETS = [
+  { value: 'all', label: 'All', dot: 'bg-gray-400' },
+  { value: 'new', label: 'New', dot: 'bg-teal-500' },
+]
+
 const STATUSES = [
   { value: 'pending',   label: 'Pending',   color: 'bg-yellow-100 text-yellow-800', dot: 'bg-yellow-400' },
   { value: 'confirmed', label: 'Confirmed', color: 'bg-green-100 text-green-800',   dot: 'bg-green-400' },
@@ -141,6 +152,15 @@ export default function AppointmentsPage() {
   }, [])
 
   useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user') || '{}')
+    if (user.role !== 'superadmin') return
+    const onNewBooking = () => fetchAppointments()
+    window.addEventListener('leela:new-appointment', onNewBooking)
+    return () => window.removeEventListener('leela:new-appointment', onNewBooking)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
     const handler = (e) => {
       if (filterRef.current && !filterRef.current.contains(e.target)) setFilterOpen(false)
     }
@@ -195,8 +215,18 @@ export default function AppointmentsPage() {
     }
   }
 
-  const filtered = filter === 'all' ? appointments : appointments.filter(a => a.status === filter)
-  const filterLabel = filter === 'all' ? 'All' : (STATUSES.find(s => s.value === filter)?.label || 'All')
+  const filtered =
+    filter === 'all'
+      ? appointments
+      : filter === 'new'
+        ? appointments.filter(isNewAppointment)
+        : appointments.filter(a => a.status === filter)
+  const filterLabel =
+    filter === 'all'
+      ? 'All'
+      : filter === 'new'
+        ? 'New'
+        : (STATUSES.find(s => s.value === filter)?.label || 'All')
 
   return (
     <>
@@ -255,7 +285,12 @@ export default function AppointmentsPage() {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-8">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Appointments</h1>
-              <p className="text-gray-500 text-sm mt-1">{appointments.length} total appointments</p>
+              <p className="text-gray-500 text-sm mt-1">
+                {appointments.length} total
+                {filter !== 'new' && (
+                  <> · {appointments.filter(isNewAppointment).length} new (until completed or cancelled)</>
+                )}
+              </p>
             </div>
             <div ref={filterRef} className="relative">
               <button
@@ -272,21 +307,34 @@ export default function AppointmentsPage() {
                   className="absolute top-full mt-2 right-0 bg-white rounded-2xl py-2 z-50"
                   style={{ minWidth: '160px', boxShadow: '0 8px 32px rgba(0,0,0,0.14)', border: '1px solid #f1f5f9' }}
                 >
-                  {[{ value: 'all', label: 'All', dot: 'bg-gray-400' }, ...STATUSES].map((s, i) => (
-                    <React.Fragment key={s.value}>
-                      {i === 1 && <div className="my-1 mx-3 border-t border-gray-100" />}
-                      <button
-                        onClick={() => { setFilter(s.value); setFilterOpen(false) }}
-                        className="flex items-center justify-between text-sm text-gray-700 hover:bg-gray-50 transition-colors rounded-xl px-4 py-2.5"
-                        style={{ width: 'calc(100% - 8px)', marginLeft: '4px' }}
-                      >
-                        <div className="flex items-center gap-3">
-                          <span className={`w-2 h-2 rounded-full ${s.dot}`} />
-                          <span className="font-medium">{s.label}</span>
-                        </div>
-                        {s.value === filter && <Check className="w-3.5 h-3.5 text-blue-500" />}
-                      </button>
-                    </React.Fragment>
+                  {FILTER_PRESETS.map(s => (
+                    <button
+                      key={s.value}
+                      onClick={() => { setFilter(s.value); setFilterOpen(false) }}
+                      className="flex items-center justify-between text-sm text-gray-700 hover:bg-gray-50 transition-colors rounded-xl px-4 py-2.5"
+                      style={{ width: 'calc(100% - 8px)', marginLeft: '4px' }}
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className={`w-2 h-2 rounded-full ${s.dot}`} />
+                        <span className="font-medium">{s.label}</span>
+                      </div>
+                      {s.value === filter && <Check className="w-3.5 h-3.5 text-blue-500" />}
+                    </button>
+                  ))}
+                  <div className="my-1 mx-3 border-t border-gray-100" />
+                  {STATUSES.map(s => (
+                    <button
+                      key={s.value}
+                      onClick={() => { setFilter(s.value); setFilterOpen(false) }}
+                      className="flex items-center justify-between text-sm text-gray-700 hover:bg-gray-50 transition-colors rounded-xl px-4 py-2.5"
+                      style={{ width: 'calc(100% - 8px)', marginLeft: '4px' }}
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className={`w-2 h-2 rounded-full ${s.dot}`} />
+                        <span className="font-medium">{s.label}</span>
+                      </div>
+                      {s.value === filter && <Check className="w-3.5 h-3.5 text-blue-500" />}
+                    </button>
                   ))}
                 </div>
               )}
@@ -315,7 +363,10 @@ export default function AppointmentsPage() {
                   </thead>
                   <tbody className="divide-y divide-gray-100">
                     {filtered.map(apt => (
-                      <tr key={apt._id} className="hover:bg-gray-50 transition-colors">
+                      <tr
+                        key={apt._id}
+                        className={`hover:bg-gray-50 transition-colors ${isNewAppointment(apt) ? 'bg-teal-50/40' : ''}`}
+                      >
                         <td className="px-5 py-4 text-xs font-mono text-gray-400">#{apt._id.slice(-6).toUpperCase()}</td>
                         <td className="px-5 py-4 text-sm font-medium text-gray-900">{apt.name}</td>
                         <td className="px-5 py-4 text-sm text-gray-600">{apt.phone}</td>

@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Calendar, Plus, Trash2, Loader2, CheckCircle, Stethoscope, Clock, Users, MoreVertical, Edit2, EyeOff, Eye, AlertTriangle, LayoutGrid, List, GripVertical } from 'lucide-react';
 import Navbar from '../components/Navbar';
@@ -74,6 +74,15 @@ export default function AdminDashboard() {
     }
     fetchDoctors();
     fetchAppointments();
+  }, []);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (user.role !== 'superadmin') return;
+    const onNewBooking = () => fetchAppointments();
+    window.addEventListener('leela:new-appointment', onNewBooking);
+    return () => window.removeEventListener('leela:new-appointment', onNewBooking);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

@@ -1,9 +1,22 @@
 ﻿import React from 'react'
 import { Phone, Mail, MapPin, Facebook, Instagram, Twitter, Youtube, ArrowRight } from 'lucide-react'
+import { Link, useNavigate } from 'react-router-dom'
 
-const quickLinks = ['Home', 'About Us', 'Services', 'Doctors', 'Careers', 'Contact']
+const quickLinks = [
+  { label: 'Home', href: '/' },
+  { label: 'About Us', href: '/about' },
+  { label: 'Services', href: '/specialities' },
+  { label: 'Doctors', href: '/doctors' }
+]
 
 export default function Footer() {
+  const navigate = useNavigate()
+
+  const handleLinkClick = (href) => {
+    navigate(href)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   return (
     <footer id="contact" className="relative overflow-hidden bg-mesh">
       
@@ -41,15 +54,17 @@ export default function Footer() {
           </div>
         </div>
 
-<div>
+        <div>
           <h4 className="text-white font-bold mb-5 text-sm uppercase tracking-wider">Quick Links</h4>
           <ul className="space-y-3">
             {quickLinks.map(link => (
-              <li key={link}>
-                <a href="#" className="text-sm text-blue-200 hover:text-teal-400 transition-colors flex items-center gap-2 group">
+              <li key={link.label}>
+                <button 
+                  onClick={() => handleLinkClick(link.href)}
+                  className="text-sm text-blue-200 hover:text-teal-400 transition-colors flex items-center gap-2 group">
                   <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -ml-5 group-hover:ml-0 transition-all duration-300" />
-                  {link}
-                </a>
+                  {link.label}
+                </button>
               </li>
             ))}
           </ul>

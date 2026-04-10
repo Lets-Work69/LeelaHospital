@@ -3,7 +3,7 @@ import { Calendar, User, Phone, Stethoscope, Send, MapPin, Mail, Clock, ChevronL
 
 const departments = [
   'Cardiology', 'Neurology', 'Orthopaedics', 'Paediatrics',
-  'Oncology', 'Pulmonology', 'Dental Care', 'Ophthalmology', 'General Medicine',
+  'Oncology', 'Pulmonology', 'Dental Care', 'Ophthalmology'
 ]
 
 const contactInfo = [

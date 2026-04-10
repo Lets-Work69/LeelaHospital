@@ -1,6 +1,6 @@
-﻿import React, { useState, useEffect } from 'react'
+﻿import React, { useState, useEffect, useRef } from 'react'
 import { Phone, Menu, X, LogOut } from 'lucide-react'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 const navLinks = [
   { label: 'Home',         href: '#home' },
@@ -16,8 +16,10 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [isSuperAdmin, setIsSuperAdmin] = useState(false)
+  const [apptNavDot, setApptNavDot] = useState(false)
   const navigate = useNavigate()
   const location = useLocation()
+  const prevPathnameRef = useRef(location.pathname)
 
   // Check if we're on an admin page
   const isAdminPage = ['/doctors-admin', '/appointments', '/logs'].includes(location.pathname)
@@ -27,6 +29,22 @@ export default function Navbar() {
     // Only show admin navbar on admin pages
     setIsSuperAdmin(user.role === 'superadmin' && isAdminPage)
   }, [location, isAdminPage])
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user') || '{}')
+    if (user.role !== 'superadmin') return
+    const onNewAppt = () => setApptNavDot(true)
+    window.addEventListener('leela:new-appointment', onNewAppt)
+    return () => window.removeEventListener('leela:new-appointment', onNewAppt)
+  }, [])
+
+  useEffect(() => {
+    const prev = prevPathnameRef.current
+    prevPathnameRef.current = location.pathname
+    if (location.pathname === '/appointments' && prev !== '/appointments' && apptNavDot) {
+      setApptNavDot(false)
+    }
+  }, [location.pathname, apptNavDot])
 
   const handleLogout = () => {
     localStorage.removeItem('token')
@@ -78,7 +96,12 @@ export default function Navbar() {
             {[{ label: 'Doctors', href: '/doctors-admin' }, { label: 'Appointments', href: '/appointments' }, { label: 'Logs', href: '/logs' }].map(link => (
               <Link key={link.label} to={link.href}
                 className={`text-sm font-medium transition-all duration-300 hover:text-teal-500 relative group ${location.pathname === link.href ? 'text-teal-500' : 'text-gray-700'}`}>
-                {link.label}
+                <span className="relative inline-block pr-1">
+                  {link.label}
+                  {link.href === '/appointments' && apptNavDot && (
+                    <span className="absolute -top-0.5 -right-1.5 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white" aria-hidden />
+                  )}
+                </span>
                 <span className={`absolute -bottom-1 left-0 h-0.5 bg-teal-400 transition-all duration-300 rounded-full ${location.pathname === link.href ? 'w-full' : 'w-0 group-hover:w-full'}`} />
               </Link>
             ))}
@@ -135,8 +158,13 @@ export default function Navbar() {
                 Doctors
               </Link>
               <Link to="/appointments" onClick={() => setMenuOpen(false)}
-                className="block py-3 text-gray-700 font-medium border-b border-gray-50 hover:text-teal-500 transition-colors">
-                Appointments
+                className="flex items-center gap-2 py-3 text-gray-700 font-medium border-b border-gray-50 hover:text-teal-500 transition-colors">
+                <span className="relative inline-block">
+                  Appointments
+                  {apptNavDot && (
+                    <span className="absolute -top-0.5 -right-2.5 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white" aria-hidden />
+                  )}
+                </span>
               </Link>
               <Link to="/logs" onClick={() => setMenuOpen(false)}
                 className="block py-3 text-gray-700 font-medium border-b border-gray-50 hover:text-teal-500 transition-colors">
