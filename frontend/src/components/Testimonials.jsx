@@ -89,11 +89,10 @@ export default function Testimonials() {
                 {/* ✅ HYBRID VIDEO SYSTEM */}
                 {t.videoSrc ? (
 
-                  // 🔥 LOCAL VIDEO (AUTOPLAY WORKS)
+                  // LOCAL VIDEO
                   <video
                     src={t.videoSrc}
                     className="h-full aspect-[9/16] object-contain"
-                    autoPlay
                     controls
                     playsInline
                     onEnded={() => go('next')}
