@@ -19,10 +19,14 @@ export default function Navbar() {
   const navigate = useNavigate()
   const location = useLocation()
 
+  // Check if we're on an admin page
+  const isAdminPage = ['/doctors-admin', '/appointments', '/logs'].includes(location.pathname)
+
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user') || '{}')
-    setIsSuperAdmin(user.role === 'superadmin')
-  }, [location])
+    // Only show admin navbar on admin pages
+    setIsSuperAdmin(user.role === 'superadmin' && isAdminPage)
+  }, [location, isAdminPage])
 
   const handleLogout = () => {
     localStorage.removeItem('token')

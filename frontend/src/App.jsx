@@ -18,6 +18,7 @@ import Login from './pages/Login'
 import AdminDashboard from './pages/AdminDashboard'
 import AppointmentsPage from './pages/AppointmentsPage'
 import LogsPage from './pages/LogsPage'
+import PrivacyPolicy from './pages/PrivacyPolicy'
 import { Calendar } from 'lucide-react'
 
 function Home() {
@@ -142,6 +143,7 @@ function AppInner({ introDone, setIntroDone }) {
           <Route path="/specialities/:slug" element={<ServiceDetail />} />
           <Route path="/about" element={<About />} />
           <Route path="/doctors" element={<DoctorsPage />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/login" element={<Login />} />
           <Route path="/doctors-admin" element={<AdminDashboard />} />
           <Route path="/appointments" element={<AppointmentsPage />} />

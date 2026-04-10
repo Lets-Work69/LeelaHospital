@@ -2,6 +2,7 @@
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import helmet from 'helmet';
 
 import authRoutes from './routes/auth.js';
 import doctorRoutes from './routes/doctors.js';
@@ -15,6 +16,7 @@ const app = express();
 const sseClients = new Set();
 setSSEClients(sseClients);
 
+app.use(helmet());
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
