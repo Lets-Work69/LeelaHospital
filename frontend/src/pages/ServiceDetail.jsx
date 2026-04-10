@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+﻿import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { CheckCircle, ArrowRight, ArrowLeft, Phone, HeartHandshake } from 'lucide-react'
 import Navbar from '../components/Navbar'
@@ -157,21 +157,17 @@ export default function ServiceDetail() {
     <div className="min-h-screen" style={{ background: '#f8fafc' }}>
       <Navbar />
 
-      {/* ── HERO HEADER ── */}
-      <div className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #0969b1 0%, #0b7fc7 50%, #17ae95 100%)', paddingTop: '100px', paddingBottom: '80px' }}>
+<div className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #0969b1 0%, #0b7fc7 50%, #17ae95 100%)', paddingTop: '100px', paddingBottom: '80px' }}>
 
-        {/* Animated mesh */}
-        <div className="absolute inset-0 opacity-10"
+<div className="absolute inset-0 opacity-10"
           style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '30px 30px' }} />
 
-        {/* Glowing orbs */}
-        <div className="absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl opacity-20 animate-blob"
+<div className="absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl opacity-20 animate-blob"
           style={{ background: 'radial-gradient(circle, white, transparent)' }} />
         <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full blur-3xl opacity-15 animate-blob-delay"
           style={{ background: 'radial-gradient(circle, white, transparent)' }} />
 
-        {/* Floating dots */}
-        {[...Array(6)].map((_, i) => (
+{[...Array(6)].map((_, i) => (
           <div key={i} className="absolute rounded-full opacity-25"
             style={{
               width: 4 + i * 2, height: 4 + i * 2,
@@ -191,8 +187,7 @@ export default function ServiceDetail() {
           <div className="flex items-start gap-6"
             style={{ opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(30px)', transition: 'all 0.7s ease' }}>
 
-            {/* Icon */}
-            {service.icon && (
+{service.icon && (
               <div className="w-24 h-24 rounded-full flex items-center justify-center flex-shrink-0 shadow-2xl"
                 style={{ background: '#17ae95' }}>
                 <img src={service.icon} alt={service.title} className="w-12 h-12"
@@ -210,8 +205,7 @@ export default function ServiceDetail() {
                 <p className="text-white opacity-80 text-xl font-light">{service.subtitle}</p>
               )}
 
-              {/* Quick stats */}
-              <div className="flex flex-wrap gap-3 sm:gap-6 mt-6">
+<div className="flex flex-wrap gap-3 sm:gap-6 mt-6">
                 {[['Expert', 'Specialists'], ['24/7', 'Available'], ['Modern', 'Equipment']].map(([v, l]) => (
                   <div key={l} className="text-center px-3 sm:px-4 py-2 rounded-xl min-w-[96px] sm:min-w-0"
                     style={{ background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(10px)' }}>
@@ -224,19 +218,16 @@ export default function ServiceDetail() {
           </div>
         </div>
 
-        {/* Wave bottom */}
-        <div className="absolute bottom-0 left-0 right-0">
+<div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 60" fill="none" preserveAspectRatio="none">
             <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="#f8fafc"/>
           </svg>
         </div>
       </div>
 
-      {/* ── CONTENT ── */}
-      <div className="max-w-5xl mx-auto px-4 py-12 space-y-6">
+<div className="max-w-5xl mx-auto px-4 py-12 space-y-6">
 
-        {/* Overview */}
-        <div className="bg-white rounded-3xl overflow-hidden shadow-sm"
+<div className="bg-white rounded-3xl overflow-hidden shadow-sm"
           style={{ opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(20px)', transition: 'all 0.6s ease 0.2s' }}>
           <div className="h-1 w-full" style={{ background: 'linear-gradient(90deg, #0969b1, #17ae95)' }} />
           <div className="p-8">
@@ -245,8 +236,7 @@ export default function ServiceDetail() {
           </div>
         </div>
 
-        {/* Treatments */}
-        <div className="bg-white rounded-3xl overflow-hidden shadow-sm"
+<div className="bg-white rounded-3xl overflow-hidden shadow-sm"
           style={{ opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(20px)', transition: 'all 0.6s ease 0.35s' }}>
           <div className="h-1 w-full" style={{ background: 'linear-gradient(90deg, #17ae95, #0969b1)' }} />
           <div className="p-8">
@@ -270,8 +260,7 @@ export default function ServiceDetail() {
           </div>
         </div>
 
-        {/* Why choose — 2 col layout */}
-        <div className="rounded-3xl overflow-hidden shadow-sm relative"
+<div className="rounded-3xl overflow-hidden shadow-sm relative"
           style={{
             background: 'linear-gradient(135deg, #0969b1, #17ae95)',
             opacity: visible ? 1 : 0,
@@ -286,8 +275,7 @@ export default function ServiceDetail() {
           </div>
         </div>
 
-        {/* Our Promise */}
-        {service.promise && (
+{service.promise && (
           <div className="bg-white rounded-3xl p-8 text-center shadow-sm relative overflow-hidden"
             style={{ opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(20px)', transition: 'all 0.6s ease 0.6s' }}>
             <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, #0969b1, #17ae95)' }} />
@@ -299,8 +287,7 @@ export default function ServiceDetail() {
           </div>
         )}
 
-
-      </div>
+</div>
 
       <Footer />
 

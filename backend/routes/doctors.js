@@ -1,4 +1,4 @@
-import express from 'express';
+﻿import express from 'express';
 import { body, validationResult } from 'express-validator';
 import Doctor from '../models/Doctor.js';
 import { protect, superadminOnly } from '../middleware/auth.js';
@@ -6,9 +6,6 @@ import { createLog } from '../utils/logger.js';
 
 const router = express.Router();
 
-// @route   POST /api/doctors/reorder
-// @desc    Save new sort order
-// @access  Private/Superadmin
 router.post('/reorder', protect, superadminOnly, async (req, res) => {
   try {
     const { orderedIds } = req.body;
@@ -25,9 +22,6 @@ router.post('/reorder', protect, superadminOnly, async (req, res) => {
   }
 });
 
-// @route   GET /api/doctors
-// @desc    Get all active doctors (public)
-// @access  Public
 router.get('/', async (req, res) => {
   try {
     const doctors = await Doctor.find({ isActive: true }).sort({ sortOrder: 1, createdAt: -1 });
@@ -38,9 +32,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-// @route   GET /api/doctors/all
-// @desc    Get all doctors including inactive (superadmin only)
-// @access  Private/Superadmin
 router.get('/all', protect, superadminOnly, async (req, res) => {
   try {
     const doctors = await Doctor.find().sort({ sortOrder: 1, createdAt: -1 });
@@ -51,9 +42,6 @@ router.get('/all', protect, superadminOnly, async (req, res) => {
   }
 });
 
-// @route   POST /api/doctors
-// @desc    Add new doctor
-// @access  Private/Superadmin
 router.post('/', protect, superadminOnly, [
   body('name').trim().notEmpty().withMessage('Name is required'),
   body('specialty').trim().notEmpty().withMessage('Specialty is required'),
@@ -85,9 +73,6 @@ router.post('/', protect, superadminOnly, [
   }
 });
 
-// @route   PUT /api/doctors/:id
-// @desc    Update doctor
-// @access  Private/Superadmin
 router.put('/:id', protect, superadminOnly, async (req, res) => {
   try {
     const { name, specialty, experience, patients, rating, profileImage, isActive } = req.body;
@@ -105,8 +90,7 @@ router.put('/:id', protect, superadminOnly, async (req, res) => {
     await doctor.save();
     res.json({ success: true, doctor });
 
-    // Log the action
-    if (isActive !== undefined) {
+if (isActive !== undefined) {
       await createLog(
         isActive ? 'DOCTOR_ACTIVATED' : 'DOCTOR_DEACTIVATED',
         'doctor',
@@ -123,9 +107,6 @@ router.put('/:id', protect, superadminOnly, async (req, res) => {
   }
 });
 
-// @route   DELETE /api/doctors/:id/permanent
-// @desc    Permanently delete doctor
-// @access  Private/Superadmin
 router.delete('/:id/permanent', protect, superadminOnly, async (req, res) => {
   try {
     const doctor = await Doctor.findByIdAndDelete(req.params.id);

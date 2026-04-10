@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+﻿import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import Doctor from '../models/Doctor.js';
 
@@ -24,8 +24,7 @@ const seed = async () => {
     await mongoose.connect(process.env.MONGODB_URI);
     console.log('Connected to MongoDB');
 
-    // Insert only doctors that don't already exist by name
-    let seeded = 0;
+let seeded = 0;
     for (const d of doctors) {
       const exists = await Doctor.findOne({ name: d.name.trim() });
       if (!exists) {

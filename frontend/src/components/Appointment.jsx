@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+﻿import React, { useState, useEffect, useRef } from 'react'
 import { Calendar, User, Phone, Stethoscope, Send, MapPin, Mail, Clock, ChevronLeft, ChevronRight, Check } from 'lucide-react'
 
 const departments = [
@@ -83,8 +83,7 @@ function DatePicker({ value, onChange, focused, onFocus, onBlur }) {
         <div className="absolute bottom-full mb-2 left-0 right-0 bg-white rounded-2xl p-4 z-50"
           style={{ boxShadow: '0 -8px 32px rgba(0,0,0,0.12)', border: '1px solid #f1f5f9' }}>
 
-          {/* Month/Year nav */}
-          <div className="flex items-center justify-between mb-3">
+<div className="flex items-center justify-between mb-3">
             <button type="button" onClick={() => setViewDate(new Date(year, month - 1, 1))}
               className="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center transition-colors">
               <ChevronLeft className="w-4 h-4 text-gray-500" />
@@ -96,15 +95,13 @@ function DatePicker({ value, onChange, focused, onFocus, onBlur }) {
             </button>
           </div>
 
-          {/* Day headers */}
-          <div className="grid grid-cols-7 mb-1">
+<div className="grid grid-cols-7 mb-1">
             {DAYS.map(d => (
               <div key={d} className="text-center text-xs font-semibold text-gray-400 py-1">{d}</div>
             ))}
           </div>
 
-          {/* Calendar grid */}
-          <div className="grid grid-cols-7 gap-y-1">
+<div className="grid grid-cols-7 gap-y-1">
             {cells.map((cell, i) => (
               <button key={i} type="button"
                 onClick={() => selectDay(cell.day, cell.cur)}
@@ -122,8 +119,7 @@ function DatePicker({ value, onChange, focused, onFocus, onBlur }) {
             ))}
           </div>
 
-          {/* Today shortcut */}
-          <div className="mt-3 pt-3 border-t border-gray-100 flex justify-end">
+<div className="mt-3 pt-3 border-t border-gray-100 flex justify-end">
             <button type="button"
               onClick={() => { const t = today; const iso = `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`; onChange(iso); setOpen(false) }}
               className="text-xs font-semibold text-primary-500 hover:text-primary-600 transition-colors">
@@ -181,12 +177,10 @@ function ContactCard({ item, index }) {
         border: hovered ? '1px solid transparent' : '1px solid #f1f5f9',
       }}>
 
-      {/* Animated background sweep on hover */}
-      <div className="absolute inset-0 opacity-0 transition-opacity duration-300 rounded-2xl"
+<div className="absolute inset-0 opacity-0 transition-opacity duration-300 rounded-2xl"
         style={{ background: item.color, opacity: hovered ? 0.05 : 0 }} />
 
-      {/* Left accent bar */}
-      <div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-2xl transition-all duration-300"
+<div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-2xl transition-all duration-300"
         style={{ background: item.color, opacity: hovered ? 1 : 0.3 }} />
 
       <div className="w-12 h-12 rounded-xl text-white flex items-center justify-center flex-shrink-0 shadow-md transition-transform duration-300"
@@ -199,8 +193,7 @@ function ContactCard({ item, index }) {
         <p className="text-gray-700 font-semibold mt-0.5">{item.value}</p>
       </div>
 
-      {/* Ripple dot on hover */}
-      {hovered && (
+{hovered && (
         <div className="absolute right-4 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full animate-ping"
           style={{ background: 'linear-gradient(135deg, #0969b1, #17ae95)' }} />
       )}
@@ -259,25 +252,21 @@ export default function Appointment() {
   return (
     <section id="appointment" className="py-24 relative overflow-hidden">
 
-      {/* Animated gradient background */}
-      <div className="absolute inset-0 animate-gradient"
+<div className="absolute inset-0 animate-gradient"
         style={{ background: 'linear-gradient(135deg, #f0f9ff, #e0f2fe, #f0fdf4, #fafafa)', backgroundSize: '400% 400%' }} />
 
-      {/* Dot grid */}
-      <div className="absolute inset-0 opacity-40"
+<div className="absolute inset-0 opacity-40"
         style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, #cbd5e1 1px, transparent 0)', backgroundSize: '28px 28px' }} />
 
-      {/* Floating medical icons */}
-      <FloatingMedical />
+<FloatingMedical />
 
-      {/* Glowing orbs */}
-      <div className="absolute top-10 right-10 w-72 h-72 rounded-full blur-3xl opacity-20 animate-pulse"
+<div className="absolute top-10 right-10 w-72 h-72 rounded-full blur-3xl opacity-20 animate-pulse"
         style={{ background: 'radial-gradient(circle, #17ae95, transparent)' }} />
       <div className="absolute bottom-10 left-10 w-64 h-64 rounded-full blur-3xl opacity-20 animate-pulse"
         style={{ background: 'radial-gradient(circle, #0969b1, transparent)', animationDelay: '1s' }} />
 
       <div className="relative max-w-7xl mx-auto px-4">
-        {/* Section header */}
+        
         <div className="text-center mb-16">
           <span className="inline-block bg-primary-50 text-primary-500 font-semibold text-xs uppercase tracking-widest px-4 py-2 rounded-full mb-4">Get In Touch</span>
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
@@ -290,12 +279,10 @@ export default function Appointment() {
 
         <div className="grid md:grid-cols-2 gap-10 items-start">
 
-          {/* Left — contact info */}
-          <div className="space-y-4">
+<div className="space-y-4">
             {contactInfo.map((item, i) => <ContactCard key={item.label} item={item} index={i} />)}
 
-            {/* Google Maps embed */}
-            <div className="rounded-2xl overflow-hidden shadow-md border border-gray-100" style={{ height: '200px' }}>
+<div className="rounded-2xl overflow-hidden shadow-md border border-gray-100" style={{ height: '200px' }}>
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12292.2348629131!2d75.62375420400151!3d15.420820184266091!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bb8f96d9a5a11fb%3A0xc3bd6862723014f3!2sLeela%20Hospital%20Gadag!5e1!3m2!1sen!2sin!4v1774927805782!5m2!1sen!2sin"
                 width="100%"
@@ -308,16 +295,13 @@ export default function Appointment() {
               />
             </div>
 
-            {/* Emergency banner with pulse effect */}
-            <div className="relative overflow-hidden rounded-2xl p-6 text-white"
+<div className="relative overflow-hidden rounded-2xl p-6 text-white"
               style={{ background: 'linear-gradient(135deg, #0969b1, #064e8a)' }}>
 
-              {/* Animated rings */}
-              <div className="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-white opacity-10 animate-ping" style={{ animationDuration: '2s' }} />
+<div className="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-white opacity-10 animate-ping" style={{ animationDuration: '2s' }} />
               <div className="absolute -right-3 -top-3 w-16 h-16 rounded-full bg-white opacity-10" />
 
-              {/* Heartbeat line */}
-              <div className="absolute bottom-3 left-0 right-0 px-4 opacity-20">
+<div className="absolute bottom-3 left-0 right-0 px-4 opacity-20">
                 <svg viewBox="0 0 300 30" className="w-full">
                   <polyline points="0,15 40,15 55,5 65,25 75,15 120,15 135,8 145,22 155,15 200,15 215,5 225,25 235,15 300,15"
                     fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round">
@@ -330,24 +314,24 @@ export default function Appointment() {
                 <div className="flex items-center gap-3 mb-4">
                   <div className="relative">
                     <svg width="48" height="32" viewBox="0 0 48 32" className="animate-drive">
-                      {/* Ambulance body */}
+                      
                       <g>
                         <rect x="4" y="12" width="28" height="12" fill="#f8fafc" rx="2"/>
                         <rect x="22" y="6" width="12" height="18" fill="#f8fafc" rx="2"/>
-                        {/* Windows */}
+                        
                         <rect x="24" y="8" width="8" height="8" fill="#0969b1"/>
-                        {/* Medical cross */}
+                        
                         <rect x="26" y="11" width="4" height="2" fill="white"/>
                         <rect x="27" y="10" width="2" height="4" fill="white"/>
                       </g>
-                      {/* Wheels */}
+                      
                       <circle cx="10" cy="26" r="3" fill="#1f2937"/>
                       <circle cx="24" cy="26" r="3" fill="#1f2937"/>
                       <circle cx="32" cy="26" r="3" fill="#1f2937"/>
-                      {/* Siren lights */}
+                      
                       <rect x="34" y="8" width="3" height="5" fill="#ef4444" className="animate-flash-red"/>
                       <rect x="38" y="8" width="3" height="5" fill="#3b82f6" className="animate-flash-blue"/>
-                      {/* Road motion lines */}
+                      
                       <g className="animate-road-lines">
                         <rect x="0" y="30" width="6" height="2" fill="white" opacity="0.6"/>
                         <rect x="20" y="30" width="4" height="2" fill="white" opacity="0.6"/>
@@ -363,8 +347,7 @@ export default function Appointment() {
             </div>
           </div>
 
-          {/* Right — form */}
-          <div ref={formRef}
+<div ref={formRef}
             className="bg-white rounded-3xl p-8 relative"
             style={{
               opacity: formVisible ? 1 : 0,
@@ -374,17 +357,15 @@ export default function Appointment() {
               border: '1px solid rgba(29,111,164,0.08)',
             }}>
 
-            {/* Top gradient bar */}
-            <div className="absolute top-0 left-0 right-0 h-1 rounded-t-3xl"
+<div className="absolute top-0 left-0 right-0 h-1 rounded-t-3xl"
               style={{ background: 'linear-gradient(90deg, #0969b1, #17ae95, #0969b1)', backgroundSize: '200%', animation: 'shimmer 3s linear infinite' }} />
 
-            {/* Corner glow */}
-            <div className="absolute top-0 right-0 w-32 h-32 rounded-full blur-2xl opacity-10"
+<div className="absolute top-0 right-0 w-32 h-32 rounded-full blur-2xl opacity-10"
               style={{ background: 'radial-gradient(circle, #17ae95, transparent)' }} />
 
             {submitted ? (
               <div className="text-center py-8">
-                {/* Animated success ring */}
+                
                 <div className="relative w-24 h-24 mx-auto mb-6">
                   <div className="absolute inset-0 rounded-full animate-ping opacity-20"
                     style={{ background: 'linear-gradient(135deg, #0969b1, #17ae95)' }} />
@@ -401,8 +382,7 @@ export default function Appointment() {
                 <h3 className="text-2xl font-extrabold text-gray-900 mb-2">Appointment Requested!</h3>
                 <p className="text-gray-500 mb-6">We'll contact you shortly to confirm your booking.</p>
 
-                {/* Info pills */}
-                <div className="flex flex-wrap justify-center gap-2 mb-6">
+<div className="flex flex-wrap justify-center gap-2 mb-6">
                   {[
                     { icon: '📞', text: 'Confirmation call within 2 hrs' },
                     { icon: '🏥', text: 'Leela Hospital, Gadag' },
@@ -413,8 +393,7 @@ export default function Appointment() {
                   ))}
                 </div>
 
-                {/* Divider */}
-                <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent mb-5" />
+<div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent mb-5" />
 
                 <p className="text-xs text-gray-400">Need help? Call us at <span className="font-semibold text-gray-600">+91 9008371817</span></p>
               </div>
@@ -447,7 +426,7 @@ export default function Appointment() {
                       minLength={field.name === 'phone' ? 10 : undefined}
                       maxLength={field.name === 'phone' ? 10 : undefined}
                       className={inputClass(field.name)} />
-                    {/* Glow line at bottom on focus */}
+                    
                     <div className="absolute bottom-0 left-4 right-4 h-px rounded-full transition-all duration-300"
                       style={{ background: 'linear-gradient(90deg, #0969b1, #17ae95)', opacity: focused === field.name ? 1 : 0, transform: focused === field.name ? 'scaleX(1)' : 'scaleX(0)' }} />
                   </div>
@@ -488,7 +467,7 @@ export default function Appointment() {
                       ))}
                     </div>
                   )}
-                  {/* hidden input for form validation */}
+                  
                   <input type="text" name="department" value={form.department} required readOnly className="sr-only" tabIndex={-1} />
                 </div>
 

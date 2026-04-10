@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+﻿import React, { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
 import Intro from './components/Intro'
 import Navbar from './components/Navbar'
@@ -81,7 +81,7 @@ function GlobalSSE({ onNewAppt }) {
   const playRing = () => {
     try {
       const ctx = new (window.AudioContext || window.webkitAudioContext)()
-      // Bell = fundamental + harmonics with different decay rates
+      
       const partials = [
         { ratio: 1.0,  gain: 0.6,  decay: 1.8 },
         { ratio: 2.76, gain: 0.4,  decay: 1.2 },
@@ -89,7 +89,7 @@ function GlobalSSE({ onNewAppt }) {
         { ratio: 8.93, gain: 0.15, decay: 0.5 },
         { ratio: 13.3, gain: 0.08, decay: 0.3 },
       ]
-      const fundamental = 523 // C5
+      const fundamental = 523 
 
       partials.forEach(({ ratio, gain, decay }) => {
         const osc = ctx.createOscillator()

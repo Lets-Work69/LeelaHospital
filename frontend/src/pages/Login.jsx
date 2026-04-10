@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Loader2, Eye, EyeOff } from 'lucide-react';
 
@@ -29,12 +29,10 @@ export default function Login() {
         throw new Error(data.message || 'Login failed');
       }
 
-      // Store token and user info
-      localStorage.setItem('token', data.token);
+localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
 
-      // Redirect based on role
-      if (data.user.role === 'superadmin') {
+if (data.user.role === 'superadmin') {
         navigate('/doctors-admin');
       } else {
         navigate('/');
@@ -49,7 +47,7 @@ export default function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-blue-50">
       <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-xl">
-        {/* Logo */}
+        
         <div className="text-center mb-8">
           <img
             src="/Leela Hospital Final Logo👍-1.png"
@@ -60,15 +58,13 @@ export default function Login() {
           <p className="text-gray-500 mt-1">Admin Login</p>
         </div>
 
-        {/* Error Message */}
-        {error && (
+{error && (
           <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
             {error}
           </div>
         )}
 
-        {/* Login Form */}
-        <form onSubmit={handleSubmit} className="space-y-5">
+<form onSubmit={handleSubmit} className="space-y-5">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Email Address
@@ -122,8 +118,7 @@ export default function Login() {
           </button>
         </form>
 
-        {/* Back to Home */}
-        <div className="mt-6 text-center">
+<div className="mt-6 text-center">
           <a href="/" className="text-sm text-gray-500 hover:text-blue-600 transition-colors">
             ← Back to Website
           </a>

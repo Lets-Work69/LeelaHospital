@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+﻿import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import User from '../models/User.js';
 
@@ -6,19 +6,17 @@ dotenv.config();
 
 const createSuperAdmin = async () => {
   try {
-    // Connect to database
+    
     await mongoose.connect(process.env.MONGODB_URI);
     console.log('Connected to MongoDB');
 
-    // Check if superadmin already exists
-    const existingAdmin = await User.findOne({ email: 'admin@leelahospital.com' });
+const existingAdmin = await User.findOne({ email: 'admin@leelahospital.com' });
     if (existingAdmin) {
       console.log('Superadmin already exists:', existingAdmin.email);
       process.exit(0);
     }
 
-    // Create superadmin
-    const superadmin = await User.create({
+const superadmin = await User.create({
       name: 'Super Admin',
       email: 'admin@leelahospital.in',
       password: 'LeelaHospitals@Admin2026',
@@ -41,7 +39,6 @@ const createSuperAdmin = async () => {
   }
 };
 
-// Run if called directly
 if (process.argv[1].includes('seedAdmin.js')) {
   createSuperAdmin();
 }

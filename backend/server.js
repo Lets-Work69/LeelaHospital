@@ -1,4 +1,4 @@
-import express from 'express';
+﻿import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -12,16 +12,13 @@ dotenv.config();
 
 const app = express();
 
-// SSE clients store
 const sseClients = new Set();
 setSSEClients(sseClients);
 
-// Middleware
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
-// Database connection
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGODB_URI);
@@ -34,7 +31,6 @@ const connectDB = async () => {
 
 connectDB();
 
-// SSE endpoint — admin subscribes here
 app.get('/api/notifications', (req, res) => {
   res.setHeader('Content-Type', 'text/event-stream');
   res.setHeader('Cache-Control', 'no-cache');
@@ -43,8 +39,7 @@ app.get('/api/notifications', (req, res) => {
 
   sseClients.add(res);
 
-  // Keep-alive ping every 25s
-  const ping = setInterval(() => res.write(': ping\n\n'), 25000);
+const ping = setInterval(() => res.write(': ping\n\n'), 25000);
 
   req.on('close', () => {
     clearInterval(ping);
@@ -52,7 +47,6 @@ app.get('/api/notifications', (req, res) => {
   });
 });
 
-// Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/doctors', doctorRoutes);
 app.use('/api/appointments', appointmentRoutes);
@@ -62,12 +56,10 @@ app.get("/", (req, res) => {
   res.send("Backend is running 🚀");
 });
 
-// Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Server is running' });
 });
 
-// Error handling
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ message: 'Something went wrong!' });

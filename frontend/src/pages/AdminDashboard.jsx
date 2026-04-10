@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Calendar, Plus, Trash2, Loader2, CheckCircle, Stethoscope, Clock, Users, MoreVertical, Edit2, EyeOff, Eye, AlertTriangle, LayoutGrid, List, GripVertical } from 'lucide-react';
 import Navbar from '../components/Navbar';
@@ -42,7 +42,7 @@ export default function AdminDashboard() {
   const [editPhotoPreview, setEditPhotoPreview] = useState(null);
   const [openMenuId, setOpenMenuId] = useState(null);
   const [confirmDialog, setConfirmDialog] = useState(null);
-  const [viewMode, setViewMode] = useState('card'); // 'card' | 'list'
+  const [viewMode, setViewMode] = useState('card'); 
   const dragItem = useRef(null);
   const dragOver = useRef(null);
 
@@ -202,7 +202,7 @@ export default function AdminDashboard() {
     setDoctors(reordered);
     dragItem.current = null;
     dragOver.current = null;
-    // Save to backend
+    
     try {
       await fetch(`${API_URL}/doctors/reorder`, {
         method: 'POST',
@@ -225,8 +225,7 @@ export default function AdminDashboard() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-8">
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {stats.map((stat, i) => (
             <div key={i} className="bg-white rounded-xl shadow-sm p-6 flex items-center justify-between">
               <div>
@@ -240,12 +239,11 @@ export default function AdminDashboard() {
           ))}
         </div>
 
-        {/* Doctors Grid */}
-        <div className="bg-white rounded-xl shadow-sm">
+<div className="bg-white rounded-xl shadow-sm">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 px-6 py-4 border-b border-gray-100">
             <h2 className="text-lg font-semibold text-gray-900">Manage Doctors</h2>
             <div className="flex items-center gap-2">
-              {/* View toggle */}
+              
               <div className="flex items-center bg-gray-100 rounded-lg p-1">
                 <button onClick={() => setViewMode('card')}
                   className={`p-1.5 rounded-md transition-colors ${viewMode === 'card' ? 'bg-white shadow-sm text-blue-600' : 'text-gray-400 hover:text-gray-600'}`}
@@ -284,15 +282,14 @@ export default function AdminDashboard() {
                   onDragEnd={handleDragEnd}
                   onDragOver={e => e.preventDefault()}
                   className="relative bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow cursor-grab active:cursor-grabbing active:opacity-60 active:scale-95">
-                  {/* Status badge */}
+                  
                   <div className="absolute top-3 right-3 z-10">
                     <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${doctor.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
                       {doctor.isActive ? 'Active' : 'Inactive'}
                     </span>
                   </div>
 
-                  {/* 3-dot dropdown */}
-                  <div className="absolute top-3 left-3 z-20">
+<div className="absolute top-3 left-3 z-20">
                     <button onClick={(e) => { e.stopPropagation(); setOpenMenuId(openMenuId === doctor._id ? null : doctor._id); }}
                       className="p-1.5 bg-white/80 backdrop-blur-sm rounded-full shadow-sm hover:bg-white transition-colors">
                       <MoreVertical className="w-4 h-4 text-gray-600" />
@@ -318,8 +315,7 @@ export default function AdminDashboard() {
                     )}
                   </div>
 
-                  {/* Photo */}
-                  <div className="h-52 bg-gradient-to-br from-slate-100 to-blue-50 overflow-hidden">
+<div className="h-52 bg-gradient-to-br from-slate-100 to-blue-50 overflow-hidden">
                     {doctor.profileImage ? (
                       <img src={doctor.profileImage} alt={doctor.name}
                         className="w-full h-full object-cover object-top" />
@@ -330,8 +326,7 @@ export default function AdminDashboard() {
                     )}
                   </div>
 
-                  {/* Info */}
-                  <div className="p-4">
+<div className="p-4">
                     <div className="h-0.5 w-8 rounded-full mb-3" style={{ background: 'linear-gradient(90deg, #0969b1, #17ae95)' }} />
                     <h3 className="font-bold text-gray-900 text-sm leading-tight">{doctor.name}</h3>
                     <p className="text-xs font-semibold mt-0.5" style={{ color: '#0969b1' }}>{doctor.specialty}</p>
@@ -354,7 +349,7 @@ export default function AdminDashboard() {
               ))}
             </div>
             ) : (
-            /* List view */
+            
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead className="bg-gray-50 border-b border-gray-100">
@@ -430,8 +425,7 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Add Doctor Modal */}
-      {showAddModal && (
+{showAddModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl shadow-xl max-w-md w-full mx-4 p-6 max-h-[90vh] overflow-y-auto">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Add New Doctor</h3>
@@ -452,8 +446,7 @@ export default function AdminDashboard() {
                 </div>
               ))}
 
-              {/* Photo Upload */}
-              <div>
+<div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Doctor Photo</label>
                 <label className="flex flex-col items-center justify-center w-full border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-400 transition-colors bg-gray-50 hover:bg-blue-50"
                   style={{ minHeight: photoPreview ? 'auto' : '100px' }}>
@@ -488,7 +481,7 @@ export default function AdminDashboard() {
           </div>
         </div>
       )}
-      {/* Confirm Dialog */}
+      
       {confirmDialog && (
         <ConfirmDialog
           message={confirmDialog.message}
@@ -499,8 +492,7 @@ export default function AdminDashboard() {
         />
       )}
 
-      {/* Edit Doctor Modal */}
-      {editingDoctor && (
+{editingDoctor && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setEditingDoctor(null)}>
           <div className="bg-white rounded-xl shadow-xl max-w-md w-full mx-4 p-6 max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Edit Doctor</h3>

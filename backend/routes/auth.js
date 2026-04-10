@@ -1,4 +1,4 @@
-import express from 'express';
+﻿import express from 'express';
 import jwt from 'jsonwebtoken';
 import { body, validationResult } from 'express-validator';
 import User from '../models/User.js';
@@ -6,16 +6,12 @@ import { protect } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Generate JWT
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRE || '7d'
   });
 };
 
-// @route   POST /api/auth/login
-// @desc    Login user
-// @access  Public
 router.post('/login', [
   body('email').isEmail().normalizeEmail(),
   body('password').notEmpty()
@@ -28,25 +24,21 @@ router.post('/login', [
 
     const { email, password } = req.body;
 
-    // Check if user exists
-    const user = await User.findOne({ email }).select('+password');
+const user = await User.findOne({ email }).select('+password');
     if (!user) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    // Check if user is active
-    if (!user.isActive) {
+if (!user.isActive) {
       return res.status(401).json({ message: 'Account is deactivated' });
     }
 
-    // Check password
-    const isMatch = await user.comparePassword(password);
+const isMatch = await user.comparePassword(password);
     if (!isMatch) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    // Generate token
-    const token = generateToken(user._id);
+const token = generateToken(user._id);
 
     res.json({
       success: true,
@@ -65,9 +57,6 @@ router.post('/login', [
   }
 });
 
-// @route   GET /api/auth/me
-// @desc    Get current user
-// @access  Private
 router.get('/me', protect, async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
@@ -90,9 +79,6 @@ router.get('/me', protect, async (req, res) => {
   }
 });
 
-// @route   POST /api/auth/change-password
-// @desc    Change password
-// @access  Private
 router.post('/change-password', protect, [
   body('currentPassword').notEmpty(),
   body('newPassword').isLength({ min: 6 })
@@ -107,14 +93,12 @@ router.post('/change-password', protect, [
 
     const user = await User.findById(req.user._id).select('+password');
 
-    // Check current password
-    const isMatch = await user.comparePassword(currentPassword);
+const isMatch = await user.comparePassword(currentPassword);
     if (!isMatch) {
       return res.status(401).json({ message: 'Current password is incorrect' });
     }
 
-    // Update password
-    user.password = newPassword;
+user.password = newPassword;
     await user.save();
 
     res.json({ success: true, message: 'Password updated successfully' });

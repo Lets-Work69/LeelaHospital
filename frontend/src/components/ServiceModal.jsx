@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+﻿import React, { useEffect, useState } from 'react'
 import { X, CheckCircle, ArrowRight } from 'lucide-react'
 
 const serviceDetails = {
@@ -99,15 +99,13 @@ export default function ServiceModal({ service, onClose }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4"
       onClick={handleClose}>
 
-      {/* Backdrop */}
-      <div className="absolute inset-0"
+<div className="absolute inset-0"
         style={{
           background: 'rgba(0,0,0,0.65)',
           animation: closing ? 'fadeOut 0.4s ease forwards' : 'fadeIn 0.4s ease forwards',
         }} />
 
-      {/* Modal */}
-      <div className="relative bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[85vh] overflow-y-auto"
+<div className="relative bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[85vh] overflow-y-auto"
         onClick={e => e.stopPropagation()}
         style={{
           animation: closing
@@ -115,8 +113,7 @@ export default function ServiceModal({ service, onClose }) {
             : 'modalOpen 0.5s cubic-bezier(0.22,1,0.36,1) forwards',
         }}>
 
-        {/* Header */}
-        <div className="sticky top-0 bg-white px-8 pt-8 pb-4 border-b border-gray-100 z-10"
+<div className="sticky top-0 bg-white px-8 pt-8 pb-4 border-b border-gray-100 z-10"
           style={{ borderRadius: '24px 24px 0 0' }}>
           <div className="flex items-start justify-between gap-4">
             <div className="flex items-center gap-4">

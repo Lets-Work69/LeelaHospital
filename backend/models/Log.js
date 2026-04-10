@@ -1,12 +1,11 @@
-import mongoose from 'mongoose';
+﻿import mongoose from 'mongoose';
 
 const logSchema = new mongoose.Schema({
   action: {
     type: String,
     required: true,
-    // e.g. DOCTOR_ADDED, DOCTOR_EDITED, DOCTOR_DELETED, DOCTOR_ACTIVATED,
-    //      APPOINTMENT_BOOKED, APPOINTMENT_STATUS_CHANGED, APPOINTMENT_DELETED
-  },
+
+},
   category: {
     type: String,
     enum: ['doctor', 'appointment'],

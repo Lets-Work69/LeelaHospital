@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react'
+﻿import React, { useRef, useEffect, useState } from 'react'
 import { Star, Clock, Users, ChevronLeft, ChevronRight } from 'lucide-react'
 
 const ACCENTS = ['#0969b1', '#17ae95']
@@ -31,8 +31,7 @@ function DoctorCard({ doc, index }) {
         boxShadow: hovered ? `0 28px 56px rgba(0,0,0,0.15), 0 0 0 1px ${doc.accent}40` : '0 4px 20px rgba(0,0,0,0.08)',
       }}>
 
-      {/* Photo */}
-      <div className="relative overflow-hidden" style={{ height: '300px', background: '#f1f5f9' }}>
+<div className="relative overflow-hidden" style={{ height: '300px', background: '#f1f5f9' }}>
         <div className="absolute top-0 left-0 right-0 z-10 transition-all duration-500"
           style={{ height: hovered ? '3px' : '2px', background: doc.accent, boxShadow: hovered ? `0 0 12px ${doc.accent}` : 'none' }} />
 
@@ -55,8 +54,7 @@ function DoctorCard({ doc, index }) {
         </div>
       </div>
 
-      {/* Info */}
-      <div className="p-5 relative overflow-hidden">
+<div className="p-5 relative overflow-hidden">
         <div className="absolute inset-0 transition-opacity duration-500 pointer-events-none"
           style={{ background: `linear-gradient(135deg, ${doc.accent}08, transparent)`, opacity: hovered ? 1 : 0 }} />
         <div className="relative z-10">
@@ -135,7 +133,7 @@ export default function Doctors() {
             <h2 className="text-4xl md:text-5xl font-black text-white">Meet Our Specialists</h2>
             <p className="text-white mt-3 text-lg max-w-lg opacity-80">Experienced doctors dedicated to your health and recovery.</p>
           </div>
-          {/* Desktop scroll controls */}
+          
           <div className="hidden md:flex gap-3">
             <button onClick={() => scroll('left')} disabled={!canLeft}
               className="w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300"
@@ -156,8 +154,7 @@ export default function Doctors() {
           {doctors.map((doc, i) => <DoctorCard key={doc.name + i} doc={doc} index={i} />)}
         </div>
 
-        {/* Mobile scroll controls — below cards, left & right */}
-        <div className="flex md:hidden justify-between mt-5 px-2">
+<div className="flex md:hidden justify-between mt-5 px-2">
           <button onClick={() => scroll('left')} disabled={!canLeft}
             className="w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300"
             style={{ background: 'rgba(255,255,255,0.2)', border: '2px solid rgba(255,255,255,0.5)', color: 'white', opacity: canLeft ? 1 : 0.4 }}>

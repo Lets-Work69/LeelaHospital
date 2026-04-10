@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react'
+﻿import React, { useState, useEffect } from 'react'
 import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react'
 import reviews from '../assets/reviews'
 import videoTestimonials from '../assets/videoTestimonials.js'
 
-// filter valid text reviews
 const getValidReviews = (reviews) => {
   return reviews.filter(r => {
     if (!r.review) return false
@@ -12,7 +11,6 @@ const getValidReviews = (reviews) => {
   })
 }
 
-// shuffle helper
 const shuffle = (arr) => [...arr].sort(() => 0.5 - Math.random())
 
 export default function Testimonials() {
@@ -49,8 +47,7 @@ export default function Testimonials() {
   useEffect(() => {
     if (!items.length) return
 
-    // ❌ Don't auto-slide if current is video
-    if (items[current]?.type === 'video') return
+if (items[current]?.type === 'video') return
 
     const timer = setInterval(() => go('next'), 5000)
     return () => clearInterval(timer)
@@ -70,8 +67,7 @@ export default function Testimonials() {
 
         <div className="flex flex-col items-center gap-4">
 
-          {/* CONTAINER */}
-          <div className="
+<div className="
             w-full 
             max-w-3xl 
             aspect-video 
@@ -86,11 +82,9 @@ export default function Testimonials() {
 
               <div className="w-full h-full flex items-center justify-center bg-black">
 
-                {/* ✅ HYBRID VIDEO SYSTEM */}
-                {t.videoSrc ? (
+{t.videoSrc ? (
 
-                  // LOCAL VIDEO
-                  <video
+<video
                     src={t.videoSrc}
                     className="h-full aspect-[9/16] object-contain"
                     controls
@@ -100,8 +94,7 @@ export default function Testimonials() {
 
                 ) : (
 
-                  // ⚠️ INSTAGRAM EMBED (FIXED)
-                  <iframe
+<iframe
                     src={t.embedUrl?.includes('/embed')
                       ? t.embedUrl
                       : `${t.embedUrl?.split('?')[0]}/embed`}
@@ -116,8 +109,7 @@ export default function Testimonials() {
 
             ) : (
 
-              // TEXT (UNCHANGED)
-              <div className="h-full flex flex-col 
+<div className="h-full flex flex-col 
                               p-5 md:p-8 text-white text-center"
                 style={{ background: 'linear-gradient(135deg, #0969b1, #1a8fd1)' }}>
 
@@ -166,8 +158,7 @@ export default function Testimonials() {
 
           </div>
 
-          {/* CONTROLS */}
-          <div className="flex justify-center items-center gap-6">
+<div className="flex justify-center items-center gap-6">
 
             <button
               onClick={() => go('prev')}

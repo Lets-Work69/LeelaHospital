@@ -1,11 +1,9 @@
-import express from 'express';
+﻿import express from 'express';
 import Log from '../models/Log.js';
 import { protect, superadminOnly } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// @route   GET /api/logs
-// @access  Private/Superadmin
 router.get('/', protect, superadminOnly, async (req, res) => {
   try {
     const { category, limit = 100 } = req.query;

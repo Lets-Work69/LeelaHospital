@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+﻿import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Loader2, FileText, Stethoscope, Calendar, Check } from 'lucide-react'
 import Navbar from '../components/Navbar'
@@ -59,8 +59,7 @@ export default function LogsPage() {
               <p className="text-gray-500 text-sm mt-1">{filtered.length} entries</p>
             </div>
 
-            {/* Filter tabs */}
-            <div className="flex items-center flex-wrap bg-white border border-gray-200 rounded-xl p-1 gap-1 shadow-sm">
+<div className="flex items-center flex-wrap bg-white border border-gray-200 rounded-xl p-1 gap-1 shadow-sm">
               {[
                 { value: 'all', label: 'All', icon: <FileText className="w-3.5 h-3.5" /> },
                 { value: 'doctor', label: 'Doctors', icon: <Stethoscope className="w-3.5 h-3.5" /> },
@@ -93,15 +92,14 @@ export default function LogsPage() {
                 return (
                   <div key={log._id}
                     className={`flex items-start gap-4 px-6 py-4 ${i !== filtered.length - 1 ? 'border-b border-gray-50' : ''} hover:bg-gray-50 transition-colors`}>
-                    {/* Icon */}
+                    
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${log.category === 'doctor' ? 'bg-blue-50' : 'bg-purple-50'}`}>
                       {log.category === 'doctor'
                         ? <Stethoscope className="w-4 h-4 text-blue-500" />
                         : <Calendar className="w-4 h-4 text-purple-500" />}
                     </div>
 
-                    {/* Content */}
-                    <div className="flex-1 min-w-0">
+<div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
                         <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${style.color}`}>
                           {style.label}
@@ -111,8 +109,7 @@ export default function LogsPage() {
                       <p className="text-xs text-gray-400 mt-1">by <span className="font-medium text-gray-500">{log.performedBy || 'System'}</span></p>
                     </div>
 
-                    {/* Time */}
-                    <div className="text-right flex-shrink-0">
+<div className="text-right flex-shrink-0">
                       <p className="text-xs font-medium text-gray-500">{date.toLocaleDateString()}</p>
                       <p className="text-xs text-gray-400">{date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                     </div>

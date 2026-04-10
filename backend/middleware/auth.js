@@ -1,7 +1,6 @@
-import jwt from 'jsonwebtoken';
+﻿import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 
-// Protect routes
 export const protect = async (req, res, next) => {
   let token;
 
@@ -27,7 +26,6 @@ export const protect = async (req, res, next) => {
   }
 };
 
-// Restrict to Superadmin only
 export const superadminOnly = (req, res, next) => {
   if (req.user && req.user.role === 'superadmin') {
     next();
@@ -36,7 +34,6 @@ export const superadminOnly = (req, res, next) => {
   }
 };
 
-// Restrict to admin roles (superadmin and receptionist)
 export const adminOnly = (req, res, next) => {
   if (req.user && ['superadmin', 'receptionist'].includes(req.user.role)) {
     next();

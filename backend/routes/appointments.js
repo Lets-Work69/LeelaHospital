@@ -1,4 +1,4 @@
-import express from 'express';
+﻿import express from 'express';
 import { body, validationResult } from 'express-validator';
 import Appointment from '../models/Appointment.js';
 import { protect, superadminOnly } from '../middleware/auth.js';
@@ -6,7 +6,6 @@ import { createLog } from '../utils/logger.js';
 
 const router = express.Router();
 
-// SSE clients reference (set from server.js)
 let sseClients = new Set();
 export const setSSEClients = (clients) => { sseClients = clients; };
 
@@ -22,9 +21,6 @@ const broadcastNewAppointment = (appointment) => {
   });
 };
 
-// @route   POST /api/appointments
-// @desc    Book an appointment (public)
-// @access  Public
 router.post('/', [
   body('name').trim().notEmpty().withMessage('Name is required'),
   body('phone').trim().notEmpty().withMessage('Phone is required'),
@@ -55,9 +51,6 @@ router.post('/', [
   }
 });
 
-// @route   GET /api/appointments
-// @desc    Get all appointments (superadmin only)
-// @access  Private/Superadmin
 router.get('/', protect, superadminOnly, async (req, res) => {
   try {
     const appointments = await Appointment.find().sort({ createdAt: -1 });
@@ -68,9 +61,6 @@ router.get('/', protect, superadminOnly, async (req, res) => {
   }
 });
 
-// @route   PUT /api/appointments/:id
-// @desc    Update appointment status (superadmin only)
-// @access  Private/Superadmin
 router.put('/:id', protect, superadminOnly, async (req, res) => {
   try {
     const { status } = req.body;
@@ -88,9 +78,6 @@ router.put('/:id', protect, superadminOnly, async (req, res) => {
   }
 });
 
-// @route   DELETE /api/appointments/:id
-// @desc    Delete appointment (superadmin only)
-// @access  Private/Superadmin
 router.delete('/:id', protect, superadminOnly, async (req, res) => {
   try {
     const appointment = await Appointment.findByIdAndDelete(req.params.id);

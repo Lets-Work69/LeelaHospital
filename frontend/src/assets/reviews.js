@@ -1,4 +1,4 @@
-const reviews = [
+﻿const reviews = [
   {
     "name": "Tippusultan Kanavi",
     "review": "My wife admitted at Leela hospital for 3 days. The hospital is clean and the rooms and overall facilities were well-maintained. Dr. Anita Dharna was excellent. She was very calm, patiently answered my questions without hesitation and made it a point to explain every course of treatment that my wife was undergoing. The support staff deserves a mention. They were equally supportive in making my hospital stay as comfortable as possible. I have been going to this hospital for years and I am always pleased with the care and it was a great experience. It’s a great hospital.  Congratulations Leela Hospital…Keep up the great work and commitment in serving the patients as always!",

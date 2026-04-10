@@ -1,4 +1,4 @@
-const videoTestimonials = [
+﻿const videoTestimonials = [
  
   {
     name: "Patient Video 1",
@@ -8,8 +8,7 @@ const videoTestimonials = [
     name: "Patient Video 2",
     videoSrc: "/videos/v2.mp4"
   }
-  
- 
+
 ]
 
 export default videoTestimonials

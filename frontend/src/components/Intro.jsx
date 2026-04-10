@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react'
+﻿import React, { useEffect, useState } from 'react'
 
 export default function Intro({ onDone }) {
-  // phases: enter → zoom → flash → tagline → fadeout
+  
   const [phase, setPhase] = useState('enter')
 
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase('zoom'), 400)      // start zoom
-    const t2 = setTimeout(() => setPhase('flash'), 1000)    // flash white
-    const t3 = setTimeout(() => setPhase('tagline'), 1200)  // show tagline
-    const t4 = setTimeout(() => setPhase('fadeout'), 3000)  // fade out
-    const t5 = setTimeout(() => onDone(), 3500)             // done
+    const t1 = setTimeout(() => setPhase('zoom'), 400)      
+    const t2 = setTimeout(() => setPhase('flash'), 1000)    
+    const t3 = setTimeout(() => setPhase('tagline'), 1200)  
+    const t4 = setTimeout(() => setPhase('fadeout'), 3000)  
+    const t5 = setTimeout(() => onDone(), 3500)             
     return () => [t1,t2,t3,t4,t5].forEach(clearTimeout)
   }, [])
 
@@ -23,8 +23,7 @@ export default function Intro({ onDone }) {
         pointerEvents: 'none',
       }}>
 
-      {/* Flash overlay */}
-      <div style={{
+<div style={{
         position: 'absolute', inset: 0,
         background: 'white',
         opacity: phase === 'flash' ? 1 : 0,
@@ -33,8 +32,7 @@ export default function Intro({ onDone }) {
         zIndex: 1,
       }} />
 
-      {/* Logo */}
-      <div style={{
+<div style={{
         position: 'relative', zIndex: 2,
         transform: phase === 'enter' ? 'scale(0.8)' : phase === 'zoom' ? 'scale(1.2)' : 'scale(1)',
         opacity: phase === 'enter' ? 0 : phase === 'tagline' || phase === 'fadeout' ? 0.9 : 1,
@@ -52,8 +50,7 @@ export default function Intro({ onDone }) {
         />
       </div>
 
-      {/* Tagline — flashes in after the white flash */}
-      <div style={{
+<div style={{
         position: 'relative', zIndex: 2,
         opacity: phase === 'tagline' || phase === 'fadeout' ? 1 : 0,
         transform: phase === 'tagline' || phase === 'fadeout' ? 'translateY(0) scale(1)' : 'translateY(10px) scale(0.95)',
@@ -70,7 +67,7 @@ export default function Intro({ onDone }) {
         }}>
           For a Better Life
         </p>
-        {/* Animated underline */}
+        
         <div style={{
           height: '1.5px',
           background: 'linear-gradient(90deg, transparent, #17ae95, transparent)',
