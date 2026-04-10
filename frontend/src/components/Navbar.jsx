@@ -15,8 +15,6 @@ const navLinks = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-  const [hidden, setHidden] = useState(false)
-  const lastScrollY = React.useRef(0)
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -24,12 +22,6 @@ export default function Navbar() {
     const onScroll = () => {
       const currentY = window.scrollY
       setScrolled(currentY > 30)
-      if (currentY > lastScrollY.current && currentY > 100) {
-        setHidden(true)
-      } else {
-        setHidden(false)
-      }
-      lastScrollY.current = currentY
     }
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
@@ -39,7 +31,6 @@ export default function Navbar() {
     e.preventDefault()
     setMenuOpen(false)
     if (location.pathname !== '/') {
-      // Navigate to home then scroll
       navigate('/' + href)
     } else {
       const el = document.querySelector(href)
@@ -54,11 +45,10 @@ export default function Navbar() {
         backdropFilter: 'none',
         boxShadow: '0 2px 20px rgba(0,0,0,0.08)',
         padding: '2px 0',
-        transform: hidden ? 'translateY(-100%)' : 'translateY(0)',
+        transform: 'translateY(0)',
       }}>
 
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
-        {/* Logo */}
         <a href="#home" className="flex items-center">
           <img src="/Leela Hospital Final Logo👍-1.png" alt="Leela Hospital" 
             className="w-auto"
@@ -66,7 +56,6 @@ export default function Navbar() {
             onError={e => { e.target.onerror = null; e.target.src = '/logo.svg' }} />
         </a>
 
-        {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map(link => (
             link.href.startsWith('/') ? (
@@ -86,23 +75,20 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* CTA */}
         <div className="hidden md:flex items-center gap-4">
           <a href="tel:+911234567890"
-            className={`flex items-center gap-2 text-sm font-semibold transition-colors text-primary-600`}>
+            className="flex items-center gap-2 text-sm font-semibold transition-colors text-primary-600">
             <Phone className="w-4 h-4" /> +91 9008371817
           </a>
           <a href="#appointment" className="btn-primary text-sm py-2.5 px-5">Book Appointment</a>
         </div>
 
-        {/* Mobile toggle */}
-        <button className={`md:hidden transition-colors text-gray-700`}
+        <button className="md:hidden transition-colors text-gray-700"
           onClick={() => setMenuOpen(!menuOpen)}>
           {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </div>
 
-      {/* Mobile Menu */}
       {menuOpen && (
         <div className="md:hidden bg-white shadow-2xl px-4 pb-6 pt-2 border-t border-gray-100">
           {navLinks.map(link => (
@@ -125,4 +111,3 @@ export default function Navbar() {
     </header>
   )
 }
-

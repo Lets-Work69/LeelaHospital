@@ -174,7 +174,7 @@ export default function Doctors() {
         {/* Cards — horizontal track (no nested scroll) */}
         <div ref={scrollRef} onScroll={checkScroll}
           className="flex gap-5 pb-4"
-          style={{ overflowX: 'hidden', overflowY: 'hidden' }}>
+          style={{ overflowX: 'auto', overflowY: 'hidden', scrollBehavior: 'smooth' }}>
           {doctors.map((doc, i) => <DoctorCard key={doc.name} doc={doc} index={i} />)}
         </div>
       </div>
