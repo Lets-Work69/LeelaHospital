@@ -24,6 +24,15 @@ const appointmentSchema = new mongoose.Schema({
     type: String,
     trim: true
   },
+  consentGiven: {
+    type: Boolean,
+    required: [true, 'Consent is required'],
+    default: false
+  },
+  consentTimestamp: {
+    type: Date,
+    required: [true, 'Consent timestamp is required']
+  },
   status: {
     type: String,
     enum: ['pending', 'confirmed', 'completed', 'cancelled'],

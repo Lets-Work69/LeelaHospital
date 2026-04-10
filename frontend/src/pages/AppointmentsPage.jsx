@@ -1,4 +1,5 @@
 ﻿import React, { useState, useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 import { Loader2, Calendar, Eye, Phone, Building2, Clock, MessageSquare, Activity, Check } from 'lucide-react'
 import Navbar from '../components/Navbar'
@@ -14,63 +15,113 @@ const STATUSES = [
 
 function StatusDropdown({ value, onChange, direction = 'down' }) {
   const [open, setOpen] = useState(false)
+  const [dropDirection, setDropDirection] = useState(direction)
+  const [position, setPosition] = useState({ top: 0, left: 0 })
   const ref = useRef(null)
+  const buttonRef = useRef(null)
+  
+  // Recalculate current status whenever value changes
   const current = STATUSES.find(s => s.value === value) || STATUSES[0]
 
   useEffect(() => {
     const handler = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) setOpen(false)
+      if (ref.current && !ref.current.contains(e.target) && 
+          !e.target.closest('.status-dropdown-portal')) {
+        setOpen(false)
+      }
     }
     document.addEventListener('mousedown', handler)
     return () => document.removeEventListener('mousedown', handler)
   }, [])
 
-  const posClass = direction === 'up'
-    ? 'bottom-full mb-2 left-0'
-    : 'top-full mt-2 left-0'
+  useEffect(() => {
+    if (open && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect()
+      const spaceBelow = window.innerHeight - rect.bottom
+      const spaceAbove = rect.top
+      
+      if (spaceBelow < 200 && spaceAbove > 200) {
+        setDropDirection('up')
+        setPosition({ top: rect.top - 10, left: rect.left })
+      } else {
+        setDropDirection('down')
+        setPosition({ top: rect.bottom + 8, left: rect.left })
+      }
+    }
+  }, [open])
+
+  const handleStatusClick = (newStatus) => {
+    console.log('Status clicked:', newStatus)
+    setOpen(false)
+    onChange(newStatus)
+  }
+
+  const dropdownContent = open ? (
+    <div
+      className="status-dropdown-portal fixed bg-white rounded-2xl py-2 z-[9999]"
+      style={{ 
+        minWidth: '160px', 
+        boxShadow: '0 8px 32px rgba(0,0,0,0.14)', 
+        border: '1px solid #f1f5f9',
+        top: `${position.top}px`,
+        left: `${position.left}px`,
+        transform: dropDirection === 'up' ? 'translateY(-100%)' : 'none'
+      }}
+    >
+      {STATUSES.map((s, i) => (
+        <React.Fragment key={s.value}>
+          {i === 2 && <div className="my-1 mx-3 border-t border-gray-100" />}
+          <button
+            type="button"
+            onMouseDown={(e) => { 
+              e.preventDefault()
+              e.stopPropagation()
+              console.log('Status option clicked:', s.value)
+              handleStatusClick(s.value)
+            }}
+            className="flex items-center justify-between text-sm text-gray-700 hover:bg-gray-50 transition-colors rounded-xl px-4 py-2.5 w-full cursor-pointer"
+            style={{ width: 'calc(100% - 8px)', marginLeft: '4px' }}
+          >
+            <div className="flex items-center gap-3">
+              <span className={`w-2 h-2 rounded-full flex-shrink-0 ${s.dot}`} />
+              <span className="font-medium">{s.label}</span>
+            </div>
+            {s.value === value && <Check className="w-3.5 h-3.5 text-blue-500" />}
+          </button>
+        </React.Fragment>
+      ))}
+    </div>
+  ) : null
 
   return (
-    <div ref={ref} className="relative inline-block">
-      <button
-        onClick={(e) => { e.stopPropagation(); setOpen(o => !o) }}
-        className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold ${current.color}`}
-      >
-        <span className={`w-1.5 h-1.5 rounded-full ${current.dot}`} />
-        {current.label}
-        <svg className={`w-3 h-3 transition-transform ${open ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
-      {open && (
-        <div
-          className={`absolute ${posClass} bg-white rounded-2xl py-2 z-[999]`}
-          style={{ minWidth: '160px', boxShadow: '0 8px 32px rgba(0,0,0,0.14)', border: '1px solid #f1f5f9' }}
+    <>
+      <div ref={ref} className="relative inline-block">
+        <button
+          ref={buttonRef}
+          type="button"
+          onClick={(e) => { 
+            e.stopPropagation()
+            console.log('Dropdown button clicked, current open:', open)
+            setOpen(o => !o) 
+          }}
+          className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold ${current.color}`}
         >
-          {STATUSES.map((s, i) => (
-            <React.Fragment key={s.value}>
-              {i === 2 && <div className="my-1 mx-3 border-t border-gray-100" />}
-              <button
-                onClick={(e) => { e.stopPropagation(); onChange(s.value); setOpen(false) }}
-                className="flex items-center justify-between text-sm text-gray-700 hover:bg-gray-50 transition-colors rounded-xl px-4 py-2.5"
-                style={{ width: 'calc(100% - 8px)', marginLeft: '4px' }}
-              >
-                <div className="flex items-center gap-3">
-                  <span className={`w-2 h-2 rounded-full flex-shrink-0 ${s.dot}`} />
-                  <span className="font-medium">{s.label}</span>
-                </div>
-                {s.value === value && <Check className="w-3.5 h-3.5 text-blue-500" />}
-              </button>
-            </React.Fragment>
-          ))}
-        </div>
-      )}
-    </div>
+          <span className={`w-1.5 h-1.5 rounded-full ${current.dot}`} />
+          {current.label}
+          <svg className={`w-3 h-3 transition-transform ${open ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+      </div>
+      {dropdownContent && createPortal(dropdownContent, document.body)}
+    </>
   )
 }
 
 export default function AppointmentsPage() {
   const [appointments, setAppointments] = useState([])
   const [loading, setLoading] = useState(true)
+  const [updatingStatus, setUpdatingStatus] = useState(null) // Track which appointment is being updated
   const [filter, setFilter] = useState('all')
   const [filterOpen, setFilterOpen] = useState(false)
   const [viewAppt, setViewAppt] = useState(null)
@@ -86,6 +137,7 @@ export default function AppointmentsPage() {
     const user = JSON.parse(localStorage.getItem('user') || '{}')
     if (user.role !== 'superadmin') { navigate('/login'); return }
     fetchAppointments()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -109,6 +161,9 @@ export default function AppointmentsPage() {
   }
 
   const updateStatus = async (id, status) => {
+    console.log('Updating status for:', id, 'to:', status)
+    setUpdatingStatus(id) // Show loading state
+    
     try {
       const res = await fetch(`${API_URL}/appointments/${id}`, {
         method: 'PUT',
@@ -116,11 +171,28 @@ export default function AppointmentsPage() {
         body: JSON.stringify({ status })
       })
       const data = await res.json()
+      console.log('Update response:', data)
+      
       if (data.success) {
-        setAppointments(prev => prev.map(a => a._id === id ? { ...a, status } : a))
-        if (viewAppt && viewAppt._id === id) setViewAppt(v => ({ ...v, status }))
+        // Force immediate state update with the returned appointment
+        setAppointments(prev => prev.map(a => a._id === id ? data.appointment : a))
+        
+        // Update the view modal if open
+        if (viewAppt && viewAppt._id === id) {
+          setViewAppt(data.appointment)
+        }
+        
+        console.log('Status updated successfully to:', data.appointment.status)
+      } else {
+        console.error('Failed to update status:', data.message)
+        alert('Failed to update status: ' + (data.message || 'Unknown error'))
       }
-    } catch (err) { console.error(err) }
+    } catch (err) { 
+      console.error('Error updating status:', err)
+      alert('Error updating status. Please check console.')
+    } finally {
+      setUpdatingStatus(null) // Clear loading state
+    }
   }
 
   const filtered = filter === 'all' ? appointments : appointments.filter(a => a.status === filter)
@@ -165,7 +237,7 @@ export default function AppointmentsPage() {
             </div>
             <div className="px-6 pb-6 flex gap-3 items-center">
               <div className="flex-1">
-                <StatusDropdown value={viewAppt.status} onChange={s => updateStatus(viewAppt._id, s)} direction="up" />
+                <StatusDropdown key={`modal-${viewAppt._id}-${viewAppt.status}`} value={viewAppt.status} onChange={s => updateStatus(viewAppt._id, s)} direction="up" />
               </div>
               <button
                 onClick={() => setViewAppt(null)}
@@ -251,7 +323,14 @@ export default function AppointmentsPage() {
                         <td className="px-5 py-4 text-sm text-gray-600">{apt.date}</td>
                         <td className="px-5 py-4 text-sm text-gray-500 max-w-xs truncate">{apt.message || '—'}</td>
                         <td className="px-5 py-4">
-                          <StatusDropdown value={apt.status} onChange={s => updateStatus(apt._id, s)} />
+                          {updatingStatus === apt._id ? (
+                            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-gray-100 text-gray-500">
+                              <Loader2 className="w-3 h-3 animate-spin" />
+                              Updating...
+                            </div>
+                          ) : (
+                            <StatusDropdown key={`${apt._id}-${apt.status}`} value={apt.status} onChange={s => updateStatus(apt._id, s)} />
+                          )}
                         </td>
                         <td className="px-5 py-4">
                           <button

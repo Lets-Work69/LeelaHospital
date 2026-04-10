@@ -1,5 +1,5 @@
-﻿import React, { useState, useEffect, useRef } from 'react'
-import { Calendar, User, Phone, Stethoscope, Send, MapPin, Mail, Clock, ChevronLeft, ChevronRight, Check } from 'lucide-react'
+﻿import { useState, useEffect, useRef } from 'react'
+import { Calendar, User, Phone, Stethoscope, Send, MapPin, Mail, Clock, ChevronLeft, ChevronRight } from 'lucide-react'
 
 const departments = [
   'Cardiology', 'Neurology', 'Orthopaedics', 'Paediatrics',
@@ -202,7 +202,7 @@ function ContactCard({ item, index }) {
 }
 
 export default function Appointment() {
-  const [form, setForm] = useState({ name: '', phone: '', department: '', date: '', message: '' })
+  const [form, setForm] = useState({ name: '', phone: '', department: '', date: '', message: '', consentGiven: false })
   const [submitted, setSubmitted] = useState(false)
   const [focused, setFocused] = useState('')
   const [formVisible, setFormVisible] = useState(false)
@@ -226,17 +226,24 @@ export default function Appointment() {
 
   const handleSubmit = async e => {
     e.preventDefault()
+    if (!form.consentGiven) {
+      alert('Please consent to the privacy policy to proceed')
+      return
+    }
     try {
       const res = await fetch('http://localhost:5000/api/appointments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form)
+        body: JSON.stringify({
+          ...form,
+          consentTimestamp: new Date().toISOString()
+        })
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.message || 'Failed to book')
       setSubmitted(true)
       setTimeout(() => setSubmitted(false), 5000)
-      setForm({ name: '', phone: '', department: '', date: '', message: '' })
+      setForm({ name: '', phone: '', department: '', date: '', message: '', consentGiven: false })
     } catch (err) {
       alert(err.message)
     }
@@ -490,8 +497,33 @@ export default function Appointment() {
                     }`} />
                 </div>
 
+                <div className="flex items-start gap-3 p-4 bg-blue-50 rounded-xl border border-blue-100">
+                  <input
+                    type="checkbox"
+                    id="consent"
+                    checked={form.consentGiven}
+                    onChange={e => setForm({ ...form, consentGiven: e.target.checked })}
+                    className="w-5 h-5 mt-0.5 rounded border-2 border-blue-300 cursor-pointer accent-blue-600 flex-shrink-0"
+                  />
+                  <label htmlFor="consent" className="text-sm text-gray-700 cursor-pointer leading-relaxed">
+                    I consent to the hospital collecting and using my name, contact number, and appointment details only for the purpose of booking and managing my appointment with the doctor. I have read and understood the{' '}
+                    <a
+                      href="/privacy-policy"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-semibold text-blue-600 hover:text-blue-700 underline"
+                    >
+                      Privacy Policy
+                    </a>
+                    {' '}and I agree to it.
+                  </label>
+                </div>
+
                 <button type="submit"
-                  className="btn-primary w-full flex items-center justify-center gap-2 py-4 text-base group">
+                  disabled={!form.consentGiven}
+                  className={`btn-primary w-full flex items-center justify-center gap-2 py-4 text-base group transition-all ${
+                    !form.consentGiven ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}>
                   <Send className="w-4 h-4 group-hover:rotate-12 transition-transform duration-300" />
                   Request Appointment
                 </button>

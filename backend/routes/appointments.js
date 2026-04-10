@@ -25,7 +25,9 @@ router.post('/', [
   body('name').trim().notEmpty().withMessage('Name is required'),
   body('phone').trim().notEmpty().withMessage('Phone is required'),
   body('department').trim().notEmpty().withMessage('Department is required'),
-  body('date').notEmpty().withMessage('Date is required')
+  body('date').notEmpty().withMessage('Date is required'),
+  body('consentGiven').isBoolean().withMessage('Consent must be a boolean'),
+  body('consentTimestamp').notEmpty().withMessage('Consent timestamp is required')
 ], async (req, res) => {
   try {
     const errors = validationResult(req);
@@ -33,9 +35,21 @@ router.post('/', [
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, phone, department, date, message } = req.body;
+    const { name, phone, department, date, message, consentGiven, consentTimestamp } = req.body;
 
-    const appointment = await Appointment.create({ name, phone, department, date, message });
+    if (!consentGiven) {
+      return res.status(400).json({ message: 'Consent is required to book an appointment' });
+    }
+
+    const appointment = await Appointment.create({ 
+      name, 
+      phone, 
+      department, 
+      date, 
+      message,
+      consentGiven,
+      consentTimestamp: new Date(consentTimestamp)
+    });
 
     broadcastNewAppointment(appointment);
     await createLog('APPOINTMENT_BOOKED', 'appointment', `New appointment booked by ${appointment.name} for ${appointment.department} on ${appointment.date}`, { appointmentId: appointment._id, name: appointment.name, department: appointment.department }, appointment.name);
