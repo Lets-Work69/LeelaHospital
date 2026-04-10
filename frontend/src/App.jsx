@@ -19,6 +19,7 @@ import AdminDashboard from './pages/AdminDashboard'
 import AppointmentsPage from './pages/AppointmentsPage'
 import LogsPage from './pages/LogsPage'
 import { Calendar } from 'lucide-react'
+import Gallery from './pages/Gallery'
 
 function Home() {
   return (
@@ -146,6 +147,7 @@ function AppInner({ introDone, setIntroDone }) {
           <Route path="/doctors-admin" element={<AdminDashboard />} />
           <Route path="/appointments" element={<AppointmentsPage />} />
           <Route path="/logs" element={<LogsPage />} />
+          <Route path="/gallery" element={<Gallery />} />
         </Routes>
       </div>
     </>
