@@ -1,6 +1,8 @@
-﻿import React, { useState, useEffect, useRef } from 'react'
+﻿import React, { useState, useEffect } from 'react'
 import { Phone, Menu, X, LogOut } from 'lucide-react'
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom'
+
+const API_URL = 'http://localhost:5000/api'
 
 const navLinks = [
   { label: 'Home',         href: '#home' },
@@ -16,10 +18,9 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [isSuperAdmin, setIsSuperAdmin] = useState(false)
-  const [apptNavDot, setApptNavDot] = useState(false)
+  const [pendingApptCount, setPendingApptCount] = useState(0)
   const navigate = useNavigate()
   const location = useLocation()
-  const prevPathnameRef = useRef(location.pathname)
 
   // Check if we're on an admin page
   const isAdminPage = ['/doctors-admin', '/appointments', '/logs'].includes(location.pathname)
@@ -32,19 +33,36 @@ export default function Navbar() {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user') || '{}')
-    if (user.role !== 'superadmin') return
-    const onNewAppt = () => setApptNavDot(true)
-    window.addEventListener('leela:new-appointment', onNewAppt)
-    return () => window.removeEventListener('leela:new-appointment', onNewAppt)
-  }, [])
-
-  useEffect(() => {
-    const prev = prevPathnameRef.current
-    prevPathnameRef.current = location.pathname
-    if (location.pathname === '/appointments' && prev !== '/appointments' && apptNavDot) {
-      setApptNavDot(false)
+    if (user.role !== 'superadmin' || !isAdminPage) {
+      setPendingApptCount(0)
+      return
     }
-  }, [location.pathname, apptNavDot])
+
+    const fetchPendingCount = async () => {
+      try {
+        const token = localStorage.getItem('token')
+        if (!token) return
+        const res = await fetch(`${API_URL}/appointments`, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        const data = await res.json()
+        if (data.success && Array.isArray(data.appointments)) {
+          const n = data.appointments.filter(a => a.status === 'pending').length
+          setPendingApptCount(n)
+        }
+      } catch (_) {
+        /* ignore */
+      }
+    }
+
+    fetchPendingCount()
+    window.addEventListener('leela:new-appointment', fetchPendingCount)
+    window.addEventListener('leela:pending-appointments-changed', fetchPendingCount)
+    return () => {
+      window.removeEventListener('leela:new-appointment', fetchPendingCount)
+      window.removeEventListener('leela:pending-appointments-changed', fetchPendingCount)
+    }
+  }, [isAdminPage, location.pathname])
 
   const handleLogout = () => {
     localStorage.removeItem('token')
@@ -98,8 +116,14 @@ export default function Navbar() {
                 className={`text-sm font-medium transition-all duration-300 hover:text-teal-500 relative group ${location.pathname === link.href ? 'text-teal-500' : 'text-gray-700'}`}>
                 <span className="relative inline-block pr-1">
                   {link.label}
-                  {link.href === '/appointments' && apptNavDot && (
-                    <span className="absolute -top-0.5 -right-1.5 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white" aria-hidden />
+                  {link.href === '/appointments' && pendingApptCount > 0 && (
+                    <span
+                      className="absolute -top-2 -right-2 translate-x-1/2 min-h-[18px] min-w-[18px] px-1 rounded-full bg-[#ff3b30] text-white text-[10px] font-bold leading-none inline-flex items-center justify-center ring-2 ring-white shadow-sm"
+                      style={{ fontVariantNumeric: 'tabular-nums' }}
+                      aria-label={`${pendingApptCount} pending appointment${pendingApptCount === 1 ? '' : 's'}`}
+                    >
+                      {pendingApptCount.toLocaleString()}
+                    </span>
                   )}
                 </span>
                 <span className={`absolute -bottom-1 left-0 h-0.5 bg-teal-400 transition-all duration-300 rounded-full ${location.pathname === link.href ? 'w-full' : 'w-0 group-hover:w-full'}`} />
@@ -161,8 +185,14 @@ export default function Navbar() {
                 className="flex items-center gap-2 py-3 text-gray-700 font-medium border-b border-gray-50 hover:text-teal-500 transition-colors">
                 <span className="relative inline-block">
                   Appointments
-                  {apptNavDot && (
-                    <span className="absolute -top-0.5 -right-2.5 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white" aria-hidden />
+                  {pendingApptCount > 0 && (
+                    <span
+                      className="absolute -top-2 -right-1 translate-x-1/2 min-h-[18px] min-w-[18px] px-1 rounded-full bg-[#ff3b30] text-white text-[10px] font-bold leading-none inline-flex items-center justify-center ring-2 ring-white shadow-sm"
+                      style={{ fontVariantNumeric: 'tabular-nums' }}
+                      aria-label={`${pendingApptCount} pending appointment${pendingApptCount === 1 ? '' : 's'}`}
+                    >
+                      {pendingApptCount.toLocaleString()}
+                    </span>
                   )}
                 </span>
               </Link>

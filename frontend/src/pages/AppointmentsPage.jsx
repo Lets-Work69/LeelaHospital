@@ -177,6 +177,7 @@ export default function AppointmentsPage() {
       console.error(err)
     } finally {
       setLoading(false)
+      window.dispatchEvent(new CustomEvent('leela:pending-appointments-changed'))
     }
   }
 
@@ -196,12 +197,13 @@ export default function AppointmentsPage() {
       if (data.success) {
         // Force immediate state update with the returned appointment
         setAppointments(prev => prev.map(a => a._id === id ? data.appointment : a))
-        
+        window.dispatchEvent(new CustomEvent('leela:pending-appointments-changed'))
+
         // Update the view modal if open
         if (viewAppt && viewAppt._id === id) {
           setViewAppt(data.appointment)
         }
-        
+
         console.log('Status updated successfully to:', data.appointment.status)
       } else {
         console.error('Failed to update status:', data.message)
