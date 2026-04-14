@@ -20,6 +20,7 @@ import AppointmentsPage from './pages/AppointmentsPage'
 import LogsPage from './pages/LogsPage'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import Gallery from './pages/Gallery'
+import Facilities from './pages/Facilities'
 
 function Home() {
   return (
@@ -73,6 +74,7 @@ function AppInner({ introDone, setIntroDone }) {
           <Route path="/appointments" element={<AppointmentsPage />} />
           <Route path="/logs" element={<LogsPage />} />
           <Route path="/gallery" element={<Gallery />} />
+          <Route path="/facilities" element={<Facilities />} />
         </Routes>
       </div>
     </>
