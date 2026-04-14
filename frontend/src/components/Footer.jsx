@@ -1,12 +1,25 @@
-import React from 'react'
+﻿import React from 'react'
 import { Phone, Mail, MapPin, Facebook, Instagram, Twitter, Youtube, ArrowRight } from 'lucide-react'
+import { Link, useNavigate } from 'react-router-dom'
 
-const quickLinks = ['Home', 'About Us', 'Services', 'Doctors', 'Careers', 'Contact']
+const quickLinks = [
+  { label: 'Home', href: '/' },
+  { label: 'About Us', href: '/about' },
+  { label: 'Services', href: '/specialities' },
+  { label: 'Doctors', href: '/doctors' }
+]
 
 export default function Footer() {
+  const navigate = useNavigate()
+
+  const handleLinkClick = (href) => {
+    navigate(href)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   return (
     <footer id="contact" className="relative overflow-hidden bg-mesh">
-      {/* Top wave */}
+      
       <div className="absolute top-0 left-0 right-0">
         <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
           <path d="M0,30 C360,60 1080,0 1440,30 L1440,0 L0,0 Z" fill="#f9fafb"/>
@@ -14,9 +27,8 @@ export default function Footer() {
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 pt-20 pb-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-        
-        {/* Brand */}
-        <div>
+
+<div>
           <div className="relative inline-block mb-5 group">
             <div className="absolute inset-0 bg-gradient-to-r from-teal-500/30 to-blue-600/30 rounded-xl blur-xl group-hover:blur-2xl transition-all duration-500 opacity-0 group-hover:opacity-100" />
             
@@ -42,23 +54,23 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Quick Links */}
         <div>
           <h4 className="text-white font-bold mb-5 text-sm uppercase tracking-wider">Quick Links</h4>
           <ul className="space-y-3">
             {quickLinks.map(link => (
-              <li key={link}>
-                <a href="#" className="text-sm text-blue-200 hover:text-teal-400 transition-colors flex items-center gap-2 group">
+              <li key={link.label}>
+                <button 
+                  onClick={() => handleLinkClick(link.href)}
+                  className="text-sm text-blue-200 hover:text-teal-400 transition-colors flex items-center gap-2 group">
                   <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -ml-5 group-hover:ml-0 transition-all duration-300" />
-                  {link}
-                </a>
+                  {link.label}
+                </button>
               </li>
             ))}
           </ul>
         </div>
 
-        {/* Contact */}
-        <div>
+<div>
           <h4 className="text-white font-bold mb-5 text-sm uppercase tracking-wider">Contact Us</h4>
           <div className="space-y-4">
             {[

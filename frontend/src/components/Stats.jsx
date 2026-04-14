@@ -1,19 +1,19 @@
-import React, { useEffect, useRef, useState } from 'react'
+﻿import React, { useEffect, useRef, useState } from 'react'
 
 const doctorIcon = (
   <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-12 h-12 mx-auto mb-3">
-    {/* Head */}
+    
     <circle cx="32" cy="16" r="10" stroke="white" strokeWidth="2.5" fill="none"/>
-    {/* Body / coat */}
+    
     <path d="M16 52c0-8.8 7.2-16 16-16s16 7.2 16 16" stroke="white" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
-    {/* Coat lapels */}
+    
     <path d="M26 36l-4 8h20l-4-8" stroke="white" strokeWidth="2" strokeLinejoin="round" fill="none"/>
-    {/* Stethoscope */}
+    
     <path d="M28 42c0 0-4 2-4 6" stroke="white" strokeWidth="2" strokeLinecap="round" fill="none"/>
     <circle cx="24" cy="49" r="2.5" stroke="white" strokeWidth="2" fill="none"/>
     <path d="M28 42c2 1 4 1 6 0" stroke="white" strokeWidth="2" strokeLinecap="round" fill="none"/>
     <path d="M34 42c0 0 4 2 4 6" stroke="white" strokeWidth="2" strokeLinecap="round" fill="none"/>
-    {/* Cross on coat */}
+    
     <path d="M31 44v4M29 46h4" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
   </svg>
 )
@@ -55,7 +55,7 @@ function CountUp({ target, suffix }) {
 export default function Stats() {
   return (
     <section className="relative py-16 overflow-hidden" style={{ background: 'linear-gradient(135deg, #0969b1, #17ae95)' }}>
-      {/* Decorative circles */}
+      
       <div className="absolute top-0 left-0 w-40 h-40 bg-white opacity-5 rounded-full -translate-x-1/2 -translate-y-1/2" />
       <div className="absolute bottom-0 right-0 w-60 h-60 bg-white opacity-5 rounded-full translate-x-1/3 translate-y-1/3" />
 

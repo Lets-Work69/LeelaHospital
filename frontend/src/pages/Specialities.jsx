@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+﻿import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, ArrowRight, Brain } from 'lucide-react'
 import Navbar from '../components/Navbar'
@@ -43,22 +43,18 @@ export default function Specialities() {
     <div className="min-h-screen bg-gray-50">
       <Navbar />
 
-      {/* Hero banner */}
-      <div className="pt-28 pb-16 relative overflow-hidden"
+<div className="pt-28 pb-16 relative overflow-hidden"
         style={{ background: 'linear-gradient(135deg, #0969b1, #17ae95)' }}>
 
-        {/* Dot grid */}
-        <div className="absolute inset-0 opacity-10"
+<div className="absolute inset-0 opacity-10"
           style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '28px 28px' }} />
 
-        {/* Animated blobs */}
-        <div className="absolute top-0 right-0 w-80 h-80 rounded-full blur-3xl opacity-20 animate-blob"
+<div className="absolute top-0 right-0 w-80 h-80 rounded-full blur-3xl opacity-20 animate-blob"
           style={{ background: 'radial-gradient(circle, white, transparent)' }} />
         <div className="absolute bottom-0 left-0 w-64 h-64 rounded-full blur-3xl opacity-15 animate-blob-delay"
           style={{ background: 'radial-gradient(circle, white, transparent)' }} />
 
-        {/* Floating particles */}
-        {[...Array(6)].map((_, i) => (
+{[...Array(6)].map((_, i) => (
           <div key={i} className="absolute rounded-full opacity-20"
             style={{
               width: 4 + i * 2, height: 4 + i * 2,
@@ -75,8 +71,7 @@ export default function Specialities() {
             <ArrowLeft className="w-4 h-4" /> Back to Home
           </button>
 
-          {/* Animated title */}
-          <div style={{ animation: 'slideUp 0.7s ease forwards' }}>
+<div style={{ animation: 'slideUp 0.7s ease forwards' }}>
             <div className="flex items-center gap-3 mb-3">
               <div className="h-px w-12 bg-white opacity-50" />
               <span className="text-white text-xs font-semibold uppercase tracking-widest opacity-70">Leela Hospital</span>
@@ -94,7 +89,7 @@ export default function Specialities() {
                   {typed.slice(4)}
                 </span>
               )}
-              {/* Blinking cursor */}
+              
               {typed.length < fullText.length && (
                 <span className="text-white" style={{ animation: 'blink 0.7s step-end infinite' }}>|</span>
               )}
@@ -105,8 +100,7 @@ export default function Specialities() {
             </p>
           </div>
 
-          {/* Stats row */}
-          <div className="flex gap-8 mt-10"
+<div className="flex gap-8 mt-10"
             style={{ animation: 'slideUp 1.1s ease forwards' }}>
             {[['15+', 'Specialities'], ['10+', 'Expert Doctors'], ['5K+', 'Patients Treated']].map(([val, label]) => (
               <div key={label} className="text-center">
@@ -118,8 +112,7 @@ export default function Specialities() {
         </div>
       </div>
 
-      {/* Grid */}
-      <div className="max-w-6xl mx-auto px-4 py-16">
+<div className="max-w-6xl mx-auto px-4 py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {specialities.map((s, i) => (
             <div key={s.slug}
@@ -127,8 +120,7 @@ export default function Specialities() {
               className="cursor-pointer"
               style={{ perspective: '1000px', height: '280px', animation: `slideUp 0.5s ease ${i * 0.05}s both` }}>
 
-              {/* Flip container */}
-              <div
+<div
                 onMouseEnter={() => setHovered(i)}
                 onMouseLeave={() => setHovered(null)}
                 style={{
@@ -138,8 +130,7 @@ export default function Specialities() {
                   transition: 'transform 0.65s cubic-bezier(0.4,0,0.2,1)',
                 }}>
 
-                {/* ── FRONT ── */}
-                <div className="absolute inset-0 rounded-3xl flex flex-col items-center justify-center gap-4 p-8 text-center"
+<div className="absolute inset-0 rounded-3xl flex flex-col items-center justify-center gap-4 p-8 text-center"
                   style={{
                     backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden',
                     background: 'white',
@@ -147,8 +138,7 @@ export default function Specialities() {
                     border: '2px solid rgba(23,174,149,0.1)',
                   }}>
 
-                  {/* Icon circle */}
-                  <div className="w-20 h-20 rounded-full flex items-center justify-center shadow-lg"
+<div className="w-20 h-20 rounded-full flex items-center justify-center shadow-lg"
                     style={{ background: 'linear-gradient(135deg,#0969b1,#17ae95)' }}>
                     {s.icon ? (
                       <img src={s.icon} alt={s.title} className="w-10 h-10"
@@ -160,31 +150,26 @@ export default function Specialities() {
 
                   <h3 className="font-bold text-gray-900 text-lg leading-tight">{s.title}</h3>
 
-                  {/* Flip hint */}
-                  <div className="flex items-center gap-1 text-xs font-semibold text-teal-500 mt-auto">
+<div className="flex items-center gap-1 text-xs font-semibold text-teal-500 mt-auto">
                     <span>Hover to explore</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </div>
 
-                  {/* Bottom accent */}
-                  <div className="absolute bottom-0 left-6 right-6 h-0.5 rounded-full"
+<div className="absolute bottom-0 left-6 right-6 h-0.5 rounded-full"
                     style={{ background: 'linear-gradient(90deg,#0969b1,#17ae95)' }} />
                 </div>
 
-                {/* ── BACK ── */}
-                <div className="absolute inset-0 rounded-3xl flex flex-col items-center justify-center gap-4 p-8 text-center overflow-hidden"
+<div className="absolute inset-0 rounded-3xl flex flex-col items-center justify-center gap-4 p-8 text-center overflow-hidden"
                   style={{
                     backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden',
                     transform: 'rotateY(180deg)',
                     background: 'linear-gradient(135deg,#022441,#0969b1,#17ae95)',
                   }}>
 
-                  {/* Dot grid */}
-                  <div className="absolute inset-0 opacity-10"
+<div className="absolute inset-0 opacity-10"
                     style={{ backgroundImage: 'radial-gradient(circle at 1px 1px,rgba(255,255,255,0.8) 1px,transparent 0)', backgroundSize: '20px 20px' }} />
 
-                  {/* Orb */}
-                  <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full blur-2xl opacity-30"
+<div className="absolute -top-8 -right-8 w-32 h-32 rounded-full blur-2xl opacity-30"
                     style={{ background: '#17ae95' }} />
 
                   <div className="relative z-10 flex flex-col items-center gap-3">

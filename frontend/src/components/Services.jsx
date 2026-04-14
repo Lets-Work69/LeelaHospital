@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react'
+﻿import React, { useRef, useEffect, useState } from 'react'
 import { ArrowRight, Brain } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import ServiceModal from './ServiceModal'
@@ -97,10 +97,10 @@ export default function Services() {
 
         setTimeout(() => {
           setPage(p => p + 1)
-        }, 300) // wait for fade out
+        }, 300) 
 
         setTimeout(() => {
-          setAnimDir(null) // triggers fade in
+          setAnimDir(null) 
         }, 350)
       }
 

@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react'
+﻿import React, { useEffect, useRef, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { Heart, Shield, Users, Target, MapPin, Phone, ArrowRight, CheckCircle2, Stethoscope, Building2 } from 'lucide-react'
 
-/* ── Scroll-reveal hook ── */
 function useReveal(threshold = 0.15) {
   const ref = useRef(null)
   const [visible, setVisible] = useState(false)
@@ -15,7 +14,6 @@ function useReveal(threshold = 0.15) {
   return [ref, visible]
 }
 
-/* ── Typewriter hook ── */
 function useTypewriter(text, speed = 45, start = false) {
   const [displayed, setDisplayed] = useState('')
   useEffect(() => {
@@ -55,7 +53,6 @@ const stats = [
   { value: '100%', label: 'Commitment' },
 ]
 
-/* ── Value Card ── */
 function ValueCard({ item, index, visible }) {
   const [hovered, setHovered] = useState(false)
   const Icon = item.icon
@@ -74,8 +71,7 @@ function ValueCard({ item, index, visible }) {
         backdropFilter: 'blur(12px)',
       }}>
 
-      {/* Watermark number */}
-      <div className="absolute -top-2 -right-2 text-7xl font-black select-none pointer-events-none"
+<div className="absolute -top-2 -right-2 text-7xl font-black select-none pointer-events-none"
         style={{ opacity: 0.04, background: 'linear-gradient(135deg,#0969b1,#17ae95)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
         {String(index + 1).padStart(2, '0')}
       </div>
@@ -89,14 +85,12 @@ function ValueCard({ item, index, visible }) {
       <h3 className="font-bold text-gray-800 text-lg mb-2 group-hover:text-gray-900">{item.label}</h3>
       <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
 
-      {/* Bottom accent line */}
-      <div className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r ${item.color} transition-transform duration-500 origin-left`}
+<div className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r ${item.color} transition-transform duration-500 origin-left`}
         style={{ transform: hovered ? 'scaleX(1)' : 'scaleX(0)' }} />
     </div>
   )
 }
 
-/* ── Founders & Leadership Section ── */
 const founders = [
   {
     name: 'Mahesh Magari',
@@ -155,28 +149,23 @@ function LeaderCard({ f, i }) {
           : '0 8px 32px rgba(0,0,0,0.08)',
       }}>
 
-      {/* ── Photo panel ── */}
-      <div className="relative md:w-80 flex-shrink-0 overflow-hidden"
+<div className="relative md:w-80 flex-shrink-0 overflow-hidden"
         style={{ minHeight: '360px', background: `linear-gradient(135deg,#022441,${f.color},${accent2})` }}>
 
-        {/* Dot grid */}
-        <div className="absolute inset-0 opacity-10"
+<div className="absolute inset-0 opacity-10"
           style={{ backgroundImage: 'radial-gradient(circle at 1px 1px,rgba(255,255,255,0.8) 1px,transparent 0)', backgroundSize: '20px 20px' }} />
 
-        {/* Animated orbs */}
-        <div className="absolute -top-8 -right-8 w-40 h-40 rounded-full blur-2xl opacity-30 animate-blob"
+<div className="absolute -top-8 -right-8 w-40 h-40 rounded-full blur-2xl opacity-30 animate-blob"
           style={{ background: accent2 }} />
         <div className="absolute -bottom-8 -left-8 w-32 h-32 rounded-full blur-2xl opacity-20 animate-blob-delay"
           style={{ background: '#7dd3fc' }} />
 
-        {/* Number */}
-        <div className="absolute top-5 right-6 font-black text-white/10 select-none"
+<div className="absolute top-5 right-6 font-black text-white/10 select-none"
           style={{ fontSize: '5rem', lineHeight: 1, fontFamily: "'Nunito',sans-serif" }}>
           {String(i + 1).padStart(2, '0')}
         </div>
 
-        {/* Full cover photo or placeholder */}
-        {f.photo ? (
+{f.photo ? (
           <>
             <img src={f.photo} alt={f.name}
               className="absolute inset-0 w-full h-full object-cover object-top z-10" />
@@ -188,7 +177,7 @@ function LeaderCard({ f, i }) {
           </>
         ) : (
           <>
-            {/* Placeholder fills full panel */}
+            
             <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3">
               <div className="w-28 h-28 rounded-full border-4 border-white/20 flex items-center justify-center"
                 style={{ background: 'rgba(255,255,255,0.08)' }}>
@@ -198,7 +187,7 @@ function LeaderCard({ f, i }) {
               </div>
               <p className="text-white/40 text-xs font-medium tracking-widest uppercase">Photo Coming Soon</p>
             </div>
-            {/* Name overlay at bottom */}
+            
             <div className="absolute bottom-0 left-0 right-0 z-20 px-6 py-5"
               style={{ background: 'linear-gradient(to top,rgba(2,36,65,0.9),transparent)' }}>
               <div className="text-white font-extrabold text-lg" style={{ fontFamily: "'Nunito',sans-serif" }}>{f.name}</div>
@@ -208,55 +197,47 @@ function LeaderCard({ f, i }) {
         )}
       </div>
 
-      {/* ── Content panel ── */}
-      <div className="flex-1 relative overflow-hidden bg-white"
+<div className="flex-1 relative overflow-hidden bg-white"
         style={{
           opacity: cardVisible ? 1 : 0,
           transform: cardVisible ? 'translateX(0)' : (isEven ? 'translateX(30px)' : 'translateX(-30px)'),
           transition: 'all 0.9s cubic-bezier(0.4,0,0.2,1) 0.2s',
         }}>
 
-        {/* Animated top bar */}
-        <div className="h-1.5 w-full overflow-hidden">
+<div className="h-1.5 w-full overflow-hidden">
           <div className="h-full transition-all duration-1000"
             style={{ width: cardVisible ? '100%' : '0%', background: `linear-gradient(90deg,${f.color},${accent2})`, transitionDelay: '0.5s' }} />
         </div>
 
-        {/* Subtle bg gradient */}
-        <div className="absolute inset-0 opacity-30"
+<div className="absolute inset-0 opacity-30"
           style={{ background: `linear-gradient(135deg,${f.color}05,${accent2}05)` }} />
 
-        {/* Watermark letter */}
-        <div className="absolute -bottom-6 -right-6 font-black select-none pointer-events-none"
+<div className="absolute -bottom-6 -right-6 font-black select-none pointer-events-none"
           style={{ fontSize: '10rem', lineHeight: 1, color: f.color, opacity: 0.04, fontFamily: "'Nunito',sans-serif" }}>
           {f.name.charAt(0)}
         </div>
 
         <div className="relative z-10 p-8 md:p-12 h-full flex flex-col justify-center">
 
-          {/* Role pill */}
-          <div className="inline-flex items-center gap-2 self-start mb-5 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest"
+<div className="inline-flex items-center gap-2 self-start mb-5 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest"
             style={{ background: `${f.color}10`, color: f.color, border: `1.5px solid ${f.color}25` }}>
             <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: `linear-gradient(135deg,${f.color},${accent2})` }} />
             {f.role}
           </div>
 
-          {/* Name */}
-          <h3 className="font-extrabold text-gray-900 mb-2 leading-tight"
+<h3 className="font-extrabold text-gray-900 mb-2 leading-tight"
             style={{ fontFamily: "'Nunito',sans-serif", fontSize: 'clamp(1.6rem,3vw,2.2rem)',
               opacity: cardVisible ? 1 : 0, transform: cardVisible ? 'translateY(0)' : 'translateY(12px)',
               transition: 'all 0.7s ease 0.35s' }}>
             {f.name}
           </h3>
 
-          {/* Expanding divider */}
-          <div className="mb-6 h-0.5 rounded-full overflow-hidden bg-gray-100">
+<div className="mb-6 h-0.5 rounded-full overflow-hidden bg-gray-100">
             <div className="h-full rounded-full transition-all duration-1000"
               style={{ width: cardVisible ? '40%' : '0%', background: `linear-gradient(90deg,${f.color},${accent2})`, transitionDelay: '0.8s' }} />
           </div>
 
-          {/* Bio */}
-          <p className="text-gray-500 leading-relaxed text-[0.97rem]"
+<p className="text-gray-500 leading-relaxed text-[0.97rem]"
             style={{ opacity: cardVisible ? 1 : 0, transform: cardVisible ? 'translateY(0)' : 'translateY(12px)',
               transition: 'all 0.7s ease 0.5s' }}>
             {f.bio}
@@ -273,15 +254,14 @@ function FoundersSection() {
   return (
     <div ref={sectionRef} className="relative overflow-hidden" style={{ background: '#fff' }}>
 
-      {/* ── ABOUT THE FOUNDERS ── */}
-      <div className="relative py-24">
+<div className="relative py-24">
         <div className="absolute inset-0 opacity-30"
           style={{ background: 'linear-gradient(135deg,#f0f9ff,#f0fdf4)' }} />
         <div className="absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl opacity-10 animate-blob"
           style={{ background: 'radial-gradient(circle,#0969b1,transparent)' }} />
 
         <div className="relative max-w-6xl mx-auto px-6">
-          {/* Label */}
+          
           <div className="text-center mb-14"
             style={{ opacity: sectionVisible ? 1 : 0, transform: sectionVisible ? 'translateY(0)' : 'translateY(24px)', transition: 'all 0.7s ease' }}>
             <span className="inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em] mb-4" style={{ color: '#17ae95' }}>
@@ -297,12 +277,10 @@ function FoundersSection() {
             </h2>
           </div>
 
-          {/* Founders story card */}
-          <div className="rounded-3xl overflow-hidden shadow-xl grid md:grid-cols-5"
+<div className="rounded-3xl overflow-hidden shadow-xl grid md:grid-cols-5"
             style={{ opacity: sectionVisible ? 1 : 0, transform: sectionVisible ? 'translateY(0)' : 'translateY(30px)', transition: 'all 0.8s ease 0.2s' }}>
 
-            {/* Left gradient panel */}
-            <div className="md:col-span-2 relative p-10 flex flex-col justify-center"
+<div className="md:col-span-2 relative p-10 flex flex-col justify-center"
               style={{ background: 'linear-gradient(135deg,#022441,#0969b1,#17ae95)' }}>
               <div className="absolute inset-0 opacity-10"
                 style={{ backgroundImage: 'radial-gradient(circle at 1px 1px,rgba(255,255,255,0.8) 1px,transparent 0)', backgroundSize: '22px 22px' }} />
@@ -317,8 +295,7 @@ function FoundersSection() {
               </div>
             </div>
 
-            {/* Right text */}
-            <div className="md:col-span-3 bg-white p-10">
+<div className="md:col-span-3 bg-white p-10">
               <div className="space-y-4 text-gray-600 leading-relaxed">
                 <p>Magari Healthcare is founded and led by a team of brothers — <strong className="text-gray-900">Mahesh, Mantesh, Siddu, Kumar, and Rajesh Magari</strong> — who share a strong vision of making quality healthcare accessible and affordable for every individual.</p>
                 <p>Coming from non-medical backgrounds, they established Magari Healthcare as a partnership firm and are successfully running Leela Hospital with dedication, courage, and purpose.</p>
@@ -331,8 +308,7 @@ function FoundersSection() {
         </div>
       </div>
 
-      {/* ── LEADERSHIP TEAM ── */}
-      <div className="relative py-24" style={{ background: 'linear-gradient(135deg,#f8fafc,#eff6ff 40%,#f0fdf4 70%,#f8fafc)' }}>
+<div className="relative py-24" style={{ background: 'linear-gradient(135deg,#f8fafc,#eff6ff 40%,#f0fdf4 70%,#f8fafc)' }}>
         <div className="absolute inset-0 opacity-20"
           style={{ backgroundImage: 'radial-gradient(circle at 1px 1px,#cbd5e1 1px,transparent 0)', backgroundSize: '30px 30px' }} />
         <div className="absolute top-10 left-10 w-72 h-72 rounded-full blur-3xl opacity-10 animate-blob"
@@ -341,7 +317,7 @@ function FoundersSection() {
           style={{ background: 'radial-gradient(circle,#17ae95,transparent)' }} />
 
         <div className="relative max-w-6xl mx-auto px-6">
-          {/* Label */}
+          
           <div className="text-center mb-16"
             style={{ opacity: sectionVisible ? 1 : 0, transform: sectionVisible ? 'translateY(0)' : 'translateY(24px)', transition: 'all 0.7s ease 0.1s' }}>
             <span className="inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em] mb-4" style={{ color: '#17ae95' }}>
@@ -357,8 +333,7 @@ function FoundersSection() {
             </h2>
           </div>
 
-          {/* Leader cards — zigzag with individual scroll reveal */}
-          <div className="space-y-16">
+<div className="space-y-16">
             {founders.map((f, i) => (
               <LeaderCard key={f.name} f={f} i={i} />
             ))}
@@ -368,7 +343,6 @@ function FoundersSection() {
     </div>
   )
 }
-
 
 function PatientQuoteCard({ visible }) {
   const words = ["We", "don't", "just", "treat", "patients", "—", "we", "care,", "we", "serve,", "and", "we", "heal", "with", "heart."]
@@ -385,25 +359,21 @@ function PatientQuoteCard({ visible }) {
     <div className="relative cursor-default"
       style={{ opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(40px)', transition: 'all 0.8s cubic-bezier(0.4,0,0.2,1)' }}>
 
-      {/* Outer glow */}
-      <div className="absolute -inset-1 rounded-3xl blur-xl opacity-40"
+<div className="absolute -inset-1 rounded-3xl blur-xl opacity-40"
         style={{ background: 'linear-gradient(135deg,#0969b1,#17ae95)' }} />
 
       <div className="relative rounded-3xl overflow-hidden" style={{ background: '#022441' }}>
 
-        {/* Animated top bar */}
-        <div className="h-1.5 w-full" style={{ background: 'linear-gradient(90deg,#0969b1,#17ae95,#0969b1)', backgroundSize: '200%', animation: 'shimmer 3s linear infinite' }} />
+<div className="h-1.5 w-full" style={{ background: 'linear-gradient(90deg,#0969b1,#17ae95,#0969b1)', backgroundSize: '200%', animation: 'shimmer 3s linear infinite' }} />
 
-        {/* Floating particles */}
-        {[...Array(5)].map((_, i) => (
+{[...Array(5)].map((_, i) => (
           <div key={i} className="absolute rounded-full animate-float pointer-events-none"
             style={{ width: `${4+i*2}px`, height: `${4+i*2}px`, background: i%2===0?'rgba(94,234,212,0.3)':'rgba(125,211,252,0.3)', left:`${15+i*17}%`, top:`${10+i*12}%`, animationDelay:`${i*0.7}s`, animationDuration:`${3+i*0.8}s` }} />
         ))}
 
         <div className="relative z-10 p-10">
 
-          {/* Pulse icon */}
-          <div className="relative w-12 h-12 mb-8">
+<div className="relative w-12 h-12 mb-8">
             <div className="absolute inset-0 rounded-full animate-pulse-ring" style={{ background: 'rgba(23,174,149,0.25)' }} />
             <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#0969b1,#17ae95)' }}>
               <svg width="20" height="16" viewBox="0 0 20 16" fill="white">
@@ -412,8 +382,7 @@ function PatientQuoteCard({ visible }) {
             </div>
           </div>
 
-          {/* Word-by-word float-in quote */}
-          <blockquote className="mb-8 leading-relaxed" style={{ fontFamily:"'Nunito',sans-serif", fontSize:'1.3rem', fontWeight:700, minHeight:'100px' }}>
+<blockquote className="mb-8 leading-relaxed" style={{ fontFamily:"'Nunito',sans-serif", fontSize:'1.3rem', fontWeight:700, minHeight:'100px' }}>
             {words.map((word, i) => (
               <span key={i} className="inline-block mr-2"
                 style={{
@@ -427,14 +396,12 @@ function PatientQuoteCard({ visible }) {
             ))}
           </blockquote>
 
-          {/* Expanding divider */}
-          <div className="mb-6 h-px rounded-full overflow-hidden bg-white/10">
+<div className="mb-6 h-px rounded-full overflow-hidden bg-white/10">
             <div className="h-full rounded-full transition-all duration-1000"
               style={{ width: visible ? '100%' : '0%', background: 'linear-gradient(90deg,#0969b1,#17ae95)', transitionDelay: '1.8s' }} />
           </div>
 
-          {/* Author */}
-          <div className="flex items-center gap-3">
+<div className="flex items-center gap-3">
             <div className="relative w-11 h-11">
               <div className="absolute inset-0 rounded-full animate-pulse-ring" style={{ background: 'rgba(23,174,149,0.3)' }} />
               <div className="w-11 h-11 rounded-full bg-white/10 border border-white/20 flex items-center justify-center">
@@ -481,27 +448,22 @@ export default function About() {
     <div className="min-h-screen bg-gray-50 overflow-x-hidden">
       <Navbar />
 
-      {/* ── HERO ── */}
-      <div className="relative pt-24 pb-0 overflow-hidden" style={{ background: 'linear-gradient(135deg, #022441 0%, #0969b1 55%, #17ae95 100%)', minHeight: '320px' }}>
+<div className="relative pt-24 pb-0 overflow-hidden" style={{ background: 'linear-gradient(135deg, #022441 0%, #0969b1 55%, #17ae95 100%)', minHeight: '320px' }}>
 
-        {/* Animated mesh gradient layer */}
-        <div className="absolute inset-0 opacity-30 animate-gradient"
+<div className="absolute inset-0 opacity-30 animate-gradient"
           style={{ background: 'linear-gradient(270deg, #022441, #0969b1, #17ae95, #022441)', backgroundSize: '400% 400%' }} />
 
-        {/* Dot grid */}
-        <div className="absolute inset-0 opacity-15"
+<div className="absolute inset-0 opacity-15"
           style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.6) 1px, transparent 0)', backgroundSize: '32px 32px' }} />
 
-        {/* Large blurred orbs */}
-        <div className="absolute -top-20 -right-20 w-[500px] h-[500px] rounded-full blur-3xl opacity-25 animate-blob"
+<div className="absolute -top-20 -right-20 w-[500px] h-[500px] rounded-full blur-3xl opacity-25 animate-blob"
           style={{ background: 'radial-gradient(circle, #17ae95, #0969b1, transparent)' }} />
         <div className="absolute bottom-0 -left-20 w-[400px] h-[400px] rounded-full blur-3xl opacity-20 animate-blob-delay"
           style={{ background: 'radial-gradient(circle, #0969b1, #022441, transparent)' }} />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full blur-3xl opacity-10"
           style={{ background: 'radial-gradient(ellipse, #5eead4, transparent)' }} />
 
-        {/* Floating particles */}
-        {[...Array(8)].map((_, i) => (
+{[...Array(8)].map((_, i) => (
           <div key={i} className="absolute rounded-full opacity-20 animate-float"
             style={{
               width: `${6 + (i % 3) * 4}px`, height: `${6 + (i % 3) * 4}px`,
@@ -511,14 +473,12 @@ export default function About() {
             }} />
         ))}
 
-        {/* Diagonal light streak */}
-        <div className="absolute inset-0 opacity-5"
+<div className="absolute inset-0 opacity-5"
           style={{ background: 'linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.8) 50%, transparent 60%)' }} />
 
         <div ref={heroRef} className="relative max-w-5xl mx-auto px-6 pt-8 pb-16 text-center">
 
-          {/* Badge */}
-          <div style={{ opacity: heroVisible ? 1 : 0, transform: heroVisible ? 'translateY(0)' : 'translateY(-20px)', transition: 'all 0.7s ease' }}>
+<div style={{ opacity: heroVisible ? 1 : 0, transform: heroVisible ? 'translateY(0)' : 'translateY(-20px)', transition: 'all 0.7s ease' }}>
             <span className="inline-flex items-center gap-2 bg-white/10 border border-white/25 text-teal-200 text-xs font-semibold uppercase tracking-[0.2em] px-5 py-2.5 rounded-full mb-8 backdrop-blur-md shadow-lg">
               <span className="w-1.5 h-1.5 bg-teal-300 rounded-full animate-pulse" />
               Leela Hospital · Gadag, Karnataka
@@ -526,8 +486,7 @@ export default function About() {
             </span>
           </div>
 
-          {/* Main heading */}
-          <div style={{ opacity: heroVisible ? 1 : 0, transform: heroVisible ? 'translateY(0)' : 'translateY(30px)', transition: 'all 0.9s cubic-bezier(0.4,0,0.2,1) 0.15s' }}>
+<div style={{ opacity: heroVisible ? 1 : 0, transform: heroVisible ? 'translateY(0)' : 'translateY(30px)', transition: 'all 0.9s cubic-bezier(0.4,0,0.2,1) 0.15s' }}>
             <h1 className="mb-4 leading-tight" style={{ fontFamily: "'Nunito', sans-serif" }}>
               <span className="block text-white/60 text-lg md:text-xl font-light tracking-[0.15em] uppercase mb-2"
                 style={{ fontFamily: "'Montserrat', sans-serif", letterSpacing: '0.25em' }}>
@@ -552,8 +511,7 @@ export default function About() {
             </h1>
           </div>
 
-          {/* Animated divider */}
-          <div style={{ opacity: heroVisible ? 1 : 0, transition: 'all 0.8s ease 0.4s' }}>
+<div style={{ opacity: heroVisible ? 1 : 0, transition: 'all 0.8s ease 0.4s' }}>
             <div className="flex items-center justify-center gap-3 my-6">
               <div className="h-px w-16 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, #5eead4)' }} />
               <div className="w-2 h-2 rounded-full bg-teal-300 animate-pulse" />
@@ -563,8 +521,7 @@ export default function About() {
             </div>
           </div>
 
-          {/* Subtitle */}
-          <div style={{ opacity: heroVisible ? 1 : 0, transform: heroVisible ? 'translateY(0)' : 'translateY(20px)', transition: 'all 0.9s ease 0.5s' }}>
+<div style={{ opacity: heroVisible ? 1 : 0, transform: heroVisible ? 'translateY(0)' : 'translateY(20px)', transition: 'all 0.9s ease 0.5s' }}>
             <p className="text-white/75 text-base md:text-lg leading-relaxed max-w-2xl mx-auto"
               style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 400, letterSpacing: '0.01em' }}>
               A unit of <span className="text-teal-300 font-semibold">Magari Healthcare</span> — where care meets compassion.
@@ -573,26 +530,21 @@ export default function About() {
             </p>
           </div>
 
+</div>
 
-        </div>
-
-        {/* Wave bottom */}
-        <svg className="w-full block" viewBox="0 0 1440 70" preserveAspectRatio="none" style={{ height: 70, display: 'block', marginTop: '-1px' }}>
+<svg className="w-full block" viewBox="0 0 1440 70" preserveAspectRatio="none" style={{ height: 70, display: 'block', marginTop: '-1px' }}>
           <path d="M0,35 C240,70 480,0 720,35 C960,70 1200,10 1440,35 L1440,70 L0,70 Z" fill="#f9fafb" />
         </svg>
       </div>
 
-      {/* ── WHO WE ARE ── */}
-      <div ref={whoRef} className="relative py-24 overflow-hidden" style={{ background: '#fff' }}>
+<div ref={whoRef} className="relative py-24 overflow-hidden" style={{ background: '#fff' }}>
 
-        {/* Subtle background accent */}
-        <div className="absolute top-0 left-0 w-1/2 h-full opacity-5"
+<div className="absolute top-0 left-0 w-1/2 h-full opacity-5"
           style={{ background: 'linear-gradient(135deg, #0969b1, transparent)' }} />
 
         <div className="max-w-6xl mx-auto px-6">
 
-          {/* Section label */}
-          <div className="text-center mb-16"
+<div className="text-center mb-16"
             style={{ opacity: whoVisible ? 1 : 0, transform: whoVisible ? 'translateY(0)' : 'translateY(20px)', transition: 'all 0.7s ease' }}>
             <span className="inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em] mb-4"
               style={{ color: '#17ae95' }}>
@@ -611,24 +563,19 @@ export default function About() {
 
           <div className="grid md:grid-cols-2 gap-14 items-start">
 
-            {/* Left — visual */}
-            <div style={{ opacity: whoVisible ? 1 : 0, transform: whoVisible ? 'translateX(0)' : 'translateX(-50px)', transition: 'all 0.9s cubic-bezier(0.4,0,0.2,1) 0.1s' }}>
+<div style={{ opacity: whoVisible ? 1 : 0, transform: whoVisible ? 'translateX(0)' : 'translateX(-50px)', transition: 'all 0.9s cubic-bezier(0.4,0,0.2,1) 0.1s' }}>
               <div className="relative flex items-center justify-center mx-auto w-full" style={{ height: `${orbitHeight}px`, maxWidth: isMobileOrbit ? '360px' : '100%' }}>
 
-                {/* Glow */}
-                <div className="absolute w-72 h-72 rounded-full animate-blob"
+<div className="absolute w-72 h-72 rounded-full animate-blob"
                   style={{ background: 'linear-gradient(135deg,rgba(9,105,177,0.12),rgba(23,174,149,0.12))', filter: 'blur(40px)' }} />
 
-                {/* Outer orbit ring */}
-                <div className="absolute rounded-full border-2 border-dashed animate-spin-slow"
+<div className="absolute rounded-full border-2 border-dashed animate-spin-slow"
                   style={{ width: `${orbitSize}px`, height: `${orbitSize}px`, borderColor: 'rgba(23,174,149,0.2)' }} />
 
-                {/* Inner orbit ring */}
-                <div className="absolute rounded-full border border-dashed"
+<div className="absolute rounded-full border border-dashed"
                   style={{ width: `${innerOrbitSize}px`, height: `${innerOrbitSize}px`, borderColor: 'rgba(9,105,177,0.15)', animation: 'spin-slow 15s linear infinite reverse' }} />
 
-                {/* Center circle */}
-                <div className="relative z-10 w-36 h-36 flex items-center justify-center flex-shrink-0">
+<div className="relative z-10 w-36 h-36 flex items-center justify-center flex-shrink-0">
                   <div className="absolute inset-0 rounded-full animate-spin-slow"
                     style={{ background: 'conic-gradient(from 0deg,#0969b1,#17ae95,#3dc9b0,#3da8d8,#0969b1)', padding: '3px' }}>
                     <div className="w-full h-full rounded-full bg-white" />
@@ -639,8 +586,7 @@ export default function About() {
                   </div>
                 </div>
 
-                {/* Chips placed evenly around the outer ring */}
-                {[
+{[
                   { icon: CheckCircle2, text: 'Multi-Specialty',       color: '#0969b1', angle: -90  },
                   { icon: Heart,        text: 'Patient-First',          color: '#17ae95', angle: -30  },
                   { icon: MapPin,       text: 'Gadag, Karnataka',       color: '#0969b1', angle: 30   },
@@ -686,14 +632,12 @@ export default function About() {
                 </p>
               </div>
 
-
-            </div>
+</div>
           </div>
         </div>
       </div>
 
-      {/* ── VALUES ── */}
-      <div className="relative py-20 overflow-hidden"
+<div className="relative py-20 overflow-hidden"
         style={{ background: 'linear-gradient(135deg, #f8fafc, #eff6ff 40%, #f0fdf4 70%, #f8fafc)' }}>
         <div className="absolute inset-0 opacity-30"
           style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, #cbd5e1 1px, transparent 0)', backgroundSize: '30px 30px' }} />
@@ -718,11 +662,9 @@ export default function About() {
         </div>
       </div>
 
-      {/* ── PATIENT FIRST ── */}
-      <div ref={patientRef} className="relative py-24 overflow-hidden">
+<div ref={patientRef} className="relative py-24 overflow-hidden">
 
-        {/* Animated background */}
-        <div className="absolute inset-0"
+<div className="absolute inset-0"
           style={{ background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 40%, #f0fdf4 100%)' }} />
         <div className="absolute inset-0 opacity-20"
           style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, #0969b1 1px, transparent 0)', backgroundSize: '40px 40px' }} />
@@ -733,8 +675,7 @@ export default function About() {
 
         <div className="relative max-w-6xl mx-auto px-6">
 
-          {/* Section label */}
-          <div className="text-center mb-16"
+<div className="text-center mb-16"
             style={{ opacity: patientVisible ? 1 : 0, transform: patientVisible ? 'translateY(0)' : 'translateY(20px)', transition: 'all 0.7s ease' }}>
             <span className="inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em] mb-4" style={{ color: '#17ae95' }}>
               <span className="w-10 h-px" style={{ background: 'linear-gradient(90deg,transparent,#17ae95)' }} />
@@ -749,14 +690,11 @@ export default function About() {
 
           <div className="grid md:grid-cols-2 gap-12 items-center">
 
-            {/* Left — animated quote card */}
-            <PatientQuoteCard visible={patientVisible} />
+<PatientQuoteCard visible={patientVisible} />
 
-            {/* Right — text with staggered reveal */}
-            <div style={{ opacity: patientVisible ? 1 : 0, transform: patientVisible ? 'translateX(0)' : 'translateX(50px)', transition: 'all 0.9s ease 0.3s' }}>
+<div style={{ opacity: patientVisible ? 1 : 0, transform: patientVisible ? 'translateX(0)' : 'translateX(50px)', transition: 'all 0.9s ease 0.3s' }}>
 
-              {/* Paragraphs with left border accent */}
-              <div className="space-y-6">
+<div className="space-y-6">
                 {[
                   'At Leela Hospital, every patient is treated like family. We believe healing begins with trust, and we take time to listen, understand, and provide personalized care to each individual. Our approach is rooted in compassion, ethics, transparency, and a genuine commitment to patient well-being.',
                   'Our team of dedicated doctors, nurses, and staff work tirelessly with passion and responsibility, ensuring timely, safe, and effective care. Every life that walks through our doors matters to us, and we strive to make a positive difference in every patient\'s journey.'
@@ -770,8 +708,7 @@ export default function About() {
                 ))}
               </div>
 
-              {/* Animated tags */}
-              <div className="mt-10 flex flex-wrap gap-3">
+<div className="mt-10 flex flex-wrap gap-3">
                 {['Compassion', 'Ethics', 'Transparency', 'Personalized Care', 'Trust'].map((tag, i) => (
                   <span key={tag}
                     className="flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-full transition-all duration-500 hover:-translate-y-1 hover:shadow-lg cursor-default"
@@ -794,8 +731,7 @@ export default function About() {
         </div>
       </div>
 
-      {/* ── MISSION ── */}
-      <div ref={missionRef} className="relative py-24 overflow-hidden" style={{ background: '#fff' }}>
+<div ref={missionRef} className="relative py-24 overflow-hidden" style={{ background: '#fff' }}>
 
         <div className="absolute inset-0 opacity-30"
           style={{ background: 'linear-gradient(135deg, #f0f9ff 0%, #f0fdf4 100%)' }} />
@@ -806,8 +742,7 @@ export default function About() {
 
         <div className="relative max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-14 items-center">
 
-          {/* Left — label + heading */}
-          <div style={{ opacity: missionVisible ? 1 : 0, transform: missionVisible ? 'translateX(0)' : 'translateX(-50px)', transition: 'all 0.8s ease' }}>
+<div style={{ opacity: missionVisible ? 1 : 0, transform: missionVisible ? 'translateX(0)' : 'translateX(-50px)', transition: 'all 0.8s ease' }}>
             <span className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 text-teal-600 text-xs font-bold uppercase tracking-[0.2em] px-5 py-2.5 rounded-full mb-6">
               <span className="w-1.5 h-1.5 bg-teal-500 rounded-full animate-pulse" />
               Our Mission
@@ -825,8 +760,7 @@ export default function About() {
             </div>
           </div>
 
-          {/* Right — content */}
-          <div style={{ opacity: missionVisible ? 1 : 0, transform: missionVisible ? 'translateX(0)' : 'translateX(50px)', transition: 'all 0.8s ease 0.2s' }}>
+<div style={{ opacity: missionVisible ? 1 : 0, transform: missionVisible ? 'translateX(0)' : 'translateX(50px)', transition: 'all 0.8s ease 0.2s' }}>
             <div className="space-y-5">
               {[
                 'Our mission is to make quality healthcare accessible to all by providing the best medical care at the most affordable cost.',
@@ -845,8 +779,7 @@ export default function About() {
         </div>
       </div>
 
-      {/* ── VISION ── */}
-      <div ref={visionRef} className="relative py-24 overflow-hidden" style={{ background: '#fff' }}>
+<div ref={visionRef} className="relative py-24 overflow-hidden" style={{ background: '#fff' }}>
 
         <div className="absolute inset-0 opacity-30"
           style={{ background: 'linear-gradient(135deg, #f0fdf4 0%, #f0f9ff 100%)' }} />
@@ -857,8 +790,7 @@ export default function About() {
 
         <div className="relative max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-14 items-center">
 
-          {/* Left — content (order-2 on mobile so heading shows first) */}
-          <div className="order-2 md:order-1" style={{ opacity: visionVisible ? 1 : 0, transform: visionVisible ? 'translateX(0)' : 'translateX(-50px)', transition: 'all 0.8s ease 0.2s' }}>
+<div className="order-2 md:order-1" style={{ opacity: visionVisible ? 1 : 0, transform: visionVisible ? 'translateX(0)' : 'translateX(-50px)', transition: 'all 0.8s ease 0.2s' }}>
             <div className="space-y-5">
               {[
                 'Our vision is to expand across Karnataka by establishing a network of hospitals, super-specialty clinics, and advanced diagnostic centers, making quality healthcare accessible to all.',
@@ -876,8 +808,7 @@ export default function About() {
             </div>
           </div>
 
-          {/* Right — label + heading (order-1 on mobile so it shows first) */}
-          <div className="order-1 md:order-2 md:text-right" style={{ opacity: visionVisible ? 1 : 0, transform: visionVisible ? 'translateX(0)' : 'translateX(50px)', transition: 'all 0.8s ease' }}>
+<div className="order-1 md:order-2 md:text-right" style={{ opacity: visionVisible ? 1 : 0, transform: visionVisible ? 'translateX(0)' : 'translateX(50px)', transition: 'all 0.8s ease' }}>
             <span className="inline-flex items-center gap-2 bg-teal-50 border border-teal-100 text-teal-600 text-xs font-bold uppercase tracking-[0.2em] px-5 py-2.5 rounded-full mb-6">
               <span className="w-1.5 h-1.5 bg-teal-500 rounded-full animate-pulse" />
               Our Vision
@@ -897,8 +828,7 @@ export default function About() {
         </div>
       </div>
 
-      {/* ── FOUNDERS ── */}
-      <FoundersSection />
+<FoundersSection />
 
       <Footer />
     </div>
