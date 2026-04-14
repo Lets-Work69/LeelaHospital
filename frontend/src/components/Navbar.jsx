@@ -19,6 +19,9 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [isSuperAdmin, setIsSuperAdmin] = useState(false)
   const [pendingApptCount, setPendingApptCount] = useState(0)
+  const [showNewApptDialog, setShowNewApptDialog] = useState(false)
+  const [newApptCount, setNewApptCount] = useState(0)
+  const previousCountRef = React.useRef(0)
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -47,7 +50,18 @@ export default function Navbar() {
         })
         const data = await res.json()
         if (data.success && Array.isArray(data.appointments)) {
+          const totalCount = data.appointments.length
           const n = data.appointments.filter(a => a.status === 'pending').length
+          
+          // Check if total count increased (new appointment)
+          if (previousCountRef.current > 0 && totalCount > previousCountRef.current) {
+            const difference = totalCount - previousCountRef.current
+            setNewApptCount(difference)
+            setShowNewApptDialog(true)
+            // Removed auto-hide - user must manually close
+          }
+          
+          previousCountRef.current = totalCount
           setPendingApptCount(n)
         }
       } catch (_) {
@@ -56,9 +70,14 @@ export default function Navbar() {
     }
 
     fetchPendingCount()
+    
+    // Poll every 5 seconds for new appointments
+    const pollInterval = setInterval(fetchPendingCount, 5000)
+    
     window.addEventListener('leela:new-appointment', fetchPendingCount)
     window.addEventListener('leela:pending-appointments-changed', fetchPendingCount)
     return () => {
+      clearInterval(pollInterval)
       window.removeEventListener('leela:new-appointment', fetchPendingCount)
       window.removeEventListener('leela:pending-appointments-changed', fetchPendingCount)
     }
@@ -92,7 +111,36 @@ export default function Navbar() {
   }
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
+    <>
+      {/* Global New Appointment Dialog - Shows centered on all admin pages */}
+      {isSuperAdmin && showNewApptDialog && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[200]">
+          <div className="bg-white rounded-2xl shadow-2xl p-8 border-2 border-green-400 max-w-md mx-4 animate-scale-in">
+            <div className="flex flex-col items-center text-center">
+              <div className="w-16 h-16 rounded-full flex items-center justify-center bg-green-100 mb-4">
+                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">New Appointment{newApptCount > 1 ? 's' : ''}!</h3>
+              <p className="text-gray-600 mb-6">
+                {newApptCount} new appointment{newApptCount > 1 ? 's have' : ' has'} been booked
+              </p>
+              <button
+                onClick={() => {
+                  setShowNewApptDialog(false)
+                  navigate('/appointments')
+                }}
+                className="px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-xl font-semibold transition-colors shadow-lg"
+              >
+                View Appointments
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
       style={{
         background: '#ffffff',
         backdropFilter: 'none',
@@ -226,5 +274,6 @@ export default function Navbar() {
           )}
         </div>}
     </header>
+    </>
   )
 }
