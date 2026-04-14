@@ -136,7 +136,10 @@ export default function AppointmentsPage() {
   const [filter, setFilter] = useState('all')
   const [filterOpen, setFilterOpen] = useState(false)
   const [viewAppt, setViewAppt] = useState(null)
+  const [showNewApptDialog, setShowNewApptDialog] = useState(false)
+  const [newApptCount, setNewApptCount] = useState(0)
   const filterRef = useRef(null)
+  const previousCountRef = useRef(0)
   const navigate = useNavigate()
 
   const getHeaders = () => ({
@@ -148,6 +151,13 @@ export default function AppointmentsPage() {
     const user = JSON.parse(localStorage.getItem('user') || '{}')
     if (user.role !== 'superadmin') { navigate('/login'); return }
     fetchAppointments()
+    
+    // Poll for new appointments every 5 seconds
+    const pollInterval = setInterval(() => {
+      fetchAppointments(true) // Pass true to indicate this is a polling request
+    }, 5000)
+    
+    return () => clearInterval(pollInterval)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -168,11 +178,28 @@ export default function AppointmentsPage() {
     return () => document.removeEventListener('mousedown', handler)
   }, [])
 
-  const fetchAppointments = async () => {
+  const fetchAppointments = async (isPolling = false) => {
     try {
       const res = await fetch(`${API_URL}/appointments`, { headers: getHeaders() })
       const data = await res.json()
-      if (data.success) setAppointments(data.appointments)
+      if (data.success) {
+        const newCount = data.appointments.length
+        
+        // Check if this is a polling request and count has increased
+        if (isPolling && previousCountRef.current > 0 && newCount > previousCountRef.current) {
+          const difference = newCount - previousCountRef.current
+          setNewApptCount(difference)
+          setShowNewApptDialog(true)
+          
+          // Auto-hide dialog after 5 seconds
+          setTimeout(() => {
+            setShowNewApptDialog(false)
+          }, 5000)
+        }
+        
+        previousCountRef.current = newCount
+        setAppointments(data.appointments)
+      }
     } catch (err) {
       console.error(err)
     } finally {
@@ -233,6 +260,35 @@ export default function AppointmentsPage() {
   return (
     <>
       <Navbar />
+
+      {/* New Appointment Dialog */}
+      {showNewApptDialog && (
+        <div className="fixed top-24 right-4 z-[200] animate-slide-in">
+          <div className="bg-white rounded-2xl shadow-2xl p-6 border-2 border-green-400 max-w-sm">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 bg-green-100">
+                <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg font-bold text-gray-900 mb-1">New Appointment{newApptCount > 1 ? 's' : ''}!</h3>
+                <p className="text-sm text-gray-600">
+                  {newApptCount} new appointment{newApptCount > 1 ? 's have' : ' has'} been booked
+                </p>
+              </div>
+              <button
+                onClick={() => setShowNewApptDialog(false)}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {viewAppt && (
         <div
