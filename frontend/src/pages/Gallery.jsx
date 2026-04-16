@@ -164,13 +164,13 @@ const Gallery = () => {
                     className="relative overflow-hidden rounded-xl cursor-pointer group"
                     style={{
                       opacity: inaugurationVisibleState ? 1 : 0,
-                      transform: inaugurationVisibleState ? 'translateY(0) scale(1)' : 'translateY(40px) scale(0.95)',
+                      transform: `${inaugurationVisibleState ? (hovered ? 'translateY(-8px)' : 'translateY(0)') : 'translateY(40px)'} ${inaugurationVisibleState ? (hovered ? 'scale(1.05)' : 'scale(1)') : 'scale(0.95)'}`,
                       transition: `all 0.4s cubic-bezier(0.4,0,0.2,1) ${index * 0.1}s`,
                       background: hovered ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.8)',
                       boxShadow: hovered ? '0 24px 48px rgba(9,105,177,0.15), 0 0 0 1px rgba(255,255,255,0.6)' : '0 2px 16px rgba(0,0,0,0.06)',
                       border: '1px solid rgba(241,245,249,1)',
                       backdropFilter: 'blur(12px)',
-                      transform: hovered ? 'translateY(-8px) scale(1.05)' : 'translateY(0) scale(1)'
+                      
                     }}>
                     <div className="aspect-[4/3] overflow-hidden">
                       <img
@@ -312,13 +312,13 @@ const Gallery = () => {
                     className="relative overflow-hidden rounded-xl cursor-pointer group"
                     style={{
                       opacity: sessionsVisibleState ? 1 : 0,
-                      transform: sessionsVisibleState ? 'translateY(0) scale(1)' : 'translateY(40px) scale(0.95)',
+                      transform: `${sessionsVisibleState ? (hovered ? 'translateY(-8px)' : 'translateY(0)') : 'translateY(40px)'} ${sessionsVisibleState ? (hovered ? 'scale(1.05)' : 'scale(1)') : 'scale(0.95)'}`,
                       transition: `all 0.4s cubic-bezier(0.4,0,0.2,1) ${index * 0.1}s`,
                       background: hovered ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.8)',
                       boxShadow: hovered ? '0 24px 48px rgba(9,105,177,0.15), 0 0 0 1px rgba(255,255,255,0.6)' : '0 2px 16px rgba(0,0,0,0.06)',
                       border: '1px solid rgba(241,245,249,1)',
                       backdropFilter: 'blur(12px)',
-                      transform: hovered ? 'translateY(-8px) scale(1.05)' : 'translateY(0) scale(1)'
+                      
                     }}>
                     <div className="aspect-[4/3] overflow-hidden">
                       <img
@@ -394,13 +394,13 @@ const Gallery = () => {
                     className="relative overflow-hidden rounded-xl cursor-pointer group"
                     style={{
                       opacity: eventsVisibleState ? 1 : 0,
-                      transform: eventsVisibleState ? 'translateY(0) scale(1)' : 'translateY(40px) scale(0.95)',
+                      transform: `${eventsVisibleState ? (hovered ? 'translateY(-8px)' : 'translateY(0)') : 'translateY(40px)'} ${eventsVisibleState ? (hovered ? 'scale(1.05)' : 'scale(1)') : 'scale(0.95)'}`,
                       transition: `all 0.4s cubic-bezier(0.4,0,0.2,1) ${index * 0.1}s`,
                       background: hovered ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.8)',
                       boxShadow: hovered ? '0 24px 48px rgba(9,105,177,0.15), 0 0 0 1px rgba(255,255,255,0.6)' : '0 2px 16px rgba(0,0,0,0.06)',
                       border: '1px solid rgba(241,245,249,1)',
                       backdropFilter: 'blur(12px)',
-                      transform: hovered ? 'translateY(-8px) scale(1.05)' : 'translateY(0) scale(1)'
+                      
                     }}>
                     <div className="aspect-[4/3] overflow-hidden">
                       <img
@@ -475,13 +475,13 @@ const Gallery = () => {
                     className="relative overflow-hidden rounded-xl cursor-pointer group"
                     style={{
                       opacity: communityVisibleState ? 1 : 0,
-                      transform: communityVisibleState ? 'translateY(0) scale(1)' : 'translateY(40px) scale(0.95)',
+                      transform: `${communityVisibleState ? (hovered ? 'translateY(-8px)' : 'translateY(0)') : 'translateY(40px)'} ${communityVisibleState ? (hovered ? 'scale(1.05)' : 'scale(1)') : 'scale(0.95)'}`,
                       transition: `all 0.4s cubic-bezier(0.4,0,0.2,1) ${index * 0.1}s`,
                       background: hovered ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.8)',
                       boxShadow: hovered ? '0 24px 48px rgba(9,105,177,0.15), 0 0 0 1px rgba(255,255,255,0.6)' : '0 2px 16px rgba(0,0,0,0.06)',
                       border: '1px solid rgba(241,245,249,1)',
                       backdropFilter: 'blur(12px)',
-                      transform: hovered ? 'translateY(-8px) scale(1.05)' : 'translateY(0) scale(1)'
+                      
                     }}>
                     <div className="aspect-[4/3] overflow-hidden">
                       <img
