@@ -1,6 +1,8 @@
 ﻿import React, { useRef, useEffect, useState } from 'react'
 import { Star, Clock, Users, ChevronLeft, ChevronRight } from 'lucide-react'
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+
 const ACCENTS = ['#0969b1', '#17ae95']
 
 function DoctorCard({ doc, index }) {
@@ -84,7 +86,7 @@ export default function Doctors() {
   const [doctors, setDoctors] = useState([])
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/doctors')
+    fetch(`${API_URL}/api/doctors`)
       .then(r => r.json())
       .then(data => {
         if (data.success) {
