@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { Calendar, Award, Users, Camera, Heart, Star, ArrowLeft } from "lucide-react";
+import { Calendar, Award, Users, Camera, Heart, Star, ArrowLeft, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const inaugurationImages = [
@@ -53,6 +53,7 @@ function useReveal(threshold = 0.15) {
 
 const Gallery = () => {
   const [selectedImage, setSelectedImage] = useState(null);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [heroVisible, setHeroVisible] = useState(false);
   const [typed, setTyped] = useState('');
   const [sessionsVisible, setSessionsVisible] = useState(false);
@@ -161,6 +162,7 @@ const Gallery = () => {
                     key={index}
                     onMouseEnter={() => setHovered(true)}
                     onMouseLeave={() => setHovered(false)}
+                    onClick={() => { setSelectedImage(image); setIsLightboxOpen(true); }}
                     className="relative overflow-hidden rounded-xl cursor-pointer group"
                     style={{
                       opacity: inaugurationVisibleState ? 1 : 0,
@@ -182,16 +184,7 @@ const Gallery = () => {
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" />
                       
-                      {/* Hover Overlay Content */}
-                      <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                        <div className="flex items-center justify-between">
-                          <span className="text-white text-sm font-medium">View Image</span>
-                          <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                            <Camera className="w-4 h-4 text-white" />
-                          </div>
-                        </div>
-                      </div>
-
+                      
                       {/* Image Number Badge */}
                       <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
                         <span className="text-gray-800 text-xs font-semibold">{index + 1}</span>
@@ -309,6 +302,7 @@ const Gallery = () => {
                     key={index}
                     onMouseEnter={() => setHovered(true)}
                     onMouseLeave={() => setHovered(false)}
+                    onClick={() => { setSelectedImage(image); setIsLightboxOpen(true); }}
                     className="relative overflow-hidden rounded-xl cursor-pointer group"
                     style={{
                       opacity: sessionsVisibleState ? 1 : 0,
@@ -330,16 +324,7 @@ const Gallery = () => {
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" />
                       
-                      {/* Hover Overlay Content */}
-                      <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                        <div className="flex items-center justify-between">
-                          <span className="text-white text-sm font-medium">View Image</span>
-                          <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                            <Camera className="w-4 h-4 text-white" />
-                          </div>
-                        </div>
-                      </div>
-
+                      
                       {/* Image Number Badge */}
                       <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
                         <span className="text-gray-800 text-xs font-semibold">{index + 1}</span>
@@ -391,6 +376,7 @@ const Gallery = () => {
                     key={index}
                     onMouseEnter={() => setHovered(true)}
                     onMouseLeave={() => setHovered(false)}
+                    onClick={() => { setSelectedImage(image); setIsLightboxOpen(true); }}
                     className="relative overflow-hidden rounded-xl cursor-pointer group"
                     style={{
                       opacity: eventsVisibleState ? 1 : 0,
@@ -412,16 +398,7 @@ const Gallery = () => {
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" />
                       
-                      {/* Hover Overlay Content */}
-                      <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                        <div className="flex items-center justify-between">
-                          <span className="text-white text-sm font-medium">View Image</span>
-                          <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                            <Camera className="w-4 h-4 text-white" />
-                          </div>
-                        </div>
-                      </div>
-
+                      
                       {/* Image Number Badge */}
                       <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
                         <span className="text-gray-800 text-xs font-semibold">{index + 1}</span>
@@ -472,6 +449,7 @@ const Gallery = () => {
                     key={index}
                     onMouseEnter={() => setHovered(true)}
                     onMouseLeave={() => setHovered(false)}
+                    onClick={() => { setSelectedImage(image); setIsLightboxOpen(true); }}
                     className="relative overflow-hidden rounded-xl cursor-pointer group"
                     style={{
                       opacity: communityVisibleState ? 1 : 0,
@@ -493,38 +471,47 @@ const Gallery = () => {
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" />
                       
-                      {/* Hover Overlay Content */}
-                      <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                        <div className="flex items-center justify-between">
-                          <span className="text-white text-sm font-medium">View Image</span>
-                          <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                            <Camera className="w-4 h-4 text-white" />
-                          </div>
-                        </div>
-                      </div>
-
+                      
                       {/* Image Number Badge */}
                       <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
                         <span className="text-gray-800 text-xs font-semibold">{index + 1}</span>
+                      </div>
                     </div>
 
-                    {/* Image Number Badge */}
-                    <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
-                      <span className="text-gray-800 text-xs font-semibold">{index + 1}</span>
-                    </div>
+                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500 to-teal-500 transition-transform duration-500 origin-left"
+                      style={{ transform: hovered ? 'scaleX(1)' : 'scaleX(0)' }} />
                   </div>
-
-                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500 to-teal-500 transition-transform duration-500 origin-left"
-                    style={{ transform: hovered ? 'scaleX(1)' : 'scaleX(0)' }} />
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
-      </div>
 
       <Footer />
+
+      {/* Lightbox Modal */}
+      {isLightboxOpen && selectedImage && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm"
+          onClick={() => setIsLightboxOpen(false)}
+        >
+          <div className="relative max-w-6xl max-h-[90vh] p-4">
+            <button
+              className="absolute -top-12 right-4 text-white hover:text-gray-300 transition-colors"
+              onClick={() => setIsLightboxOpen(false)}
+            >
+              <X className="w-8 h-8" />
+            </button>
+            <img
+              src={selectedImage}
+              alt="Enlarged view"
+              className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+        </div>
+      )}
     </>
   );
 };
