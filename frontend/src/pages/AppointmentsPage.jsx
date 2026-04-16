@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { Loader2, Calendar, Eye, Phone, Building2, Clock, MessageSquare, Activity, Check } from 'lucide-react'
 import Navbar from '../components/Navbar'
 
-const API_URL = 'http://localhost:5000/api'
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
 /** Open bookings: still "new" until status is completed or cancelled. */
 function isNewAppointment(a) {
@@ -180,7 +180,7 @@ export default function AppointmentsPage() {
 
   const fetchAppointments = async (isPolling = false) => {
     try {
-      const res = await fetch(`${API_URL}/appointments`, { headers: getHeaders() })
+      const res = await fetch(`${API_URL}/api/appointments`, { headers: getHeaders() })
       const data = await res.json()
       if (data.success) {
         const newCount = data.appointments.length
@@ -213,7 +213,7 @@ export default function AppointmentsPage() {
     setUpdatingStatus(id) // Show loading state
     
     try {
-      const res = await fetch(`${API_URL}/appointments/${id}`, {
+      const res = await fetch(`${API_URL}/api/appointments/${id}`, {
         method: 'PUT',
         headers: getHeaders(),
         body: JSON.stringify({ status })

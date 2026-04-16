@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Calendar, Plus, Trash2, Loader2, CheckCircle, Stethoscope, Clock, Users, MoreVertical, Edit2, EyeOff, Eye, AlertTriangle, LayoutGrid, List, GripVertical } from 'lucide-react';
 import Navbar from '../components/Navbar';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 function ConfirmDialog({ message, onConfirm, onCancel, confirmLabel = 'Confirm', danger = false }) {
   return (
@@ -93,7 +93,7 @@ export default function AdminDashboard() {
 
   const fetchDoctors = async () => {
     try {
-      const res = await fetch(`${API_URL}/doctors/all`, { headers: getAuthHeaders() });
+      const res = await fetch(`${API_URL}/api/doctors/all`, { headers: getAuthHeaders() });
       const data = await res.json();
       if (data.success) setDoctors(data.doctors);
     } catch (err) {
@@ -105,7 +105,7 @@ export default function AdminDashboard() {
 
   const fetchAppointments = async () => {
     try {
-      const res = await fetch(`${API_URL}/appointments`, { headers: getAuthHeaders() });
+      const res = await fetch(`${API_URL}/api/appointments`, { headers: getAuthHeaders() });
       const data = await res.json();
       if (data.success) setAppointments(data.appointments);
     } catch (err) {
@@ -116,11 +116,38 @@ export default function AdminDashboard() {
   const handleAddDoctor = async (e) => {
     e.preventDefault();
     setLoading(true);
+    
+    // Format the data before sending
+    const formattedData = {
+      ...formData,
+      // Add "Dr." prefix if not present
+      name: formData.name.trim().startsWith('Dr.') || formData.name.trim().startsWith('Dr ') 
+        ? formData.name.trim() 
+        : `Dr. ${formData.name.trim()}`,
+      // Add "Yrs" suffix if not present (only if it's a number)
+      experience: formData.experience.trim().match(/^\d+$/) 
+        ? `${formData.experience.trim()} Yrs` 
+        : formData.experience.trim(),
+      // Add "K" suffix if not present (only if it's a number)
+      patients: (() => {
+        const val = formData.patients.trim();
+        // If it's just a number, add K
+        if (val.match(/^\d+(\.\d+)?$/)) {
+          return `${val}K`;
+        }
+        // If it already has K, make sure there's only one K
+        if (val.match(/^\d+(\.\d+)?[Kk]+$/)) {
+          return val.replace(/[Kk]+$/, 'K');
+        }
+        return val;
+      })()
+    };
+    
     try {
-      const res = await fetch(`${API_URL}/doctors`, {
+      const res = await fetch(`${API_URL}/api/doctors`, {
         method: 'POST',
         headers: getAuthHeaders(),
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formattedData)
       });
       const data = await res.json();
       if (data.success) {
@@ -144,7 +171,7 @@ export default function AdminDashboard() {
       async () => {
         setConfirmDialog(null);
         try {
-          const res = await fetch(`${API_URL}/doctors/${id}/permanent`, { method: 'DELETE', headers: getAuthHeaders() });
+          const res = await fetch(`${API_URL}/api/doctors/${id}/permanent`, { method: 'DELETE', headers: getAuthHeaders() });
           const data = await res.json();
           if (data.success) fetchDoctors();
         } catch { alert('Error deleting doctor'); }
@@ -155,7 +182,7 @@ export default function AdminDashboard() {
 
   const handleToggleActive = async (doctor) => {
     try {
-      const res = await fetch(`${API_URL}/doctors/${doctor._id}`, {
+      const res = await fetch(`${API_URL}/api/doctors/${doctor._id}`, {
         method: 'PUT',
         headers: getAuthHeaders(),
         body: JSON.stringify({ isActive: !doctor.isActive })
@@ -177,11 +204,39 @@ export default function AdminDashboard() {
 
   const handleEditSubmit = async (e) => {
     e.preventDefault();
+    
+    // Format the data before sending
+    const formattedData = {
+      ...editFormData,
+      // Add "Dr." prefix if not present
+      name: editFormData.name.trim().startsWith('Dr.') || editFormData.name.trim().startsWith('Dr ') 
+        ? editFormData.name.trim() 
+        : `Dr. ${editFormData.name.trim()}`,
+      // Add "Yrs" suffix if not present (only if it's a number)
+      experience: editFormData.experience.trim().match(/^\d+$/) 
+        ? `${editFormData.experience.trim()} Yrs` 
+        : editFormData.experience.trim(),
+      // Add "K" suffix if not present (only if it's a number)
+      patients: (() => {
+        const val = editFormData.patients.trim();
+        // If it's just a number, add K
+        if (val.match(/^\d+(\.\d+)?$/)) {
+          return `${val}K`;
+        }
+        // If it already has K, make sure there's only one K
+        if (val.match(/^\d+(\.\d+)?[Kk]+$/)) {
+          return val.replace(/[Kk]+$/, 'K');
+        }
+        return val;
+      })(),
+      profileImage: editPhotoPreview || editingDoctor.profileImage
+    };
+    
     try {
-      const res = await fetch(`${API_URL}/doctors/${editingDoctor._id}`, {
+      const res = await fetch(`${API_URL}/api/doctors/${editingDoctor._id}`, {
         method: 'PUT',
         headers: getAuthHeaders(),
-        body: JSON.stringify({ ...editFormData, profileImage: editPhotoPreview || editingDoctor.profileImage })
+        body: JSON.stringify(formattedData)
       });
       const data = await res.json();
       if (data.success) { setEditingDoctor(null); fetchDoctors(); }
@@ -213,7 +268,7 @@ export default function AdminDashboard() {
     dragOver.current = null;
     
     try {
-      await fetch(`${API_URL}/doctors/reorder`, {
+      await fetch(`${API_URL}/api/doctors/reorder`, {
         method: 'POST',
         headers: getAuthHeaders(),
         body: JSON.stringify({ orderedIds: reordered.map(d => d._id) })
@@ -440,10 +495,10 @@ export default function AdminDashboard() {
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Add New Doctor</h3>
             <form onSubmit={handleAddDoctor} className="space-y-4">
               {[
-                { label: 'Full Name', key: 'name', type: 'text', required: true, placeholder: 'Dr. John Smith' },
+                { label: 'Full Name', key: 'name', type: 'text', required: true, placeholder: 'John Smith (Dr. will be added automatically)' },
                 { label: 'Specialty', key: 'specialty', type: 'text', required: true, placeholder: 'e.g. General Physician' },
-                { label: 'Experience', key: 'experience', type: 'text', required: true, placeholder: 'e.g. 17 Yrs' },
-                { label: 'Patients Treated', key: 'patients', type: 'text', required: true, placeholder: 'e.g. 2.0K' },
+                { label: 'Experience', key: 'experience', type: 'text', required: true, placeholder: 'Just enter number (e.g. 17)' },
+                { label: 'Patients Treated', key: 'patients', type: 'text', required: true, placeholder: 'Just enter number (e.g. 2.0)' },
                 { label: 'Rating', key: 'rating', type: 'text', required: false, placeholder: 'e.g. 4.8' },
               ].map(f => (
                 <div key={f.key}>
@@ -507,10 +562,10 @@ export default function AdminDashboard() {
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Edit Doctor</h3>
             <form onSubmit={handleEditSubmit} className="space-y-4">
               {[
-                { label: 'Full Name', key: 'name', placeholder: 'Dr. John Smith' },
+                { label: 'Full Name', key: 'name', placeholder: 'John Smith (Dr. will be added automatically)' },
                 { label: 'Specialty', key: 'specialty', placeholder: 'e.g. General Physician' },
-                { label: 'Experience', key: 'experience', placeholder: 'e.g. 17 Yrs' },
-                { label: 'Patients Treated', key: 'patients', placeholder: 'e.g. 2.0K' },
+                { label: 'Experience', key: 'experience', placeholder: 'Just enter number (e.g. 17)' },
+                { label: 'Patients Treated', key: 'patients', placeholder: 'Just enter number (e.g. 2.0)' },
                 { label: 'Rating', key: 'rating', placeholder: 'e.g. 4.8' },
               ].map(f => (
                 <div key={f.key}>
