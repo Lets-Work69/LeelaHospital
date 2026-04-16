@@ -2,7 +2,7 @@
 import { Phone, Menu, X, LogOut } from 'lucide-react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 
-const API_URL = 'http://localhost:5000/api'
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
 const navLinks = [
   { label: 'Home',         href: '#home' },
@@ -45,7 +45,7 @@ export default function Navbar() {
       try {
         const token = localStorage.getItem('token')
         if (!token) return
-        const res = await fetch(`${API_URL}/appointments`, {
+        const res = await fetch(`${API_URL}/api/appointments`, {
           headers: { Authorization: `Bearer ${token}` }
         })
         const data = await res.json()
