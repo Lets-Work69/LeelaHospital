@@ -114,7 +114,7 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-white border-opacity-10 py-6 text-center text-sm text-blue-300">
-        © {new Date().getFullYear()} Leela Hospital. All rights reserved. | Designed with ❤️ for better health.
+        © {new Date().getFullYear()} Leela Hospital. All rights reserved. | Powered by DevForYou.
       </div>
     </footer>
   )

@@ -428,7 +428,7 @@ export default function Facilities() {
             </p>
           </div>
           <div className="flex gap-10 mt-10 pb-16" style={{ animation: 'slideUp 1.1s ease forwards' }}>
-            {[['12+', 'Facilities'], ['24/7', 'Emergency Care'], ['5K+', 'Patients Served'], ['15+', 'Years of Excellence']].map(([val, label]) => (
+            {[ ['24/7', 'Emergency Care']].map(([val, label]) => (
               <div key={label}>
                 <p className="text-3xl font-black text-white">{val}</p>
                 <p className="text-white text-xs opacity-55 mt-0.5 font-medium">{label}</p>

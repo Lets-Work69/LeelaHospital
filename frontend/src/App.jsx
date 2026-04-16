@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react'
+﻿import React, { useState, useEffect, useRef } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Intro from './components/Intro'
 import Navbar from './components/Navbar'
@@ -22,6 +22,111 @@ import PrivacyPolicy from './pages/PrivacyPolicy'
 import Gallery from './pages/Gallery'
 import Facilities from './pages/Facilities'
 
+function OffersPopup() {
+  const offers = ['/offers/offer1.jpeg', '/offers/offer2.jpeg']
+  const [isVisible, setIsVisible] = useState(false)
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [isClosed, setIsClosed] = useState(false)
+  const [isMobileView, setIsMobileView] = useState(false)
+  const adScrollRef = useRef(null)
+
+  useEffect(() => {
+    const updateViewportState = () => {
+      setIsMobileView(window.innerWidth < 768)
+    }
+
+    updateViewportState()
+    window.addEventListener('resize', updateViewportState)
+    return () => window.removeEventListener('resize', updateViewportState)
+  }, [])
+
+  useEffect(() => {
+    const firstOfferTrigger = 180
+    const secondOfferTrigger = 700
+
+    const onScroll = () => {
+      if (isClosed) return
+
+      const scrollY = window.scrollY
+      if (scrollY >= secondOfferTrigger) {
+        setActiveIndex(1)
+        setIsVisible(true)
+      } else if (scrollY >= firstOfferTrigger) {
+        setActiveIndex(0)
+        setIsVisible(true)
+      } else {
+        setIsVisible(false)
+      }
+    }
+
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [isClosed])
+
+  useEffect(() => {
+    if (isClosed || !isVisible) {
+      document.body.style.overflow = ''
+      return
+    }
+
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [isClosed, isVisible])
+
+  useEffect(() => {
+    if (!isVisible || isClosed || isMobileView || !adScrollRef.current) return
+
+    const scrollContainer = adScrollRef.current
+    const imageSections = scrollContainer.querySelectorAll('[data-offer-index]')
+    const targetSection = imageSections[activeIndex]
+
+    if (targetSection) {
+      scrollContainer.scrollTo({
+        top: targetSection.offsetTop,
+        behavior: 'smooth',
+      })
+    }
+  }, [activeIndex, isVisible, isClosed, isMobileView])
+
+  if (isClosed || !isVisible) return null
+
+  return (
+    <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/50 p-4">
+      <div className="relative w-full max-w-[95vw] overflow-hidden rounded-2xl bg-white shadow-2xl md:max-w-4xl">
+        <button
+          type="button"
+          onClick={() => setIsClosed(true)}
+          className="absolute right-3 top-3 z-10 rounded-full bg-black/60 px-2.5 py-1.5 text-lg font-bold leading-none text-white transition hover:bg-black"
+          aria-label="Close offer popup"
+        >
+          ×
+        </button>
+        <div
+          ref={adScrollRef}
+          className={`overflow-y-auto ${isMobileView ? 'max-h-[80vh]' : 'max-h-[88vh] scroll-smooth snap-y snap-mandatory'}`}
+        >
+          {offers.map((offerImage, index) => (
+            <section
+              key={offerImage}
+              data-offer-index={index}
+              className={isMobileView ? '' : 'snap-start min-h-[88vh]'}
+            >
+              <img
+                src={offerImage}
+                alt={`Special offer ${index + 1}`}
+                className={isMobileView ? 'block w-full h-auto' : 'h-full min-h-[88vh] w-full object-contain'}
+              />
+            </section>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function Home() {
   return (
     <>
@@ -34,6 +139,7 @@ function Home() {
       <Testimonials />
       <Appointment />
       <Footer />
+      <OffersPopup />
     </>
   )
 }

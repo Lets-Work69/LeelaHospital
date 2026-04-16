@@ -102,7 +102,7 @@ export default function Specialities() {
 
 <div className="flex gap-8 mt-10"
             style={{ animation: 'slideUp 1.1s ease forwards' }}>
-            {[['15+', 'Specialities'], ['10+', 'Expert Doctors'], ['5K+', 'Patients Treated']].map(([val, label]) => (
+            {[['13+', 'Specialities'], ['10+', 'Expert Doctors'], ['5K+', 'Patients Treated']].map(([val, label]) => (
               <div key={label} className="text-center">
                 <p className="text-2xl font-black text-white">{val}</p>
                 <p className="text-white text-xs opacity-60 mt-0.5">{label}</p>

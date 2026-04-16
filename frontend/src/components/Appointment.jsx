@@ -4,8 +4,9 @@ import { Calendar, User, Phone, Stethoscope, Send, MapPin, Mail, Clock, ChevronL
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
 const departments = [
-  'Cardiology', 'Neurology', 'Orthopaedics', 'Paediatrics',
-  'Oncology', 'Pulmonology', 'Dental Care', 'Ophthalmology'
+  'Cardiology', 'Dermatology', 'Diabetology', 'Endoscopy', 'ENT',
+'Gynecology', 'Nephrology', 'Neurology', 'Oncology', 'Ophthalmology',
+'Orthopaedics', 'Paediatrics', 'Psychiatry', 'Pulmonology','Urology'
 ]
 
 const contactInfo = [
