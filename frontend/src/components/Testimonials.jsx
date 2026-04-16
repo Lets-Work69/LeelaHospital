@@ -1,5 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react'
-import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Quote } from 'lucide-react'
 import reviews from '../assets/reviews'
 import videoTestimonials from '../assets/videoTestimonials.js'
 
@@ -140,13 +140,6 @@ if (items[current]?.type === 'video') return
                 </div>
 
                 <div className="mt-3">
-
-                  <div className="flex gap-1 mb-2 justify-center">
-                    {[...Array(t.rating || 5)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 text-yellow-300 fill-yellow-300" />
-                    ))}
-                  </div>
-
                   <p className="font-bold">{t.name}</p>
                   <p className="text-sm opacity-80">Patient</p>
 

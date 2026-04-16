@@ -6,7 +6,7 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 const departments = [
   'Cardiology', 'Dermatology', 'Diabetology', 'Endoscopy', 'ENT',
 'Gynecology', 'Nephrology', 'Neurology', 'Oncology', 'Ophthalmology',
-'Orthopaedics', 'Paediatrics', 'Psychiatry', 'Pulmonology','Urology'
+'Orthopaedics', 'Paediatrics', 'Psychiatry', 'Physiotherapy','Pulmonology','Urology',
 ]
 
 const contactInfo = [

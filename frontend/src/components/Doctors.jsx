@@ -1,5 +1,5 @@
 ﻿import React, { useRef, useEffect, useState } from 'react'
-import { Star, Clock, Users, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Clock, Users, ChevronLeft, ChevronRight } from 'lucide-react'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
@@ -50,10 +50,6 @@ function DoctorCard({ doc, index }) {
         <div className="absolute inset-0 transition-opacity duration-500"
           style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.1) 60%, transparent 100%)', opacity: hovered ? 1 : 0.7 }} />
 
-        <div className="absolute bottom-3 left-4 flex items-center gap-1">
-          <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
-          <span className="text-white text-sm font-bold">{doc.rating}</span>
-        </div>
       </div>
 
 <div className="p-5 relative overflow-hidden">
