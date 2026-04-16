@@ -44,7 +44,8 @@ function GlobalSSE() {
     const user = JSON.parse(localStorage.getItem('user') || '{}')
     if (user.role !== 'superadmin') return
 
-    const es = new EventSource('http://localhost:5000/api/notifications')
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+    const es = new EventSource(`${API_URL}/api/notifications`)
     es.addEventListener('new-appointment', (e) => {
       try {
         const detail = JSON.parse(e.data)
