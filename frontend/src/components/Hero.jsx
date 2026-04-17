@@ -5,9 +5,6 @@ const particles = [
   { size: 8, top: '15%', left: '10%', delay: '0s', color: 'rgba(23,174,149,0.4)' },
   { size: 12, top: '70%', left: '5%', delay: '1s', color: 'rgba(9,105,177,0.3)' },
   { size: 6, top: '40%', left: '90%', delay: '2s', color: 'rgba(23,174,149,0.5)' },
-  { size: 10, top: '80%', left: '85%', delay: '0.5s', color: 'rgba(9,105,177,0.4)' },
-  { size: 5, top: '25%', left: '75%', delay: '1.5s', color: 'rgba(23,174,149,0.3)' },
-  { size: 14, top: '60%', left: '50%', delay: '2.5s', color: 'rgba(9,105,177,0.2)' },
 ]
 
 export default function Hero() {
@@ -90,6 +87,7 @@ export default function Hero() {
               src="/hospital/WhatsApp Image 2026-03-30 at 12.32.59 PM.jpeg"
               alt="Leela Hospital"
               className="w-full h-auto block"
+              loading="lazy"
               style={{ maxWidth: '420px' }}
             />
           </div>

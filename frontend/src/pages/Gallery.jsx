@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, memo } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Calendar, Award, Users, Camera, Heart, Star, ArrowLeft, X } from "lucide-react";
@@ -50,6 +50,168 @@ function useReveal(threshold = 0.15) {
   }, [])
   return [ref, visible]
 }
+
+const galleryData = {
+  sessions: [
+    {
+      type: "highlight",
+      title: "Infection Control - A Commitment to Safe Healthcare",
+      description: `Dr. Praveen Dambal (MBBS, MS - General Surgery, MCh - Urology) conducted an insightful session for the Visual Journey team on best practices in Infection Control.
+
+This interactive session focused on maintaining hygiene standards, preventing hospital-acquired infections (HAIs), and ensuring patient safety across all departments.
+
+At Visual Journey, we believe continuous learning is essential to delivering safe and high-quality healthcare.`,
+      images: [
+        "/gallery/session1.jpeg",
+        "/gallery/session2.jpeg",
+        "/gallery/session3.jpeg",
+        "/gallery/session4.jpeg",
+      ],
+    },
+    {
+      type: "normal",
+      src: "/session5.jpg",
+      title: "Health Awareness Camp",
+      description: "Community health awareness initiative focused on preventive care and wellness education."
+    },
+    {
+      type: "normal", 
+      src: "/session6.jpg",
+      title: "Medical Training Workshop",
+      description: "Advanced medical training session for healthcare professionals."
+    },
+    {
+      type: "normal",
+      src: "/session7.jpg", 
+      title: "Patient Safety Program",
+      description: "Comprehensive patient safety protocols and best practices training."
+    }
+  ],
+
+  awards: [
+    {
+      src: "/award1.jpg",
+      title: "Excellence in Healthcare Award",
+      description: "Recognized for outstanding patient care and medical excellence."
+    },
+    {
+      src: "/award2.jpg",
+      title: "Best Hospital Award 2024",
+      description: "Awarded for exceptional healthcare services and patient satisfaction."
+    },
+    {
+      src: "/award3.jpg",
+      title: "Quality Care Certification",
+      description: "Certified for maintaining highest standards in medical care."
+    },
+    {
+      src: "/award4.jpg",
+      title: "Community Service Award",
+      description: "Honored for contributions to community health and wellness."
+    }
+  ],
+
+  events: [
+    {
+      src: "/event1.jpg",
+      title: "Hospital Community Event",
+      description: "Annual community health fair and medical camp."
+    },
+    {
+      src: "/event2.jpg",
+      title: "Health Check-up Drive",
+      description: "Free health screening camp for local residents."
+    },
+    {
+      src: "/event3.jpg",
+      title: "Medical Camp 2024",
+      description: "Comprehensive medical examination and consultation drive."
+    },
+    {
+      src: "/event4.jpg",
+      title: "Wellness Workshop",
+      description: "Interactive wellness and lifestyle management session."
+    },
+    {
+      src: "/event5.jpg",
+      title: "Blood Donation Camp",
+      description: "Community blood donation drive organized by Leela Hospital."
+    },
+    {
+      src: "/event6.jpg",
+      title: "Health Awareness Seminar",
+      description: "Educational seminar on preventive healthcare measures."
+    }
+  ],
+};
+
+const Section = ({ title, icon, children }) => {
+  return (
+    <div className="mb-20">
+      <div className="text-center mb-12">
+        <div className="inline-flex items-center gap-2 glass text-primary-600 text-sm font-medium px-4 py-2 rounded-full mb-4">
+          {icon}
+          {title.includes('Awards') ? 'Recognition & Excellence' : 'Community Engagement'}
+        </div>
+        <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-teal-600 mb-4">
+          {title}
+        </h2>
+        <p className="text-gray-600 max-w-2xl mx-auto">
+          {title.includes('Awards') 
+            ? 'Recognitions and accolades that validate our commitment to healthcare excellence'
+            : 'Community outreach programs and health initiatives making a difference'
+          }
+        </p>
+      </div>
+
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {children}
+      </div>
+    </div>
+  );
+};
+
+/* IMAGE CARD */
+const ImageCard = memo(function ImageCard({ item, setSelectedImage, index, visible }) {
+  return (
+    <div className="rounded-2xl overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-3 group cursor-pointer" style={{
+      background: 'rgba(255,255,255,0.8)',
+      backdropFilter: 'blur(12px)',
+      border: '1px solid rgba(241,245,249,1)',
+      transform: visible ? 'translateY(0) scale(1)' : 'translateY(40px) scale(0.95)',
+      transition: `all 0.6s cubic-bezier(0.4,0,0.2,1) ${index * 0.1}s`,
+      opacity: visible ? 1 : 0,
+      boxShadow: '0 2px 16px rgba(0,0,0,0.06)'
+    }} onClick={() => setSelectedImage(item.src)}>
+      <div className="relative h-56 overflow-hidden">
+        <img
+          src={item.src}
+          className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:-translate-y-2"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" />
+        <div className="absolute top-4 right-4 glass px-3 py-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
+          <span className="text-white text-xs font-medium">View</span>
+        </div>
+        <div className="absolute bottom-4 left-4 glass px-3 py-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 transform -translate-y-2 group-hover:translate-y-0">
+          <Camera className="w-3 h-3 text-white mr-1" />
+          <span className="text-white text-xs font-medium">Expand</span>
+        </div>
+      </div>
+      <div className="p-6">
+        <h4 className="text-lg font-semibold text-gray-800 mb-3 group-hover:text-primary-600 transition-colors duration-300">{item.title}</h4>
+        {item.description && (
+          <p className="text-gray-600 text-sm leading-relaxed mb-4">{item.description}</p>
+        )}
+        <div className="flex items-center justify-between">
+          <span className="text-primary-600 text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">Click to view</span>
+          <div className="w-6 h-6 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-0 group-hover:scale-100" style={{ background: 'linear-gradient(135deg, #0969b1, #17ae95)' }}>
+            <Camera className="w-3 h-3 text-white" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+});
 
 const Gallery = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -118,12 +280,24 @@ const Gallery = () => {
             </div>
           </div>
 
-          <div className="absolute bottom-0 left-0 right-0">
-            <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-              <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="white"/>
-            </svg>
-          </div>
-        </div>
+          {/* FEATURED SESSION */}
+          <div className="glass rounded-3xl overflow-hidden shadow-xl mb-12 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2" style={{
+                background: 'rgba(255,255,255,0.8)',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(9,105,177,0.1)'
+              }}>
+            <div className="grid md:grid-cols-2 gap-0">
+              {/* LEFT: BIG IMAGE */}
+              <div className="relative overflow-hidden group">
+                <img
+                  src="/gallery/session1.jpeg"
+                  className="w-full h-full object-cover min-h-[400px] transition-transform duration-700 group-hover:scale-110"
+                  loading="lazy"
+                />
+                <div className="absolute top-4 left-4 glass px-3 py-1 rounded-full">
+                  <span className="text-primary-600 text-xs font-semibold">Featured Session</span>
+                </div>
+              </div>
 
         {/* Educational Sessions Section with Real Images */}
 
@@ -198,6 +372,68 @@ const Gallery = () => {
               })}
             </div>
           </div>
+
+          {/* IMAGE GALLERY */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              "/gallery/session1.jpeg",
+              "/gallery/session2.jpeg", 
+              "/gallery/session3.jpeg",
+              "/gallery/session4.jpeg",
+            ].map((img, i) => (
+              <div key={i} className="relative group cursor-pointer overflow-hidden rounded-xl" 
+                onClick={() => setSelectedImage(img)}
+                style={{
+                  transform: sessionsVisible ? 'translateY(0) scale(1)' : 'translateY(30px) scale(0.95)',
+                  transition: `all 0.6s cubic-bezier(0.4,0,0.2,1) ${i * 0.1}s`,
+                  opacity: sessionsVisible ? 1 : 0,
+                  boxShadow: '0 2px 16px rgba(0,0,0,0.06)',
+                  background: 'rgba(255,255,255,0.8)',
+                  backdropFilter: 'blur(12px)',
+                  border: '1px solid rgba(241,245,249,1)'
+                }}>
+                <img
+                  src={img}
+                  className="w-full h-40 object-cover transition-all duration-500 group-hover:scale-110 group-hover:-translate-y-2"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" />
+                <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
+                  <Camera className="w-4 h-4 text-gray-700" />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* ADDITIONAL SESSIONS */}
+          <div className="grid md:grid-cols-3 gap-6 mt-8">
+            {galleryData.sessions.slice(1).map((session, index) => (
+              <div key={index} className="rounded-2xl overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-3 group cursor-pointer" style={{
+                background: 'rgba(255,255,255,0.8)',
+                backdropFilter: 'blur(12px)',
+                border: '1px solid rgba(241,245,249,1)',
+                transform: sessionsVisible ? 'translateY(0) scale(1)' : 'translateY(40px) scale(0.95)',
+                transition: `all 0.6s cubic-bezier(0.4,0,0.2,1) ${index * 0.15}s`,
+                opacity: sessionsVisible ? 1 : 0,
+                boxShadow: '0 2px 16px rgba(0,0,0,0.06)'
+              }}>
+                <div className="h-48 overflow-hidden relative">
+                  <img
+                    src={session.src}
+                    className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" />
+                </div>
+                <div className="p-6">
+                  <h4 className="text-lg font-semibold text-gray-800 mb-2 group-hover:text-primary-600 transition-colors duration-300">{session.title}</h4>
+                  <p className="text-gray-600 text-sm leading-relaxed">{session.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
         </div>
 
         {/* Educational Sessions Section with Real Images */}

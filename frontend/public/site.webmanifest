@@ -1,0 +1,21 @@
+{
+  "name": "Leela Hospital",
+  "short_name": "Leela Hospital",
+  "description": "Advanced Multispeciality Healthcare - For a Better Life",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0969b1",
+  "icons": [
+    {
+      "src": "/Leela Hospital Final Logo👍-1.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/Leela Hospital Final Logo👍-1.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

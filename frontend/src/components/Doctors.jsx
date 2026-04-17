@@ -1,11 +1,9 @@
-﻿import React, { useRef, useEffect, useState } from 'react'
-import { Clock, Users, ChevronLeft, ChevronRight } from 'lucide-react'
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+﻿import React, { useRef, useEffect, useState, memo } from 'react'
+import { Star, Clock, Users, ChevronLeft, ChevronRight } from 'lucide-react'
 
 const ACCENTS = ['#0969b1', '#17ae95']
 
-function DoctorCard({ doc, index }) {
+const DoctorCard = memo(function DoctorCard({ doc, index }) {
   const ref = useRef(null)
   const [visible, setVisible] = useState(false)
   const [hovered, setHovered] = useState(false)
@@ -39,6 +37,7 @@ function DoctorCard({ doc, index }) {
 
         {doc.photo ? (
           <img src={doc.photo} alt={doc.name} className="w-full h-full object-cover object-top"
+            loading="lazy"
             style={{ transform: hovered ? 'scale(1.06)' : 'scale(1)', transition: 'transform 0.6s cubic-bezier(0.4,0,0.2,1)' }} />
         ) : (
           <div className="w-full h-full flex items-center justify-center"
@@ -72,7 +71,7 @@ function DoctorCard({ doc, index }) {
       </div>
     </div>
   )
-}
+})
 
 export default function Doctors() {
   const titleRef = useRef(null)
@@ -82,11 +81,17 @@ export default function Doctors() {
   const [doctors, setDoctors] = useState([])
 
   useEffect(() => {
-    fetch(`${API_URL}/api/doctors`)
+    const cached = sessionStorage.getItem('doctors')
+    if (cached) {
+      setDoctors(JSON.parse(cached))
+      return
+    }
+    
+    fetch('http://localhost:5000/api/doctors')
       .then(r => r.json())
       .then(data => {
         if (data.success) {
-          setDoctors(data.doctors.map((d, i) => ({
+          const mapped = data.doctors.map((d, i) => ({
             name: d.name,
             specialty: d.specialty,
             exp: d.experience,
@@ -95,7 +100,9 @@ export default function Doctors() {
             photo: d.profileImage || '',
             initials: d.name.split(' ')[1]?.charAt(0) || 'D',
             accent: ACCENTS[i % 2],
-          })))
+          }))
+          setDoctors(mapped)
+          sessionStorage.setItem('doctors', JSON.stringify(mapped))
         }
       })
       .catch(() => {})
