@@ -117,7 +117,7 @@ const founders = [
     name: 'Kumar Magari',
     role: 'Director – Operations, Marketing & Patient Support',
     color: '#17ae95',
-    photo: '/leadership_team/p4.jpeg',
+    photo: null,
     bio: 'Kumar Magari contributes across marketing, operations, and patient care with exceptional dedication. He manages outreach, hospital maintenance, and OT coordination while ensuring patients feel cared for and comfortable. Known for his kindness and availability, he supports patients 24/7 with compassion and responsibility.',
   },
   {
