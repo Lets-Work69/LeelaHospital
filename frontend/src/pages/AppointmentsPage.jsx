@@ -61,7 +61,6 @@ function StatusDropdown({ value, onChange, direction = 'down' }) {
   }, [open])
 
   const handleStatusClick = (newStatus) => {
-    console.log('Status clicked:', newStatus)
     setOpen(false)
     onChange(newStatus)
   }
@@ -86,7 +85,6 @@ function StatusDropdown({ value, onChange, direction = 'down' }) {
             onMouseDown={(e) => { 
               e.preventDefault()
               e.stopPropagation()
-              console.log('Status option clicked:', s.value)
               handleStatusClick(s.value)
             }}
             className="flex items-center justify-between text-sm text-gray-700 hover:bg-gray-50 transition-colors rounded-xl px-4 py-2.5 w-full cursor-pointer"
@@ -111,7 +109,6 @@ function StatusDropdown({ value, onChange, direction = 'down' }) {
           type="button"
           onClick={(e) => { 
             e.stopPropagation()
-            console.log('Dropdown button clicked, current open:', open)
             setOpen(o => !o) 
           }}
           className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold ${current.color}`}
@@ -151,13 +148,11 @@ export default function AppointmentsPage() {
     if (user.role !== 'superadmin') { navigate('/login'); return }
     fetchAppointments()
     
-    // Poll for new appointments every 5 seconds
     const pollInterval = setInterval(() => {
-      fetchAppointments(true) // Pass true to indicate this is a polling request
+      fetchAppointments(true)
     }, 5000)
     
     return () => clearInterval(pollInterval)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -166,7 +161,6 @@ export default function AppointmentsPage() {
     const onNewBooking = () => fetchAppointments()
     window.addEventListener('leela:new-appointment', onNewBooking)
     return () => window.removeEventListener('leela:new-appointment', onNewBooking)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -200,7 +194,9 @@ export default function AppointmentsPage() {
         setAppointments(data.appointments)
       }
     } catch (err) {
-      console.error(err)
+      if (import.meta.env.DEV) {
+        console.error('Failed to fetch appointments:', err)
+      }
     } finally {
       setLoading(false)
       window.dispatchEvent(new CustomEvent('leela:pending-appointments-changed'))
@@ -208,7 +204,6 @@ export default function AppointmentsPage() {
   }
 
   const updateStatus = async (id, status) => {
-    console.log('Updating status for:', id, 'to:', status)
     setUpdatingStatus(id) // Show loading state
     
     try {
@@ -218,7 +213,6 @@ export default function AppointmentsPage() {
         body: JSON.stringify({ status })
       })
       const data = await res.json()
-      console.log('Update response:', data)
       
       if (data.success) {
         // Force immediate state update with the returned appointment
@@ -229,15 +223,17 @@ export default function AppointmentsPage() {
         if (viewAppt && viewAppt._id === id) {
           setViewAppt(data.appointment)
         }
-
-        console.log('Status updated successfully to:', data.appointment.status)
       } else {
-        console.error('Failed to update status:', data.message)
+        if (import.meta.env.DEV) {
+          console.error('Failed to update status:', data.message)
+        }
         alert('Failed to update status: ' + (data.message || 'Unknown error'))
       }
     } catch (err) { 
-      console.error('Error updating status:', err)
-      alert('Error updating status. Please check console.')
+      if (import.meta.env.DEV) {
+        console.error('Error updating status:', err)
+      }
+      alert('Error updating status. Please try again.')
     } finally {
       setUpdatingStatus(null) // Clear loading state
     }

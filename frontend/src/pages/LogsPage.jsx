@@ -39,7 +39,9 @@ export default function LogsPage() {
       const data = await res.json()
       if (data.success) setLogs(data.logs)
     } catch (err) {
-      console.error(err)
+      if (import.meta.env.DEV) {
+        console.error('Failed to fetch logs:', err)
+      }
     } finally {
       setLoading(false)
     }
