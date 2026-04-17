@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Calendar, Plus, Trash2, Loader2, CheckCircle, Stethoscope, Clock, Users, MoreVertical, Edit2, EyeOff, Eye, AlertTriangle, LayoutGrid, List, GripVertical } from 'lucide-react';
 import Navbar from '../components/Navbar';
-import { API_URL } from '../config/api';
+const url = import.meta.env.VITE_API_URL;
 
 function ConfirmDialog({ message, onConfirm, onCancel, confirmLabel = 'Confirm', danger = false }) {
   return (
@@ -92,7 +92,7 @@ export default function AdminDashboard() {
 
   const fetchDoctors = async () => {
     try {
-      const res = await fetch(`${API_URL}/api/doctors/all`, { headers: getAuthHeaders() });
+      const res = await fetch(`${url}/api/doctors/all`, { headers: getAuthHeaders() });
       const data = await res.json();
       if (data.success) setDoctors(data.doctors);
     } catch (err) {
@@ -104,7 +104,7 @@ export default function AdminDashboard() {
 
   const fetchAppointments = async () => {
     try {
-      const res = await fetch(`${API_URL}/api/appointments`, { headers: getAuthHeaders() });
+      const res = await fetch(`${url}/api/appointments`, { headers: getAuthHeaders() });
       const data = await res.json();
       if (data.success) setAppointments(data.appointments);
     } catch (err) {
@@ -143,7 +143,7 @@ export default function AdminDashboard() {
     };
     
     try {
-      const res = await fetch(`${API_URL}/api/doctors`, {
+      const res = await fetch(`${url}/api/doctors`, {
         method: 'POST',
         headers: getAuthHeaders(),
         body: JSON.stringify(formattedData)
@@ -170,7 +170,7 @@ export default function AdminDashboard() {
       async () => {
         setConfirmDialog(null);
         try {
-          const res = await fetch(`${API_URL}/api/doctors/${id}/permanent`, { method: 'DELETE', headers: getAuthHeaders() });
+          const res = await fetch(`${url}/api/doctors/${id}/permanent`, { method: 'DELETE', headers: getAuthHeaders() });
           const data = await res.json();
           if (data.success) fetchDoctors();
         } catch { alert('Error deleting doctor'); }
@@ -181,7 +181,7 @@ export default function AdminDashboard() {
 
   const handleToggleActive = async (doctor) => {
     try {
-      const res = await fetch(`${API_URL}/api/doctors/${doctor._id}`, {
+      const res = await fetch(`${url}/api/doctors/${doctor._id}`, {
         method: 'PUT',
         headers: getAuthHeaders(),
         body: JSON.stringify({ isActive: !doctor.isActive })
@@ -232,7 +232,7 @@ export default function AdminDashboard() {
     };
     
     try {
-      const res = await fetch(`${API_URL}/api/doctors/${editingDoctor._id}`, {
+      const res = await fetch(`${url}/api/doctors/${editingDoctor._id}`, {
         method: 'PUT',
         headers: getAuthHeaders(),
         body: JSON.stringify(formattedData)
@@ -267,7 +267,7 @@ export default function AdminDashboard() {
     dragOver.current = null;
     
     try {
-      await fetch(`${API_URL}/api/doctors/reorder`, {
+      await fetch(`${url}/api/doctors/reorder`, {
         method: 'POST',
         headers: getAuthHeaders(),
         body: JSON.stringify({ orderedIds: reordered.map(d => d._id) })

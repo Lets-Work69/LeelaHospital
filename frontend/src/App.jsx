@@ -11,7 +11,7 @@ import Testimonials from './components/Testimonials'
 import Appointment from './components/Appointment'
 import Footer from './components/Footer'
 import Facilities from './pages/Facilities'
-import { API_URL } from './config/api'
+const url = import.meta.env.VITE_API_URL
 
 // Lazy load pages
 const ServiceDetail = lazy(() => import('./pages/ServiceDetail'))
@@ -133,7 +133,7 @@ function GlobalSSE() {
     const user = JSON.parse(localStorage.getItem('user') || '{}')
     if (user.role !== 'superadmin') return
 
-    const es = new EventSource(`${API_URL}/api/notifications`)
+    const es = new EventSource(`${url}/api/notifications`)
     es.addEventListener('new-appointment', (e) => {
       try {
         const detail = JSON.parse(e.data)

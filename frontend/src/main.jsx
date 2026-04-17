@@ -2,11 +2,12 @@
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
-import { API_URL } from './config/api'
+
+const url = import.meta.env.VITE_API_URL
 
 
 // Verify environment configuration
-console.log('API configured for:', API_URL || '(relative /api)')
+console.log('API configured for:', url)
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

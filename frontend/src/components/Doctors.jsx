@@ -1,6 +1,7 @@
 ﻿import React, { useRef, useEffect, useState, memo } from 'react'
 import { Star, Clock, Users, ChevronLeft, ChevronRight } from 'lucide-react'
-import { API_URL } from '../config/api'
+
+const url = import.meta.env.VITE_API_URL
 
 const ACCENTS = ['#0969b1', '#17ae95']
 
@@ -88,7 +89,7 @@ export default function Doctors() {
       return
     }
     
-    fetch(`${API_URL}/api/doctors`)
+    fetch(`${url}/api/doctors`)
       .then(r => r.json())
       .then(data => {
         if (data.success) {
