@@ -1,6 +1,8 @@
 ﻿import React, { useRef, useEffect, useState, memo } from 'react'
 import { Star, Clock, Users, ChevronLeft, ChevronRight } from 'lucide-react'
 
+const url = import.meta.env.VITE_API_URL
+
 const ACCENTS = ['#0969b1', '#17ae95']
 
 const DoctorCard = memo(function DoctorCard({ doc, index }) {
@@ -87,7 +89,7 @@ export default function Doctors() {
       return
     }
     
-    fetch('http://localhost:5000/api/doctors')
+    fetch(`${url}/api/doctors`)
       .then(r => r.json())
       .then(data => {
         if (data.success) {

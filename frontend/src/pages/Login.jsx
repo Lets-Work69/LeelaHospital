@@ -1,8 +1,7 @@
 ﻿import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Loader2, Eye, EyeOff } from 'lucide-react';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const url = import.meta.env.VITE_API_URL;
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -17,7 +16,7 @@ export default function Login() {
     setError('');
 
     try {
-      const response = await fetch(`${API_URL}/api/auth/login`, {
+      const response = await fetch(`${url}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)

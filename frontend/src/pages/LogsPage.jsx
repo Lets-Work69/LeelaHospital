@@ -2,8 +2,7 @@
 import { useNavigate } from 'react-router-dom'
 import { Loader2, FileText, Stethoscope, Calendar, Check } from 'lucide-react'
 import Navbar from '../components/Navbar'
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+const url = import.meta.env.VITE_API_URL
 
 const ACTION_STYLES = {
   DOCTOR_ADDED:              { color: 'bg-green-100 text-green-700',  label: 'Doctor Added' },
@@ -36,7 +35,7 @@ export default function LogsPage() {
 
   const fetchLogs = async () => {
     try {
-      const res = await fetch(`${API_URL}/api/logs?limit=200`, { headers: getHeaders() })
+      const res = await fetch(`${url}/api/logs?limit=200`, { headers: getHeaders() })
       const data = await res.json()
       if (data.success) setLogs(data.logs)
     } catch (err) {

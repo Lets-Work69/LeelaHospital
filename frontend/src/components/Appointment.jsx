@@ -1,7 +1,6 @@
 ﻿import { useState, useEffect, useRef } from 'react'
 import { Calendar, User, Phone, Stethoscope, Send, MapPin, Mail, Clock, ChevronLeft, ChevronRight } from 'lucide-react'
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+const url = import.meta.env.VITE_API_URL
 
 const departments = [
   'Cardiology', 'Dermatology', 'Diabetology', 'Endoscopy', 'ENT',
@@ -234,7 +233,7 @@ export default function Appointment() {
       return
     }
     try {
-      const res = await fetch(`${API_URL}/api/appointments`, {
+      const res = await fetch(`${url}/api/appointments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

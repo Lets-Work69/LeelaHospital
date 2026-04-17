@@ -2,8 +2,7 @@
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { Clock, Users } from 'lucide-react'
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+const url = import.meta.env.VITE_API_URL
 
 const hardcodedDoctors = []
 
@@ -101,7 +100,7 @@ export default function DoctorsPage() {
 
   useEffect(() => {
     const t = setTimeout(() => setHeroVisible(true), 100)
-    fetch(`${API_URL}/api/doctors`)
+    fetch(`${url}/api/doctors`)
       .then(r => r.json())
       .then(data => {
         if (data.success && data.doctors.length) {
