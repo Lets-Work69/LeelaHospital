@@ -3,8 +3,7 @@ import { createPortal } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 import { Loader2, Calendar, Eye, Phone, Building2, Clock, MessageSquare, Activity, Check } from 'lucide-react'
 import Navbar from '../components/Navbar'
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+import { API_URL } from '../config/api'
 
 /** Open bookings: still "new" until status is completed or cancelled. */
 function isNewAppointment(a) {

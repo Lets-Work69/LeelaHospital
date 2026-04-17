@@ -1,8 +1,7 @@
 ﻿import React, { useState, useEffect } from 'react'
 import { Phone, Menu, X, LogOut } from 'lucide-react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+import { API_URL } from '../config/api'
 
 const navLinks = [
   { label: 'Home',         href: '#home' },

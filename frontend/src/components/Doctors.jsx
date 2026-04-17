@@ -1,5 +1,6 @@
 ﻿import React, { useRef, useEffect, useState, memo } from 'react'
 import { Star, Clock, Users, ChevronLeft, ChevronRight } from 'lucide-react'
+import { API_URL } from '../config/api'
 
 const ACCENTS = ['#0969b1', '#17ae95']
 
@@ -87,7 +88,7 @@ export default function Doctors() {
       return
     }
     
-    fetch('http://localhost:5000/api/doctors')
+    fetch(`${API_URL}/api/doctors`)
       .then(r => r.json())
       .then(data => {
         if (data.success) {
