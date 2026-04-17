@@ -136,13 +136,6 @@ export default function Testimonials() {
                 </div>
 
                 <div className="mt-3">
-
-                  <div className="flex gap-1 mb-2 justify-center">
-                    {[...Array(t.rating || 5)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 text-yellow-300 fill-yellow-300" />
-                    ))}
-                  </div>
-
                   <p className="font-bold">{t.name}</p>
                   <p className="text-sm opacity-80">Patient</p>
 
