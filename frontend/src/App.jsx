@@ -4,17 +4,11 @@ import { Gift, X } from 'lucide-react'
 import Intro from './components/Intro'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
-import Stats from './components/Stats'
-import Services from './components/Services'
-import WhyUs from './components/WhyUs'
-import Doctors from './components/Doctors'
-import Testimonials from './components/Testimonials'
-import Appointment from './components/Appointment'
-import Footer from './components/Footer'
-import Facilities from './pages/Facilities'
 const url = import.meta.env.VITE_API_URL
 
-// Lazy load pages
+// Lazy load pages & below-the-fold home (separate JS chunks on demand)
+const HomeBelowFold = lazy(() => import('./components/HomeBelowFold'))
+const Facilities = lazy(() => import('./pages/Facilities'))
 const ServiceDetail = lazy(() => import('./pages/ServiceDetail'))
 const Specialities = lazy(() => import('./pages/Specialities'))
 const About = lazy(() => import('./pages/About'))
@@ -117,6 +111,8 @@ function OffersPopup() {
                         src={imageSrc}
                         alt={`Hospital special offer ${index + 1}`}
                         className="block w-full h-auto rounded-xl object-contain md:max-h-full md:w-auto md:max-w-full"
+                        loading="lazy"
+                        decoding="async"
                         onError={() =>
                           setMissingImages((prev) => ({
                             ...prev,
@@ -147,18 +143,22 @@ function OffersPopup() {
   )
 }
 
+function RouteLoadingFallback() {
+  return (
+    <div className="min-h-[40vh] flex items-center justify-center bg-white" aria-hidden>
+      <div className="animate-spin rounded-full h-10 w-10 border-2 border-primary-600 border-t-transparent" />
+    </div>
+  )
+}
+
 function Home() {
   return (
     <>
       <Navbar />
       <Hero />
-      <Stats />
-      <Services />
-      <WhyUs />
-      <Doctors />
-      <Testimonials />
-      <Appointment />
-      <Footer />
+      <Suspense fallback={<RouteLoadingFallback />}>
+        <HomeBelowFold />
+      </Suspense>
       <OffersPopup />
     </>
   )
