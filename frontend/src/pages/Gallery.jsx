@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, memo } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Calendar, Award, Users, Camera, Heart, Star, ArrowLeft } from "lucide-react";
@@ -136,7 +136,7 @@ const Section = ({ title, icon, children }) => {
 };
 
 /* IMAGE CARD */
-const ImageCard = ({ item, setSelectedImage, index, visible }) => {
+const ImageCard = memo(function ImageCard({ item, setSelectedImage, index, visible }) {
   return (
     <div className="rounded-2xl overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-3 group cursor-pointer" style={{
       background: 'rgba(255,255,255,0.8)',
@@ -175,7 +175,7 @@ const ImageCard = ({ item, setSelectedImage, index, visible }) => {
       </div>
     </div>
   );
-};
+});
 
 const Gallery = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -225,12 +225,12 @@ const Gallery = () => {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full blur-3xl opacity-10"
           style={{ background: 'radial-gradient(ellipse, #5eead4, transparent)' }} />
 
-        {[...Array(8)].map((_, i) => (
+        {[...Array(4)].map((_, i) => (
           <div key={i} className="absolute rounded-full opacity-20 animate-float pointer-events-none"
             style={{
               width: `${6 + (i % 3) * 4}px`, height: `${6 + (i % 3) * 4}px`,
               background: i % 2 === 0 ? '#5eead4' : '#7dd3fc',
-              left: `${10 + i * 11}%`, top: `${20 + (i % 4) * 18}%`,
+              left: `${10 + i * 20}%`, top: `${20 + (i % 4) * 18}%`,
               animationDelay: `${i * 0.6}s`, animationDuration: `${4 + i * 0.5}s`
             }} />
         ))}
@@ -327,6 +327,7 @@ const Gallery = () => {
                 <img
                   src="/gallery/session1.jpeg"
                   className="w-full h-full object-cover min-h-[400px] transition-transform duration-700 group-hover:scale-110"
+                  loading="lazy"
                 />
                 <div className="absolute top-4 left-4 glass px-3 py-1 rounded-full">
                   <span className="text-primary-600 text-xs font-semibold">Featured Session</span>
@@ -389,6 +390,7 @@ const Gallery = () => {
                 <img
                   src={img}
                   className="w-full h-40 object-cover transition-all duration-500 group-hover:scale-110 group-hover:-translate-y-2"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" />
                 <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
@@ -414,6 +416,7 @@ const Gallery = () => {
                   <img
                     src={session.src}
                     className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
+                    loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" />
                 </div>

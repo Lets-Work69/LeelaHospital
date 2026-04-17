@@ -1,4 +1,4 @@
-﻿import React, { useRef, useEffect, useState } from 'react'
+﻿import React, { useRef, useEffect, useState, memo, useCallback } from 'react'
 import { ArrowRight, Brain } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import ServiceModal from './ServiceModal'
@@ -39,7 +39,7 @@ const services = [
   { title: 'Psychiatry', icon: <img src="/services%20icons/mental-health.png" className="w-9 h-9" style={{ filter: 'brightness(0) invert(1)' }} /> },
 ]
 
-function ServiceCard({ service, index, onClick }) {
+const ServiceCard = memo(function ServiceCard({ service, index, onClick }) {
   return (
     <div
       onClick={onClick}
@@ -69,7 +69,7 @@ function ServiceCard({ service, index, onClick }) {
       </p>
     </div>
   )
-}
+})
 
 export default function Services() {
   const [animDir, setAnimDir] = useState(null)
@@ -82,11 +82,11 @@ export default function Services() {
 
   const touchStart = useRef(null)
 
-  const handleTouchStart = (e) => {
+  const handleTouchStart = useCallback((e) => {
     touchStart.current = e.touches[0].clientX
-  }
+  }, [])
 
-  const handleTouchEnd = (e) => {
+  const handleTouchEnd = useCallback((e) => {
     if (!touchStart.current) return
 
     const diff = touchStart.current - e.changedTouches[0].clientX
@@ -118,7 +118,7 @@ export default function Services() {
     }
 
     touchStart.current = null
-  }
+  }, [page, totalPages])
 
   return (
     <section id="services" className="py-24 relative overflow-hidden">

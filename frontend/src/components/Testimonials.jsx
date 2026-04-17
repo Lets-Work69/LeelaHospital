@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react'
+﻿import React, { useState, useEffect, useMemo, useCallback } from 'react'
 import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react'
 import reviews from '../assets/reviews'
 import videoTestimonials from '../assets/videoTestimonials.js'
@@ -15,9 +15,8 @@ const shuffle = (arr) => [...arr].sort(() => 0.5 - Math.random())
 
 export default function Testimonials() {
   const [current, setCurrent] = useState(0)
-  const [items, setItems] = useState([])
-
-  useEffect(() => {
+  
+  const items = useMemo(() => {
     const textReviews = shuffle(getValidReviews(reviews)).slice(0, 3)
     const videos = shuffle(videoTestimonials).slice(0, 2)
 
@@ -33,26 +32,23 @@ export default function Testimonials() {
       }
     }
 
-    setItems(combined)
+    return combined
   }, [])
 
-  const go = (dir) => {
+  const go = useCallback((dir) => {
     setCurrent(c =>
       dir === 'next'
         ? (c + 1) % items.length
         : (c - 1 + items.length) % items.length
     )
-  }
+  }, [items.length])
 
   useEffect(() => {
-    if (!items.length) return
-
-if (items[current]?.type === 'video') return
+    if (!items.length || items[current]?.type === 'video') return
 
     const timer = setInterval(() => go('next'), 5000)
     return () => clearInterval(timer)
-
-  }, [items, current])
+  }, [items.length, current, go])
 
   const t = items[current] || {}
 

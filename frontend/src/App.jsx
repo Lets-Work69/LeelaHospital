@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react'
+﻿import React, { useState, useEffect, lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
 import Intro from './components/Intro'
 import Navbar from './components/Navbar'
@@ -10,17 +10,19 @@ import Doctors from './components/Doctors'
 import Testimonials from './components/Testimonials'
 import Appointment from './components/Appointment'
 import Footer from './components/Footer'
-import ServiceDetail from './pages/ServiceDetail'
-import Specialities from './pages/Specialities'
-import About from './pages/About'
-import DoctorsPage from './pages/DoctorsPage'
-import Login from './pages/Login'
-import AdminDashboard from './pages/AdminDashboard'
-import AppointmentsPage from './pages/AppointmentsPage'
-import LogsPage from './pages/LogsPage'
-import PrivacyPolicy from './pages/PrivacyPolicy'
 import { Calendar } from 'lucide-react'
-import Gallery from './pages/Gallery'
+
+// Lazy load pages
+const ServiceDetail = lazy(() => import('./pages/ServiceDetail'))
+const Specialities = lazy(() => import('./pages/Specialities'))
+const About = lazy(() => import('./pages/About'))
+const DoctorsPage = lazy(() => import('./pages/DoctorsPage'))
+const Login = lazy(() => import('./pages/Login'))
+const AdminDashboard = lazy(() => import('./pages/AdminDashboard'))
+const AppointmentsPage = lazy(() => import('./pages/AppointmentsPage'))
+const LogsPage = lazy(() => import('./pages/LogsPage'))
+const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'))
+const Gallery = lazy(() => import('./pages/Gallery'))
 
 function Home() {
   return (
@@ -138,19 +140,25 @@ function AppInner({ introDone, setIntroDone }) {
         />
       )}
       <div className="min-h-screen bg-white">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/specialities" element={<Specialities />} />
-          <Route path="/specialities/:slug" element={<ServiceDetail />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/doctors" element={<DoctorsPage />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/doctors-admin" element={<AdminDashboard />} />
-          <Route path="/appointments" element={<AppointmentsPage />} />
-          <Route path="/logs" element={<LogsPage />} />
-          <Route path="/gallery" element={<Gallery />} />
-        </Routes>
+        <Suspense fallback={
+          <div className="min-h-screen flex items-center justify-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+          </div>
+        }>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/specialities" element={<Specialities />} />
+            <Route path="/specialities/:slug" element={<ServiceDetail />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/doctors" element={<DoctorsPage />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/doctors-admin" element={<AdminDashboard />} />
+            <Route path="/appointments" element={<AppointmentsPage />} />
+            <Route path="/logs" element={<LogsPage />} />
+            <Route path="/gallery" element={<Gallery />} />
+          </Routes>
+        </Suspense>
       </div>
     </>
   )
