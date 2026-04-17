@@ -101,11 +101,11 @@ export default function Navbar() {
   const handleAnchorClick = (e, href) => {
     e.preventDefault()
     setMenuOpen(false)
+    const hash = href.startsWith('#') ? href.slice(1) : href
     if (location.pathname !== '/') {
-      navigate('/' + href)
+      navigate({ pathname: '/', hash })
     } else {
-      const el = document.querySelector(href)
-      if (el) el.scrollIntoView({ behavior: 'smooth' })
+      navigate({ pathname: '/', hash }, { replace: true })
     }
   }
 
@@ -149,7 +149,7 @@ export default function Navbar() {
       }}>
 
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
-        <a href="#home" className="flex items-center">
+        <a href="#home" className="flex items-center" onClick={(e) => handleAnchorClick(e, '#home')}>
           <img src="/Leela Hospital Final Logo👍-1.png" alt="Leela Hospital" 
             className="w-auto"
             style={{ height: '70px' }}
@@ -210,7 +210,7 @@ export default function Navbar() {
                 className="flex items-center gap-2 text-sm font-semibold transition-colors text-primary-600">
                 <Phone className="w-4 h-4" /> +91 9008371817
               </a>
-              <a href="#appointment" className="btn-primary text-sm py-2.5 px-5">Book Appointment</a>
+              <a href="#appointment" className="btn-primary text-sm py-2.5 px-5" onClick={(e) => handleAnchorClick(e, '#appointment')}>Book Appointment</a>
             </>
           )}
         </div>
@@ -268,7 +268,7 @@ export default function Navbar() {
                   </a>
                 )
               ))}
-              <a href="#appointment" className="btn-primary block text-center mt-4">Book Appointment</a>
+              <a href="#appointment" className="btn-primary block text-center mt-4" onClick={(e) => handleAnchorClick(e, '#appointment')}>Book Appointment</a>
             </>
           )}
         </div>}
