@@ -2,8 +2,7 @@
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { Clock, Users } from 'lucide-react'
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+import { API_URL } from '../config/api'
 
 const hardcodedDoctors = []
 

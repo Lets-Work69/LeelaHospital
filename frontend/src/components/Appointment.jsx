@@ -1,7 +1,6 @@
 ﻿import { useState, useEffect, useRef } from 'react'
 import { Calendar, User, Phone, Stethoscope, Send, MapPin, Mail, Clock, ChevronLeft, ChevronRight } from 'lucide-react'
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+import { API_URL } from '../config/api'
 
 const departments = [
   'Cardiology', 'Dermatology', 'Diabetology', 'Endoscopy', 'ENT',

@@ -2,8 +2,7 @@
 import { useNavigate } from 'react-router-dom'
 import { Loader2, FileText, Stethoscope, Calendar, Check } from 'lucide-react'
 import Navbar from '../components/Navbar'
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+import { API_URL } from '../config/api'
 
 const ACTION_STYLES = {
   DOCTOR_ADDED:              { color: 'bg-green-100 text-green-700',  label: 'Doctor Added' },
