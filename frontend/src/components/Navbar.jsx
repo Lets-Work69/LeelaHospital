@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Phone, Menu, X, LogOut } from 'lucide-react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 const url = import.meta.env.VITE_API_URL
@@ -101,11 +101,11 @@ export default function Navbar() {
   const handleAnchorClick = (e, href) => {
     e.preventDefault()
     setMenuOpen(false)
-    const hash = href.startsWith('#') ? href.slice(1) : href
     if (location.pathname !== '/') {
-      navigate({ pathname: '/', hash })
+      navigate('/' + href)
     } else {
-      navigate({ pathname: '/', hash }, { replace: true })
+      const el = document.querySelector(href)
+      if (el) el.scrollIntoView({ behavior: 'smooth' })
     }
   }
 
@@ -149,7 +149,7 @@ export default function Navbar() {
       }}>
 
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
-        <a href="#home" className="flex items-center" onClick={(e) => handleAnchorClick(e, '#home')}>
+        <a href="#home" className="flex items-center">
           <img src="/Leela Hospital Final Logo👍-1.png" alt="Leela Hospital" 
             className="w-auto"
             style={{ height: '70px' }}
@@ -210,7 +210,7 @@ export default function Navbar() {
                 className="flex items-center gap-2 text-sm font-semibold transition-colors text-primary-600">
                 <Phone className="w-4 h-4" /> +91 9008371817
               </a>
-              <a href="#appointment" className="btn-primary text-sm py-2.5 px-5" onClick={(e) => handleAnchorClick(e, '#appointment')}>Book Appointment</a>
+              <a href="#appointment" className="btn-primary text-sm py-2.5 px-5">Book Appointment</a>
             </>
           )}
         </div>
@@ -268,7 +268,7 @@ export default function Navbar() {
                   </a>
                 )
               ))}
-              <a href="#appointment" className="btn-primary block text-center mt-4" onClick={(e) => handleAnchorClick(e, '#appointment')}>Book Appointment</a>
+              <a href="#appointment" className="btn-primary block text-center mt-4">Book Appointment</a>
             </>
           )}
         </div>}

@@ -80,7 +80,7 @@ const serviceDetails = {
     title: 'Oncology', subtitle: 'Cancer Care',
     icon: '/services%20icons/oncology.svg',
     overview: 'Our Oncology department provides comprehensive cancer care with a multidisciplinary approach. From early detection to advanced treatment, we fight cancer with compassion.',
-    treatments: ['Treatment'],
+    treatments: ['Cancer Diagnosis & Staging', 'Chemotherapy', 'Radiation Therapy', 'Surgical Oncology', 'Immunotherapy', 'Targeted Therapy', 'Palliative Care', 'Cancer Screening Programs', 'Bone Marrow Transplant', 'Hormone Therapy'],
     why: 'A dedicated cancer care team fighting alongside you every step of the way.',
     promise: 'Hope and strength.',
   },

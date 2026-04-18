@@ -2,7 +2,7 @@
 import { body, validationResult } from 'express-validator';
 import Doctor from '../models/Doctor.js';
 import { protect, superadminOnly } from '../middleware/auth.js';
-import { createLog } from '../utils/logger.js';
+import { createLog, logger } from '../utils/logger.js';
 
 const router = express.Router();
 
@@ -17,7 +17,7 @@ router.post('/reorder', protect, superadminOnly, async (req, res) => {
     await createLog('DOCTORS_REORDERED', 'doctor', 'Doctor order updated', {}, req.user?.name);
     res.json({ success: true });
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -27,7 +27,7 @@ router.get('/', async (req, res) => {
     const doctors = await Doctor.find({ isActive: true }).sort({ sortOrder: 1, createdAt: -1 });
     res.json({ success: true, count: doctors.length, doctors });
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -37,7 +37,7 @@ router.get('/all', protect, superadminOnly, async (req, res) => {
     const doctors = await Doctor.find().sort({ sortOrder: 1, createdAt: -1 });
     res.json({ success: true, count: doctors.length, doctors });
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -68,7 +68,7 @@ router.post('/', protect, superadminOnly, [
     res.status(201).json({ success: true, message: 'Doctor added successfully', doctor });
     await createLog('DOCTOR_ADDED', 'doctor', `Added doctor: ${doctor.name} (${doctor.specialty})`, { doctorId: doctor._id, name: doctor.name }, req.user?.name);
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -102,7 +102,7 @@ if (isActive !== undefined) {
       await createLog('DOCTOR_EDITED', 'doctor', `Edited doctor: ${doctor.name}`, { doctorId: doctor._id, name: doctor.name }, req.user?.name);
     }
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -114,7 +114,7 @@ router.delete('/:id/permanent', protect, superadminOnly, async (req, res) => {
     await createLog('DOCTOR_DELETED', 'doctor', `Permanently deleted doctor: ${doctor.name}`, { name: doctor.name }, req.user?.name);
     res.json({ success: true, message: 'Doctor deleted' });
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -128,7 +128,7 @@ router.delete('/:id', protect, superadminOnly, async (req, res) => {
 
     res.json({ success: true, message: 'Doctor deactivated' });
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     res.status(500).json({ message: 'Server error' });
   }
 });
