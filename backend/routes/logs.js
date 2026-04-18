@@ -1,6 +1,7 @@
 ﻿import express from 'express';
 import Log from '../models/Log.js';
 import { protect, superadminOnly } from '../middleware/auth.js';
+import { logger } from '../utils/logger.js';
 
 const router = express.Router();
 
@@ -11,7 +12,7 @@ router.get('/', protect, superadminOnly, async (req, res) => {
     const logs = await Log.find(query).sort({ createdAt: -1 }).limit(Number(limit));
     res.json({ success: true, count: logs.length, logs });
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     res.status(500).json({ message: 'Server error' });
   }
 });

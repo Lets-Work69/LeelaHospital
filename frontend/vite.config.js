@@ -13,8 +13,12 @@ export default defineConfig({
       }
     },
     chunkSizeWarningLimit: 1000,
+    sourcemap: false,
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom', 'lucide-react']
+  },
+  esbuild: {
+    drop: ['console', 'debugger'],
   }
 })
