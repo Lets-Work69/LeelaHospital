@@ -1,4 +1,4 @@
-﻿import React from 'react'
+import React from 'react'
 import { Phone, Mail, MapPin, Facebook, Instagram, Twitter, Youtube, ArrowRight } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -18,7 +18,7 @@ export default function Footer() {
   }
 
   return (
-    <footer id="contact" className="relative overflow-hidden bg-mesh">
+    <footer className="relative overflow-hidden bg-mesh">
       
       <div className="absolute top-0 left-0 right-0">
         <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
@@ -70,7 +70,7 @@ export default function Footer() {
           </ul>
         </div>
 
-<div>
+<div id="contact-us">
           <h4 className="text-white font-bold mb-5 text-sm uppercase tracking-wider">Contact Us</h4>
           <div className="space-y-4">
             {[

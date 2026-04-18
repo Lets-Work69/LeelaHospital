@@ -10,7 +10,7 @@ const navLinks = [
   { label: 'Doctors',      href: '/doctors' },
   { label: 'Facilities',   href: '/facilities' },
   { label: 'Gallery',      href: '/gallery' },
-  { label: 'Contact',      href: '#contact' },
+  { label: 'Contact',      href: '#contact-us' },
 ]
 
 export default function Navbar() {
@@ -98,14 +98,38 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  const scrollToAnchor = (href) => {
+    let attempts = 0
+    const maxAttempts = 30
+
+    const tryScroll = () => {
+      const el = document.querySelector(href)
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        return
+      }
+
+      attempts += 1
+      if (attempts < maxAttempts) {
+        setTimeout(tryScroll, 50)
+      }
+    }
+
+    tryScroll()
+  }
+
   const handleAnchorClick = (e, href) => {
     e.preventDefault()
     setMenuOpen(false)
+    const localScrollPages = new Set(['/about', '/specialities', '/doctors', '/facilities', '/gallery'])
+    if (localScrollPages.has(location.pathname)) {
+      window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' })
+      return
+    }
     if (location.pathname !== '/') {
-      navigate('/' + href)
+      navigate('/', { state: { scrollTo: href.slice(1) } })
     } else {
-      const el = document.querySelector(href)
-      if (el) el.scrollIntoView({ behavior: 'smooth' })
+      scrollToAnchor(href)
     }
   }
 

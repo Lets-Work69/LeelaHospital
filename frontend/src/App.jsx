@@ -1,5 +1,5 @@
-﻿import React, { useState, useEffect, lazy, Suspense } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+﻿import React, { useState, useEffect, useLayoutEffect, useRef, lazy, Suspense } from 'react'
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 import Intro from './components/Intro'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
@@ -60,7 +60,24 @@ function OffersPopup() {
     sessionStorage.setItem('homeOffersSeen', 'true')
   }
 
-  if (!isOpen) return null
+  const reopenPopup = () => {
+    setIsOpen(true)
+  }
+
+  if (!isOpen) {
+    if (!isClosed) return null
+    return (
+      <button
+        type="button"
+        onClick={reopenPopup}
+        className="fixed bottom-6 right-6 z-[110] h-14 w-14 rounded-full bg-primary-600 text-white shadow-xl transition-transform hover:scale-105 hover:bg-primary-700"
+        aria-label="Open offers popup"
+        title="Open offers"
+      >
+        <span className="text-2xl leading-none" role="img" aria-hidden="true">🎁</span>
+      </button>
+    )
+  }
 
   return (
     <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center px-4 py-6">
@@ -160,10 +177,64 @@ function GlobalSSE() {
   return null
 }
 
+function ScrollToTop() {
+  const { pathname, state } = useLocation()
+  const hasInitialized = useRef(false)
+
+  useLayoutEffect(() => {
+    if (!hasInitialized.current) {
+      hasInitialized.current = true
+      if ('scrollRestoration' in window.history) {
+        window.history.scrollRestoration = 'manual'
+      }
+      const historyState = window.history.state
+      if (historyState?.usr?.scrollTo) {
+        window.history.replaceState({ ...historyState, usr: null }, '', `${window.location.pathname}${window.location.search}`)
+      }
+      if (window.location.hash) {
+        window.history.replaceState(window.history.state, '', `${window.location.pathname}${window.location.search}`)
+      }
+      const forceTop = () => window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+      forceTop()
+      requestAnimationFrame(forceTop)
+      setTimeout(forceTop, 0)
+      setTimeout(forceTop, 120)
+      return
+    }
+
+    if (state?.scrollTo) {
+      const id = state.scrollTo
+      let attempts = 0
+      const maxAttempts = 30
+
+      const scrollToHash = () => {
+        const element = document.getElementById(id)
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          return
+        }
+
+        attempts += 1
+        if (attempts < maxAttempts) {
+          setTimeout(scrollToHash, 50)
+        }
+      }
+
+      scrollToHash()
+      return
+    }
+
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+  }, [pathname, state])
+
+  return null
+}
+
 function AppInner({ introDone, setIntroDone }) {
   return (
     <>
       {!introDone && <Intro onDone={() => setIntroDone(true)} />}
+      <ScrollToTop />
       <GlobalSSE />
       <div className="min-h-screen bg-white">
         <Suspense fallback={
