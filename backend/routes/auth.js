@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import { body, validationResult } from 'express-validator';
 import User from '../models/User.js';
 import { protect } from '../middleware/auth.js';
+import { logger } from '../utils/logger.js';
 
 const router = express.Router();
 
@@ -52,7 +53,7 @@ const token = generateToken(user._id);
       }
     });
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -74,7 +75,7 @@ router.get('/me', protect, async (req, res) => {
       }
     });
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -103,7 +104,7 @@ user.password = newPassword;
 
     res.json({ success: true, message: 'Password updated successfully' });
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     res.status(500).json({ message: 'Server error' });
   }
 });

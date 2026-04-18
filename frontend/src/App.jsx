@@ -1,5 +1,5 @@
 ﻿import React, { useState, useEffect, lazy, Suspense } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Intro from './components/Intro'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
@@ -13,7 +13,6 @@ import Footer from './components/Footer'
 import Facilities from './pages/Facilities'
 const url = import.meta.env.VITE_API_URL
 
-// Lazy load pages
 const ServiceDetail = lazy(() => import('./pages/ServiceDetail'))
 const Specialities = lazy(() => import('./pages/Specialities'))
 const About = lazy(() => import('./pages/About'))
@@ -127,20 +126,36 @@ function Home() {
   )
 }
 
-/** Keeps SSE open for superadmin; new bookings dispatch a window event (no modal). */
 function GlobalSSE() {
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user') || '{}')
-    if (user.role !== 'superadmin') return
+    if (user.role !== 'superadmin') return undefined
 
     const es = new EventSource(`${url}/api/notifications`)
-    es.addEventListener('new-appointment', (e) => {
+    
+    const handleNewAppointment = (e) => {
       try {
         const detail = JSON.parse(e.data)
         window.dispatchEvent(new CustomEvent('leela:new-appointment', { detail }))
-      } catch (_) {}
-    })
-    return () => es.close()
+      } catch (error) {
+        if (import.meta.env.DEV) {
+          console.error('Failed to parse SSE data:', error)
+        }
+      }
+    }
+    
+    es.addEventListener('new-appointment', handleNewAppointment)
+    
+    es.onerror = () => {
+      if (import.meta.env.DEV) {
+        console.warn('SSE connection error')
+      }
+    }
+    
+    return () => {
+      es.removeEventListener('new-appointment', handleNewAppointment)
+      es.close()
+    }
   }, [])
   return null
 }
@@ -180,8 +195,8 @@ export default function App() {
   const [introDone, setIntroDone] = useState(false)
 
   return (
-    <BrowserRouter>
+    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <AppInner introDone={introDone} setIntroDone={setIntroDone} />
-    </BrowserRouter>
+    </Router>
   )
 }
