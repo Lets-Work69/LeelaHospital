@@ -81,7 +81,6 @@ export default function AdminDashboard() {
     const onNewBooking = () => fetchAppointments();
     window.addEventListener('leela:new-appointment', onNewBooking);
     return () => window.removeEventListener('leela:new-appointment', onNewBooking);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -96,7 +95,9 @@ export default function AdminDashboard() {
       const data = await res.json();
       if (data.success) setDoctors(data.doctors);
     } catch (err) {
-      console.error(err);
+      if (import.meta.env.DEV) {
+        console.error('Failed to fetch doctors:', err);
+      }
     } finally {
       setLoading(false);
     }
@@ -108,7 +109,9 @@ export default function AdminDashboard() {
       const data = await res.json();
       if (data.success) setAppointments(data.appointments);
     } catch (err) {
-      console.error(err);
+      if (import.meta.env.DEV) {
+        console.error('Failed to fetch appointments:', err);
+      }
     }
   };
 
@@ -272,7 +275,11 @@ export default function AdminDashboard() {
         headers: getAuthHeaders(),
         body: JSON.stringify({ orderedIds: reordered.map(d => d._id) })
       });
-    } catch (err) { console.error(err); }
+    } catch (err) { 
+      if (import.meta.env.DEV) {
+        console.error('Failed to reorder doctors:', err);
+      }
+    }
   };
 
   const stats = [
