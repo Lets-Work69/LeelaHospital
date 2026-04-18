@@ -8,7 +8,7 @@ import {
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 
-import imgAmbulance      from '../assets/facilities/ambulance.jpg'
+import imgAmbulance      from '../assets/facilities/ambulance.png'
 import imgOT             from '../assets/facilities/operation-theatre.jpg'
 import imgLab            from '../assets/facilities/laboratory.jpg'
 import imgRadiology      from '../assets/facilities/radiology.jpg'
@@ -241,7 +241,10 @@ function FacilityModal({ facility, onClose }) {
                   src={facility.image}
                   alt={facility.title}
                   className="w-full h-full object-cover"
-                  style={{ minHeight: '220px' }}
+                  style={{ 
+                    minHeight: '220px',
+                    objectPosition: facility.title === '24/7 Ambulance Service' ? 'left center' : 'center'
+                  }}
                   onError={e => { e.target.style.display = 'none' }}
                 />
               </div>
