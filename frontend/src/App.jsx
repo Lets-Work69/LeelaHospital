@@ -202,6 +202,16 @@ function ScrollToTop() {
       return
     }
 
+    if (state?.scrollToBottom) {
+      const scrollBottom = () =>
+        window.scrollTo({ top: document.body.scrollHeight, left: 0, behavior: 'smooth' })
+
+      scrollBottom()
+      requestAnimationFrame(scrollBottom)
+      setTimeout(scrollBottom, 120)
+      return
+    }
+
     if (state?.scrollTo) {
       const id = state.scrollTo
       let attempts = 0
