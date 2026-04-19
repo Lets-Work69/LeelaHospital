@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { Calendar, Users, Heart, ArrowLeft, X } from "lucide-react";
+import { Calendar, Users, Heart, ArrowLeft, X, Award } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const inaugurationImages = [
@@ -130,7 +130,7 @@ const Gallery = () => {
     return () => { clearTimeout(t); clearInterval(timer); };
   }, []);
 
-  const [sessionsRef, sessionsVisible] = useReveal(0.2);
+  const [inaugurationRef, inaugurationVisible] = useReveal(0.2);
   const [eventsRef, eventsVisible] = useReveal(0.2);
   const [communityRef, communityVisible] = useReveal(0.2);
 
@@ -171,14 +171,14 @@ const Gallery = () => {
         </div>
 
         <SectionWrapper
-          refEl={sessionsRef}
-          visibleState={sessionsVisible}
-          badge="Educational Programs"
-          icon={<Calendar className="w-4 h-4" />}
-          title="Sessions & Workshops"
-          subtitle="Continuous learning and development programs for our healthcare team"
+          refEl={inaugurationRef}
+          visibleState={inaugurationVisible}
+          badge="Grand Opening"
+          icon={<Award className="w-4 h-4" />}
+          title="Inauguration Ceremony"
+          subtitle="The historic opening of Leela Hospital - A new chapter in healthcare excellence"
         >
-          <ImageGrid images={sessionImages} visibleState={sessionsVisible} altPrefix="Session" onOpen={openLightbox} />
+          <ImageGrid images={inaugurationImages} visibleState={inaugurationVisible} altPrefix="Inauguration" onOpen={openLightbox} />
         </SectionWrapper>
 
         <SectionWrapper
