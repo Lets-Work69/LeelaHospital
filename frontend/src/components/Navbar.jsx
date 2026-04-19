@@ -121,11 +121,6 @@ export default function Navbar() {
   const handleAnchorClick = (e, href) => {
     e.preventDefault()
     setMenuOpen(false)
-    const localScrollPages = new Set(['/about', '/specialities', '/doctors', '/facilities', '/gallery'])
-    if (localScrollPages.has(location.pathname)) {
-      window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' })
-      return
-    }
     if (location.pathname !== '/') {
       navigate('/', { state: { scrollTo: href.slice(1) } })
     } else {
@@ -173,7 +168,8 @@ export default function Navbar() {
       }}>
 
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
-        <a href="#home" className="flex items-center">
+        <a href="#home" className="flex items-center"
+          onClick={e => handleAnchorClick(e, '#home')}>
           <img src="/Leela Hospital Final Logo👍-1.png" alt="Leela Hospital" 
             className="w-auto"
             style={{ height: '70px' }}
