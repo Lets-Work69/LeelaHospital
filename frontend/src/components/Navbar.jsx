@@ -131,9 +131,17 @@ export default function Navbar() {
     e.preventDefault()
     setMenuOpen(false)
     if (location.pathname !== '/') {
-      navigate('/', { state: { scrollTo: href.slice(1) } })
+      if (href === '#contact-us') {
+        navigate('/', { state: { scrollToBottom: true } })
+      } else {
+        navigate('/', { state: { scrollTo: href.slice(1) } })
+      }
     } else {
-      scrollToAnchor(href)
+      if (href === '#contact-us') {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
+      } else {
+        scrollToAnchor(href)
+      }
     }
   }
 
