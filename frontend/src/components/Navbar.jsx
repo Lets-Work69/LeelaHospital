@@ -100,18 +100,27 @@ export default function Navbar() {
 
   const scrollToAnchor = (href) => {
     let attempts = 0
-    const maxAttempts = 30
+    const maxAttempts = 40
 
     const tryScroll = () => {
       const el = document.querySelector(href)
       if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        setTimeout(() => {
+          const navbarHeight = 100 // Increased offset for navbar
+          const elementPosition = el.getBoundingClientRect().top + window.pageYOffset
+          const offsetPosition = elementPosition - navbarHeight
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          })
+        }, 50)
         return
       }
 
       attempts += 1
       if (attempts < maxAttempts) {
-        setTimeout(tryScroll, 50)
+        setTimeout(tryScroll, 100)
       }
     }
 
@@ -199,22 +208,23 @@ export default function Navbar() {
           </nav>
         ) : (
           <nav className="hidden md:flex items-center gap-8">
-            {navLinks.map(link => (
-              link.href.startsWith('/') ? (
+            {navLinks.map(link => {
+              const isActive = link.href.startsWith('/') && location.pathname === link.href
+              return link.href.startsWith('/') ? (
                 <Link key={link.label} to={link.href}
-                  className="text-sm font-medium transition-all duration-300 hover:text-teal-500 relative group text-gray-700">
+                  className={`text-sm font-medium transition-all duration-300 hover:text-teal-500 relative group ${isActive ? 'text-teal-500' : 'text-gray-700'}`}>
                   {link.label}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-teal-400 group-hover:w-full transition-all duration-300 rounded-full" />
+                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-teal-400 transition-all duration-300 rounded-full ${isActive ? 'w-full' : 'w-0 group-hover:w-full'}`} />
                 </Link>
               ) : (
                 <a key={link.label} href={link.href}
                   onClick={e => handleAnchorClick(e, link.href)}
-                  className="text-sm font-medium transition-all duration-300 hover:text-teal-500 relative group text-gray-700">
+                  className={`text-sm font-medium transition-all duration-300 hover:text-teal-500 relative group ${location.pathname === '/' && link.href === '#home' ? 'text-teal-500' : 'text-gray-700'}`}>
                   {link.label}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-teal-400 group-hover:w-full transition-all duration-300 rounded-full" />
+                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-teal-400 transition-all duration-300 rounded-full ${location.pathname === '/' && link.href === '#home' ? 'w-full' : 'w-0 group-hover:w-full'}`} />
                 </a>
               )
-            ))}
+            })}
           </nav>
         )}
 
@@ -230,7 +240,9 @@ export default function Navbar() {
                 className="flex items-center gap-2 text-sm font-semibold transition-colors text-primary-600">
                 <Phone className="w-4 h-4" /> +91 9008371817
               </a>
-              <a href="#appointment" className="btn-primary text-sm py-2.5 px-5">Book Appointment</a>
+              <a href="#appointment" 
+                onClick={e => handleAnchorClick(e, '#appointment')}
+                className="btn-primary text-sm py-2.5 px-5">Book Appointment</a>
             </>
           )}
         </div>
@@ -274,21 +286,24 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              {navLinks.map(link => (
-                link.href.startsWith('/') ? (
+              {navLinks.map(link => {
+                const isActive = link.href.startsWith('/') && location.pathname === link.href
+                return link.href.startsWith('/') ? (
                   <Link key={link.label} to={link.href} onClick={() => setMenuOpen(false)}
-                    className="block py-3 text-gray-700 font-medium border-b border-gray-50 hover:text-primary-500 transition-colors">
+                    className={`block py-3 font-medium border-b border-gray-50 hover:text-teal-500 transition-colors ${isActive ? 'text-teal-500' : 'text-gray-700'}`}>
                     {link.label}
                   </Link>
                 ) : (
                   <a key={link.label} href={link.href}
                     onClick={e => handleAnchorClick(e, link.href)}
-                    className="block py-3 text-gray-700 font-medium border-b border-gray-50 hover:text-primary-500 transition-colors">
+                    className={`block py-3 font-medium border-b border-gray-50 hover:text-teal-500 transition-colors ${location.pathname === '/' && link.href === '#home' ? 'text-teal-500' : 'text-gray-700'}`}>
                     {link.label}
                   </a>
                 )
-              ))}
-              <a href="#appointment" className="btn-primary block text-center mt-4">Book Appointment</a>
+              })}
+              <a href="#appointment" 
+                onClick={e => handleAnchorClick(e, '#appointment')}
+                className="btn-primary block text-center mt-4">Book Appointment</a>
             </>
           )}
         </div>}
