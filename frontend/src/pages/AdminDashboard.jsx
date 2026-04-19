@@ -135,7 +135,7 @@ export default function AdminDashboard() {
         const val = formData.patients.trim();
         // If it's just a number, add K
         if (val.match(/^\d+(\.\d+)?$/)) {
-          return `${val}K`;
+          return `${val}`;
         }
         // If it already has K, make sure there's only one K
         if (val.match(/^\d+(\.\d+)?[Kk]+$/)) {
