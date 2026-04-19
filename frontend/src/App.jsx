@@ -215,22 +215,32 @@ function ScrollToTop() {
     if (state?.scrollTo) {
       const id = state.scrollTo
       let attempts = 0
-      const maxAttempts = 30
+      const maxAttempts = 40
 
       const scrollToHash = () => {
         const element = document.getElementById(id)
         if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          // Wait a bit more for full render
+          setTimeout(() => {
+            const navbarHeight = 100 // Increased offset for navbar
+            const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
+            const offsetPosition = elementPosition - navbarHeight
+
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: 'smooth'
+            })
+          }, 100)
           return
         }
 
         attempts += 1
         if (attempts < maxAttempts) {
-          setTimeout(scrollToHash, 50)
+          setTimeout(scrollToHash, 100)
         }
       }
 
-      scrollToHash()
+      setTimeout(scrollToHash, 200)
       return
     }
 
