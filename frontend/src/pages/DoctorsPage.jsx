@@ -26,7 +26,7 @@ function DoctorCard({ doc, index }) {
       style={{
         opacity: visible ? 1 : 0,
         transform: visible ? 'translateY(0) scale(1)' : 'translateY(40px) scale(0.96)',
-        transition: `all 0.7s cubic-bezier(0.4,0,0.2,1) ${index * 0.07}s`,
+        transition: `all 0.7s cubic-bezier(0.4,0,0.2,1) ${index * 0.03}s`,
         boxShadow: hovered
           ? `0 28px 56px rgba(0,0,0,0.14), 0 0 0 1.5px ${doc.accent}40`
           : '0 4px 24px rgba(0,0,0,0.07)',
