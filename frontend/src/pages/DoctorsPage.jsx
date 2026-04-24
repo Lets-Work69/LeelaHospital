@@ -99,10 +99,12 @@ export default function DoctorsPage() {
   const [heroVisible, setHeroVisible] = useState(false)
   const heroRef = useRef(null)
   const [doctors, setDoctors] = useState(hardcodedDoctors)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
+  const [initialLoad, setInitialLoad] = useState(true)
   const observerRef = useRef(null)
+  const isFetchingRef = useRef(false)
 
   useEffect(() => {
     const t = setTimeout(() => setHeroVisible(true), 100)
@@ -110,43 +112,72 @@ export default function DoctorsPage() {
   }, [])
 
   useEffect(() => {
+    if (isFetchingRef.current) return
+    
     const cacheKey = `doctors_page_${page}`
     const cached = sessionStorage.getItem(cacheKey)
     
     if (cached) {
       const cachedData = JSON.parse(cached)
       setDoctors(prev => page === 1 ? [...hardcodedDoctors, ...cachedData] : [...prev, ...cachedData])
-      setLoading(false)
+      setInitialLoad(false)
+      
+      // Check if there's more cached data
+      const nextCacheKey = `doctors_page_${page + 1}`
+      const hasNextCache = sessionStorage.getItem(nextCacheKey)
+      if (!hasNextCache) {
+        // Verify with a quick check if there's more data
+        fetch(`${url}/api/doctors?page=${page}&limit=${DOCTORS_PER_PAGE}`)
+          .then(r => r.json())
+          .then(data => {
+            if (data.success) {
+              setHasMore(data.page < data.totalPages)
+            }
+          })
+          .catch(() => {})
+      }
       return
     }
 
+    isFetchingRef.current = true
     setLoading(true)
+    
     fetch(`${url}/api/doctors?page=${page}&limit=${DOCTORS_PER_PAGE}`)
       .then(r => r.json())
       .then(data => {
-        if (data.success && data.doctors.length) {
-          const dbDocs = data.doctors.map(d => ({
-            name: d.name,
-            specialty: d.specialty,
-            exp: d.experience || '',
-            rating: parseFloat(d.rating) || 4.5,
-            patients: d.patients || '0',
-            photo: d.profileImage || '',
-            accent: '#0969b1'
-          }))
-          setDoctors(prev => page === 1 ? [...hardcodedDoctors, ...dbDocs] : [...prev, ...dbDocs])
+        if (data.success) {
+          if (data.doctors.length > 0) {
+            const dbDocs = data.doctors.map(d => ({
+              name: d.name,
+              specialty: d.specialty,
+              exp: d.experience || '',
+              rating: parseFloat(d.rating) || 4.5,
+              patients: d.patients || '0',
+              photo: d.profileImage || '',
+              accent: '#0969b1'
+            }))
+            setDoctors(prev => page === 1 ? [...hardcodedDoctors, ...dbDocs] : [...prev, ...dbDocs])
+            sessionStorage.setItem(cacheKey, JSON.stringify(dbDocs))
+          }
           setHasMore(data.page < data.totalPages)
-          sessionStorage.setItem(cacheKey, JSON.stringify(dbDocs))
+        } else {
+          setHasMore(false)
         }
         setLoading(false)
+        setInitialLoad(false)
+        isFetchingRef.current = false
       })
-      .catch(() => setLoading(false))
+      .catch(() => {
+        setLoading(false)
+        setInitialLoad(false)
+        isFetchingRef.current = false
+      })
   }, [page])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && hasMore && !loading) {
+        if (entries[0].isIntersecting && hasMore && !loading && !initialLoad && !isFetchingRef.current) {
           setPage(prev => prev + 1)
         }
       },
@@ -158,7 +189,7 @@ export default function DoctorsPage() {
     }
 
     return () => observer.disconnect()
-  }, [hasMore, loading])
+  }, [hasMore, loading, initialLoad])
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -220,22 +251,32 @@ export default function DoctorsPage() {
       </div>
 
 <div className="max-w-6xl mx-auto px-6 py-16" style={{ minHeight: '60vh' }}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {doctors.map((doc, i) => (
-            <DoctorCard key={doc.name + i} doc={doc} index={i} />
-          ))}
-          {loading && [...Array(6)].map((_, i) => (
-            <DoctorPageSkeleton key={`skeleton-${i}`} index={i} />
-          ))}
-        </div>
-        
-        {/* Infinite scroll trigger */}
-        <div ref={observerRef} className="h-10 mt-8" />
-        
-        {!loading && !hasMore && doctors.length > 0 && (
-          <div className="text-center mt-8 text-gray-500">
-            <p className="text-sm font-semibold">You've reached the end</p>
+        {initialLoad ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[...Array(9)].map((_, i) => (
+              <DoctorPageSkeleton key={`initial-skeleton-${i}`} index={i} />
+            ))}
           </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {doctors.map((doc, i) => (
+                <DoctorCard key={doc.name + i} doc={doc} index={i} />
+              ))}
+              {loading && [...Array(6)].map((_, i) => (
+                <DoctorPageSkeleton key={`skeleton-${i}`} index={i} />
+              ))}
+            </div>
+            
+            {/* Infinite scroll trigger */}
+            {hasMore && <div ref={observerRef} className="h-10 mt-8" />}
+            
+            {!loading && !hasMore && doctors.length > 0 && (
+              <div className="text-center mt-8 text-gray-500">
+                <p className="text-sm font-semibold">You've reached the end</p>
+              </div>
+            )}
+          </>
         )}
       </div>
 
