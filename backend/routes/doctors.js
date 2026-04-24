@@ -24,8 +24,25 @@ router.post('/reorder', protect, superadminOnly, async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-    const doctors = await Doctor.find({ isActive: true }).sort({ sortOrder: 1, createdAt: -1 });
-    res.json({ success: true, count: doctors.length, doctors });
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const doctors = await Doctor.find({ isActive: true })
+      .sort({ sortOrder: 1, createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+    
+    const total = await Doctor.countDocuments({ isActive: true });
+
+    res.json({ 
+      success: true, 
+      count: doctors.length, 
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+      doctors 
+    });
   } catch (error) {
     logger.error(error);
     res.status(500).json({ message: 'Server error' });

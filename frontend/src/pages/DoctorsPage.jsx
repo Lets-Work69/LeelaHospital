@@ -2,9 +2,11 @@
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { Clock, Users } from 'lucide-react'
+import DoctorPageSkeleton from '../components/DoctorPageSkeleton'
 const url = import.meta.env.VITE_API_URL
 
 const hardcodedDoctors = []
+const DOCTORS_PER_PAGE = 9
 
 function DoctorCard({ doc, index }) {
   const ref = useRef(null)
@@ -97,10 +99,29 @@ export default function DoctorsPage() {
   const [heroVisible, setHeroVisible] = useState(false)
   const heroRef = useRef(null)
   const [doctors, setDoctors] = useState(hardcodedDoctors)
+  const [loading, setLoading] = useState(true)
+  const [page, setPage] = useState(1)
+  const [hasMore, setHasMore] = useState(true)
+  const observerRef = useRef(null)
 
   useEffect(() => {
     const t = setTimeout(() => setHeroVisible(true), 100)
-    fetch(`${url}/api/doctors`)
+    return () => clearTimeout(t)
+  }, [])
+
+  useEffect(() => {
+    const cacheKey = `doctors_page_${page}`
+    const cached = sessionStorage.getItem(cacheKey)
+    
+    if (cached) {
+      const cachedData = JSON.parse(cached)
+      setDoctors(prev => page === 1 ? [...hardcodedDoctors, ...cachedData] : [...prev, ...cachedData])
+      setLoading(false)
+      return
+    }
+
+    setLoading(true)
+    fetch(`${url}/api/doctors?page=${page}&limit=${DOCTORS_PER_PAGE}`)
       .then(r => r.json())
       .then(data => {
         if (data.success && data.doctors.length) {
@@ -113,12 +134,31 @@ export default function DoctorsPage() {
             photo: d.profileImage || '',
             accent: '#0969b1'
           }))
-          setDoctors([...hardcodedDoctors, ...dbDocs])
+          setDoctors(prev => page === 1 ? [...hardcodedDoctors, ...dbDocs] : [...prev, ...dbDocs])
+          setHasMore(data.page < data.totalPages)
+          sessionStorage.setItem(cacheKey, JSON.stringify(dbDocs))
         }
+        setLoading(false)
       })
-      .catch(() => {})
-    return () => clearTimeout(t)
-  }, [])
+      .catch(() => setLoading(false))
+  }, [page])
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !loading) {
+          setPage(prev => prev + 1)
+        }
+      },
+      { threshold: 0.1 }
+    )
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current)
+    }
+
+    return () => observer.disconnect()
+  }, [hasMore, loading])
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -184,7 +224,19 @@ export default function DoctorsPage() {
           {doctors.map((doc, i) => (
             <DoctorCard key={doc.name + i} doc={doc} index={i} />
           ))}
+          {loading && [...Array(6)].map((_, i) => (
+            <DoctorPageSkeleton key={`skeleton-${i}`} index={i} />
+          ))}
         </div>
+        
+        {/* Infinite scroll trigger */}
+        <div ref={observerRef} className="h-10 mt-8" />
+        
+        {!loading && !hasMore && doctors.length > 0 && (
+          <div className="text-center mt-8 text-gray-500">
+            <p className="text-sm font-semibold">You've reached the end</p>
+          </div>
+        )}
       </div>
 
       <Footer />
