@@ -103,7 +103,7 @@ const founders = [
     name: 'Mantesh Magari',
     role: 'Director – Administration & Finance',
     color: '#17ae95',
-    photo: '/leadership_team/p2.jpeg',
+    photo: '/leadership_team/p2.jpg',
     bio: 'Mantesh Magari manages the financial and administrative backbone of the hospital, ensuring smooth day-to-day operations. With an M.Com in Finance and healthcare experience, he brings discipline, transparency, and responsibility. He is consistently present in the hospital, supporting patients, staff, and operations with dedication and care.',
   },
   {
@@ -150,7 +150,7 @@ function LeaderCard({ f, i }) {
       }}>
 
 <div className="relative md:w-80 flex-shrink-0 overflow-hidden"
-        style={{ minHeight: '360px', background: `linear-gradient(135deg,#022441,${f.color},${accent2})` }}>
+        style={{ minHeight: '450px', background: `linear-gradient(135deg,#022441,${f.color},${accent2})` }}>
 
 <div className="absolute inset-0 opacity-10"
           style={{ backgroundImage: 'radial-gradient(circle at 1px 1px,rgba(255,255,255,0.8) 1px,transparent 0)', backgroundSize: '20px 20px' }} />
