@@ -88,7 +88,7 @@ export default function Doctors() {
   const [hasMore, setHasMore] = useState(true)
 
   useEffect(() => {
-    const cacheKey = `doctors_page_${page}`
+    const cacheKey = `doctors_home_${page}`
     const cached = sessionStorage.getItem(cacheKey)
     
     if (cached) {

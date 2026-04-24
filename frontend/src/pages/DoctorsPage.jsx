@@ -125,7 +125,9 @@ export default function DoctorsPage() {
       // Check if there's more cached data
       const nextCacheKey = `doctors_page_${page + 1}`
       const hasNextCache = sessionStorage.getItem(nextCacheKey)
-      if (!hasNextCache) {
+      if (hasNextCache) {
+        setHasMore(true)
+      } else {
         // Verify with a quick check if there's more data
         fetch(`${url}/api/doctors?page=${page}&limit=${DOCTORS_PER_PAGE}`)
           .then(r => r.json())
