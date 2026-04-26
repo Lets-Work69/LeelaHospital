@@ -3,6 +3,7 @@ import { body, validationResult } from 'express-validator';
 import Doctor from '../models/Doctor.js';
 import { protect, superadminOnly } from '../middleware/auth.js';
 import { createLog, logger } from '../utils/logger.js';
+import { ensureWebpDataUrl } from '../utils/imageConverter.js';
 
 const router = express.Router();
 
@@ -24,8 +25,25 @@ router.post('/reorder', protect, superadminOnly, async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-    const doctors = await Doctor.find({ isActive: true }).sort({ sortOrder: 1, createdAt: -1 });
-    res.json({ success: true, count: doctors.length, doctors });
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const doctors = await Doctor.find({ isActive: true })
+      .sort({ sortOrder: 1, createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+    
+    const total = await Doctor.countDocuments({ isActive: true });
+
+    res.json({ 
+      success: true, 
+      count: doctors.length, 
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+      doctors 
+    });
   } catch (error) {
     logger.error(error);
     res.status(500).json({ message: 'Server error' });
@@ -54,6 +72,7 @@ router.post('/', protect, superadminOnly, [
     }
 
     const { name, specialty, experience, patients, rating, profileImage } = req.body;
+    const normalizedProfileImage = await ensureWebpDataUrl(profileImage);
 
     const doctor = await Doctor.create({
       name,
@@ -61,7 +80,7 @@ router.post('/', protect, superadminOnly, [
       experience,
       patients: patients || '0',
       rating: rating || '4.5',
-      profileImage: profileImage || '',
+      profileImage: normalizedProfileImage || '',
       isActive: true
     });
 
@@ -76,6 +95,7 @@ router.post('/', protect, superadminOnly, [
 router.put('/:id', protect, superadminOnly, async (req, res) => {
   try {
     const { name, specialty, experience, patients, rating, profileImage, isActive } = req.body;
+    const normalizedProfileImage = await ensureWebpDataUrl(profileImage);
     const doctor = await Doctor.findById(req.params.id);
     if (!doctor) return res.status(404).json({ message: 'Doctor not found' });
 
@@ -84,7 +104,7 @@ router.put('/:id', protect, superadminOnly, async (req, res) => {
     if (experience !== undefined) doctor.experience = experience;
     if (patients !== undefined) doctor.patients = patients;
     if (rating !== undefined) doctor.rating = rating;
-    if (profileImage !== undefined) doctor.profileImage = profileImage;
+    if (profileImage !== undefined) doctor.profileImage = normalizedProfileImage;
     if (isActive !== undefined) doctor.isActive = isActive;
 
     await doctor.save();

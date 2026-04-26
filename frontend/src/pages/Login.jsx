@@ -49,7 +49,7 @@ if (data.user.role === 'superadmin') {
         
         <div className="text-center mb-8">
           <img
-            src="/Leela Hospital Final Logo👍-1.png"
+            src="/Leela Hospital Final Logo👍-1.webp"
             alt="Leela Hospital"
             className="h-20 w-auto mx-auto mb-2"
             onError={e => { e.target.onerror = null; e.target.src = '/logo.svg' }}

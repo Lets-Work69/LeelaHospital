@@ -23,7 +23,7 @@ const serviceDetails = {
   },
   'paediatrics-neonatology': {
     title: 'Paediatrics & Neonatology', subtitle: 'Care for Children',
-    icon: '/services%20icons/pediatrics_17942024.png',
+    icon: '/services%20icons/pediatrics_17942024.webp',
     overview: 'At Leela Hospital, our Pediatric and Neonatology Department is dedicated to providing comprehensive and compassionate care for your little ones.',
     treatments: ['Newborn Care', 'Vaccination', 'Child Illness'],
     why: 'Gentle treatment and child-friendly care — because every child deserves the best start in life.',
@@ -47,7 +47,7 @@ const serviceDetails = {
   },
   'urology': {
     title: 'Urology', subtitle: 'Urinary Care',
-    icon: '/services%20icons/urinary_7857026.png',
+    icon: '/services%20icons/urinary_7857026.webp',
     overview: 'Our team of skilled urologists specializes in diagnosing and treating a wide range of urological conditions affecting both men and women.',
     treatments: ['Stones', 'Infection'],
     why: 'Expert urological care with a focus on your comfort and quick recovery.',
@@ -71,7 +71,7 @@ const serviceDetails = {
   },
   'ent': {
     title: 'ENT', subtitle: 'Ear, Nose & Throat Specialists',
-    icon: '/services%20icons/nose.png',
+    icon: '/services%20icons/nose.webp',
     overview: 'At Leela Hospital, we prioritize your ear, nose, and throat health with dedicated expertise and compassionate care. Our ENT specialists are here for you.',
     treatments: ['Hearing Loss & Tinnitus', 'Sinusitis Treatment', 'Tonsil & Adenoid Surgery', 'Voice & Throat Disorders', 'Nasal Polyps', 'Ear Infections'],
     why: 'Experienced ENT specialists, advanced endoscopic equipment, and minimally invasive surgical techniques.',
@@ -94,7 +94,7 @@ const serviceDetails = {
   },
   'nephrology': {
     title: 'Nephrology', subtitle: 'Kidney Care',
-    icon: '/services%20icons/organ.png',
+    icon: '/services%20icons/organ.webp',
     overview: 'Our Nephrology Department at Leela Hospital is dedicated to providing comprehensive and compassionate care for patients with kidney conditions.',
     treatments: ['Kidney Disease'],
     why: 'Expert nephrologists committed to protecting and preserving your kidney health.',
@@ -109,7 +109,7 @@ const serviceDetails = {
   },
   'laparoscopy-endoscopy': {
     title: 'Laparoscopy & Endoscopy', subtitle: 'Minimally Invasive Care',
-    icon: '/services%20icons/laparoscopy_8670713.png',
+    icon: '/services%20icons/laparoscopy_8670713.webp',
     overview: 'Laparoscopic surgery uses small cuts and a camera to perform operations with minimal pain and faster recovery. At Leela Hospital, we bring you the best of minimally invasive surgical care.',
     treatments: ['Gallbladder', 'Hernia', 'Appendix'],
     why: 'Less pain, faster recovery, and small cuts — our laparoscopic team ensures you heal quickly and comfortably.',
@@ -125,7 +125,7 @@ const serviceDetails = {
   },
   'psychiatry': {
     title: 'Psychiatry', subtitle: 'Mental Health',
-    icon: '/services%20icons/mental-health.png',
+    icon: '/services%20icons/mental-health.webp',
     overview: 'At Leela Hospital, we understand the crucial role mental health plays in overall well-being. Our team of dedicated psychiatrists is here to support you.',
     treatments: ['Counseling'],
     why: 'Compassionate, confidential mental health care in a safe and supportive environment.',

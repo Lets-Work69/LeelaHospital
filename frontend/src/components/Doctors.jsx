@@ -1,9 +1,11 @@
 ﻿import React, { useRef, useEffect, useState, memo } from 'react'
 import { Star, Clock, Users, ChevronLeft, ChevronRight } from 'lucide-react'
+import DoctorCardSkeleton from './DoctorCardSkeleton'
 
 const url = import.meta.env.VITE_API_URL
 
 const ACCENTS = ['#0969b1', '#17ae95']
+const DOCTORS_PER_PAGE = 12
 
 const DoctorCard = memo(function DoctorCard({ doc, index }) {
   const ref = useRef(null)
@@ -81,15 +83,23 @@ export default function Doctors() {
   const [canLeft, setCanLeft] = useState(false)
   const [canRight, setCanRight] = useState(true)
   const [doctors, setDoctors] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [page, setPage] = useState(1)
+  const [hasMore, setHasMore] = useState(true)
 
   useEffect(() => {
-    const cached = sessionStorage.getItem('doctors')
+    const cacheKey = `doctors_home_${page}`
+    const cached = sessionStorage.getItem(cacheKey)
+    
     if (cached) {
-      setDoctors(JSON.parse(cached))
+      const cachedData = JSON.parse(cached)
+      setDoctors(prev => page === 1 ? cachedData : [...prev, ...cachedData])
+      setLoading(false)
       return
     }
     
-    fetch(`${url}/api/doctors`)
+    setLoading(true)
+    fetch(`${url}/api/doctors?page=${page}&limit=${DOCTORS_PER_PAGE}`)
       .then(r => r.json())
       .then(data => {
         if (data.success) {
@@ -103,18 +113,25 @@ export default function Doctors() {
             initials: d.name.split(' ')[1]?.charAt(0) || 'D',
             accent: ACCENTS[i % 2],
           }))
-          setDoctors(mapped)
-          sessionStorage.setItem('doctors', JSON.stringify(mapped))
+          setDoctors(prev => page === 1 ? mapped : [...prev, ...mapped])
+          setHasMore(data.page < data.totalPages)
+          sessionStorage.setItem(cacheKey, JSON.stringify(mapped))
         }
+        setLoading(false)
       })
-      .catch(() => {})
-  }, [])
+      .catch(() => setLoading(false))
+  }, [page])
 
   const checkScroll = () => {
     const el = scrollRef.current
     if (!el) return
     setCanLeft(el.scrollLeft > 10)
     setCanRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 10)
+    
+    // Load more when near the end
+    if (el.scrollLeft > el.scrollWidth - el.clientWidth - 300 && hasMore && !loading) {
+      setPage(prev => prev + 1)
+    }
   }
 
   const scroll = (dir) => scrollRef.current?.scrollBy({ left: dir === 'left' ? -280 : 280, behavior: 'smooth' })
@@ -159,6 +176,7 @@ export default function Doctors() {
           className="flex gap-5 pb-4"
           style={{ overflowX: 'auto', overflowY: 'hidden', scrollBehavior: 'smooth', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
           {doctors.map((doc, i) => <DoctorCard key={doc.name + i} doc={doc} index={i} />)}
+          {loading && [...Array(4)].map((_, i) => <DoctorCardSkeleton key={`skeleton-${i}`} index={i} />)}
         </div>
 
 <div className="flex md:hidden justify-between mt-5 px-2">
