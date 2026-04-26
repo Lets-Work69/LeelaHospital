@@ -128,7 +128,7 @@ export default function AdminDashboard() {
     else setLoading(true);
     
     try {
-      const res = await fetch(`${url}/api/doctors/all?page=${pageNum}&limit=20`, { headers: getAuthHeaders() });
+      const res = await fetch(`${url}/api/doctors/all?page=${pageNum}&limit=9`, { headers: getAuthHeaders() });
       const data = await res.json();
       if (data.success) {
         if (append) {
