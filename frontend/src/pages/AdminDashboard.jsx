@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Calendar, Plus, Trash2, Loader2, CheckCircle, Stethoscope, Clock, Users, MoreVertical, Edit2, EyeOff, Eye, AlertTriangle, LayoutGrid, List, GripVertical } from 'lucide-react';
 import Navbar from '../components/Navbar';
+import { AdminDoctorCardSkeleton, AdminDoctorRowSkeleton } from '../components/AdminDoctorSkeleton';
 const url = import.meta.env.VITE_API_URL;
 
 function ConfirmDialog({ message, onConfirm, onCancel, confirmLabel = 'Confirm', danger = false }) {
@@ -33,6 +34,10 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
   const navigate = useNavigate();
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const observerRef = useRef(null);
 
   const [formData, setFormData] = useState({ name: '', specialty: '', experience: '', patients: '', rating: '', profileImage: '' });
   const [photoPreview, setPhotoPreview] = useState(null);
@@ -71,7 +76,7 @@ export default function AdminDashboard() {
       navigate('/login');
       return;
     }
-    fetchDoctors();
+    fetchDoctors(1, false);
     fetchAppointments();
   }, []);
 
@@ -89,17 +94,59 @@ export default function AdminDashboard() {
     return () => document.removeEventListener('click', close);
   }, []);
 
-  const fetchDoctors = async () => {
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !loadingMore && !loading) {
+          const nextPage = page + 1;
+          setPage(nextPage);
+          fetchDoctors(nextPage, true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [hasMore, loadingMore, loading, page]);
+
+  const fetchDoctors = async (pageNum = 1, append = false) => {
+    const cacheKey = `admin_doctors_page_${pageNum}`;
+    const cached = sessionStorage.getItem(cacheKey);
+    
+    if (cached && !append) {
+      const cachedData = JSON.parse(cached);
+      setDoctors(cachedData.doctors);
+      setHasMore(cachedData.page < cachedData.totalPages);
+      setLoading(false);
+      return;
+    }
+    
+    if (append) setLoadingMore(true);
+    else setLoading(true);
+    
     try {
-      const res = await fetch(`${url}/api/doctors/all`, { headers: getAuthHeaders() });
+      const res = await fetch(`${url}/api/doctors/all?page=${pageNum}&limit=9`, { headers: getAuthHeaders() });
       const data = await res.json();
-      if (data.success) setDoctors(data.doctors);
+      if (data.success) {
+        if (append) {
+          setDoctors(prev => [...prev, ...data.doctors]);
+        } else {
+          setDoctors(data.doctors);
+        }
+        setHasMore(data.page < data.totalPages);
+        sessionStorage.setItem(cacheKey, JSON.stringify(data));
+      }
     } catch (err) {
       if (import.meta.env.DEV) {
         console.error('Failed to fetch doctors:', err);
       }
     } finally {
       setLoading(false);
+      setLoadingMore(false);
     }
   };
 
@@ -156,7 +203,11 @@ export default function AdminDashboard() {
         setShowAddModal(false);
         setFormData({ name: '', specialty: '', experience: '', patients: '', rating: '', profileImage: '' });
         setPhotoPreview(null);
-        fetchDoctors();
+        // Clear cache and reset pagination
+        sessionStorage.clear();
+        setPage(1);
+        setHasMore(true);
+        fetchDoctors(1, false);
       } else {
         alert(data.message || 'Failed to add doctor');
       }
@@ -175,7 +226,13 @@ export default function AdminDashboard() {
         try {
           const res = await fetch(`${url}/api/doctors/${id}/permanent`, { method: 'DELETE', headers: getAuthHeaders() });
           const data = await res.json();
-          if (data.success) fetchDoctors();
+          if (data.success) {
+            // Clear cache and reset pagination
+            sessionStorage.clear();
+            setPage(1);
+            setHasMore(true);
+            fetchDoctors(1, false);
+          }
         } catch { alert('Error deleting doctor'); }
       },
       true, 'Delete'
@@ -190,7 +247,13 @@ export default function AdminDashboard() {
         body: JSON.stringify({ isActive: !doctor.isActive })
       });
       const data = await res.json();
-      if (data.success) fetchDoctors();
+      if (data.success) {
+        // Clear cache and reset pagination
+        sessionStorage.clear();
+        setPage(1);
+        setHasMore(true);
+        fetchDoctors(1, false);
+      }
     } catch {
       alert('Error updating doctor');
     }
@@ -241,7 +304,14 @@ export default function AdminDashboard() {
         body: JSON.stringify(formattedData)
       });
       const data = await res.json();
-      if (data.success) { setEditingDoctor(null); fetchDoctors(); }
+      if (data.success) { 
+        setEditingDoctor(null); 
+        // Clear cache and reset pagination
+        sessionStorage.clear();
+        setPage(1);
+        setHasMore(true);
+        fetchDoctors(1, false);
+      }
       else alert(data.message || 'Failed to update');
     } catch {
       alert('Error updating doctor');
@@ -336,9 +406,30 @@ export default function AdminDashboard() {
           </div>
 
           {loading ? (
-            <div className="flex items-center justify-center py-16">
-              <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-            </div>
+            viewMode === 'card' ? (
+              <div className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                {[...Array(9)].map((_, i) => (
+                  <AdminDoctorCardSkeleton key={`skeleton-${i}`} />
+                ))}
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-gray-50 border-b border-gray-100">
+                    <tr>
+                      {['Doctor', 'Specialty', 'Experience', 'Patients', 'Rating', 'Status', 'Actions'].map(h => (
+                        <th key={h} className="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {[...Array(9)].map((_, i) => (
+                      <AdminDoctorRowSkeleton key={`skeleton-${i}`} />
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )
           ) : doctors.length === 0 ? (
             <div className="text-center py-16 text-gray-400">No doctors added yet</div>
           ) : (
@@ -491,6 +582,33 @@ export default function AdminDashboard() {
               </table>
             </div>
             )
+          )}
+          
+          {/* Infinite scroll trigger and loading indicator */}
+          {!loading && hasMore && <div ref={observerRef} className="h-10" />}
+          {loadingMore && (
+            viewMode === 'card' ? (
+              <div className="p-6 pt-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                {[...Array(3)].map((_, i) => (
+                  <AdminDoctorCardSkeleton key={`loading-skeleton-${i}`} />
+                ))}
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <tbody className="divide-y divide-gray-100">
+                    {[...Array(3)].map((_, i) => (
+                      <AdminDoctorRowSkeleton key={`loading-skeleton-${i}`} />
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )
+          )}
+          {!loading && !loadingMore && !hasMore && doctors.length > 0 && (
+            <div className="text-center py-6 text-gray-400 text-sm">
+              All doctors loaded
+            </div>
           )}
         </div>
       </div>
