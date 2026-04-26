@@ -3,6 +3,7 @@ import { body, validationResult } from 'express-validator';
 import Doctor from '../models/Doctor.js';
 import { protect, superadminOnly } from '../middleware/auth.js';
 import { createLog, logger } from '../utils/logger.js';
+import { ensureWebpDataUrl } from '../utils/imageConverter.js';
 
 const router = express.Router();
 
@@ -71,6 +72,7 @@ router.post('/', protect, superadminOnly, [
     }
 
     const { name, specialty, experience, patients, rating, profileImage } = req.body;
+    const normalizedProfileImage = await ensureWebpDataUrl(profileImage);
 
     const doctor = await Doctor.create({
       name,
@@ -78,7 +80,7 @@ router.post('/', protect, superadminOnly, [
       experience,
       patients: patients || '0',
       rating: rating || '4.5',
-      profileImage: profileImage || '',
+      profileImage: normalizedProfileImage || '',
       isActive: true
     });
 
@@ -93,6 +95,7 @@ router.post('/', protect, superadminOnly, [
 router.put('/:id', protect, superadminOnly, async (req, res) => {
   try {
     const { name, specialty, experience, patients, rating, profileImage, isActive } = req.body;
+    const normalizedProfileImage = await ensureWebpDataUrl(profileImage);
     const doctor = await Doctor.findById(req.params.id);
     if (!doctor) return res.status(404).json({ message: 'Doctor not found' });
 
@@ -101,7 +104,7 @@ router.put('/:id', protect, superadminOnly, async (req, res) => {
     if (experience !== undefined) doctor.experience = experience;
     if (patients !== undefined) doctor.patients = patients;
     if (rating !== undefined) doctor.rating = rating;
-    if (profileImage !== undefined) doctor.profileImage = profileImage;
+    if (profileImage !== undefined) doctor.profileImage = normalizedProfileImage;
     if (isActive !== undefined) doctor.isActive = isActive;
 
     await doctor.save();
