@@ -43,7 +43,7 @@ export default function Intro({ onDone }) {
           : 'opacity 0.4s ease',
       }}>
         <img
-          src="/Leela Hospital Final Logo👍-1.png"
+          src="/Leela Hospital Final Logo👍-1.webp"
           alt="Leela Hospital"
           style={{ height: '110px', width: 'auto' }}
           onError={e => { e.target.src = '/logo.svg' }}

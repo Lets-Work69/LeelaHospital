@@ -96,21 +96,21 @@ const founders = [
     name: 'Mahesh Magari',
     role: 'Managing Director',
     color: '#0969b1',
-    photo: '/leadership_team/p1.jpeg',
+    photo: '/leadership_team/p1.webp',
     bio: 'Mahesh Magari serves as the Managing Director of Magari Healthcare, leading Leela Hospital with exceptional leadership, vision, and a deep commitment to patient care. With an MBA in Management and valuable experience in the healthcare sector, he brings strong strategic thinking and next-level management skills. His leadership reflects trust, responsibility, and a passion to make a meaningful impact in healthcare.',
   },
   {
     name: 'Mantesh Magari',
     role: 'Director – Administration & Finance',
     color: '#17ae95',
-    photo: '/leadership_team/p2.jpg',
+    photo: '/leadership_team/p2.webp',
     bio: 'Mantesh Magari manages the financial and administrative backbone of the hospital, ensuring smooth day-to-day operations. With an M.Com in Finance and healthcare experience, he brings discipline, transparency, and responsibility. He is consistently present in the hospital, supporting patients, staff, and operations with dedication and care.',
   },
   {
     name: 'Siddu Magari',
     role: 'Director – Patient Services & Administration',
     color: '#0969b1',
-    photo: '/leadership_team/p3.jpeg',
+    photo: '/leadership_team/p3.webp',
     bio: 'Siddu Magari plays a key role in patient coordination, billing, and overall patient experience. With a B.Com background, he manages the entire patient journey from entry to discharge, ensuring smooth communication between patients and doctors. His dedication and personal involvement create a supportive and patient-friendly environment.',
   },
   {
@@ -124,7 +124,7 @@ const founders = [
     name: 'Rajesh Magari',
     role: 'Director – Clinical Support & Patient Care',
     color: '#0969b1',
-    photo: '/leadership_team/p5.PNG',
+    photo: '/leadership_team/p5.webp',
     bio: 'Rajesh Magari, a Pharm.D graduate, brings strong medical knowledge to the hospital. He supports both OPD and IPD care, guiding patients from admission to discharge. He explains conditions, treatments, and recovery clearly, helping patients feel informed and confident throughout their healthcare journey.',
   },
 ]
@@ -405,7 +405,7 @@ function PatientQuoteCard({ visible }) {
             <div className="relative w-11 h-11">
               <div className="absolute inset-0 rounded-full animate-pulse-ring" style={{ background: 'rgba(23,174,149,0.3)' }} />
               <div className="w-11 h-11 rounded-full bg-white/10 border border-white/20 flex items-center justify-center">
-                <img src="/Leela__Logo_-1-removebg-preview.png" alt="" className="w-7 h-7 object-contain" />
+                <img src="/Leela__Logo_-1-removebg-preview.webp" alt="" className="w-7 h-7 object-contain" />
               </div>
             </div>
             <div>
@@ -581,7 +581,7 @@ export default function About() {
                     <div className="w-full h-full rounded-full bg-white" />
                   </div>
                   <div className="relative z-10 w-32 h-32 rounded-full bg-white shadow-xl flex items-center justify-center">
-                    <img src="/Leela__Logo_-1-removebg-preview.png" alt="Leela Hospital"
+                    <img src="/Leela__Logo_-1-removebg-preview.webp" alt="Leela Hospital"
                       className="w-20 h-20 object-contain" />
                   </div>
                 </div>

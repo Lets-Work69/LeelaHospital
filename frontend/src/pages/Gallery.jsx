@@ -5,35 +5,35 @@ import { Calendar, Users, Heart, ArrowLeft, X, Award } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const inaugurationImages = [
-  "/gallery/inauguration1.jpeg",
-  "/gallery/inauguration2.jpeg",
-  "/gallery/inauguration3.jpeg",
-  "/gallery/inauguration4.jpeg",
-  "/gallery/inauguration5.jpeg",
-  "/gallery/inauguration6.jpeg",
+  "/gallery/inauguration1.webp",
+  "/gallery/inauguration2.webp",
+  "/gallery/inauguration3.webp",
+  "/gallery/inauguration4.webp",
+  "/gallery/inauguration5.webp",
+  "/gallery/inauguration6.webp",
 ];
 
 const eventImages = [
-  "/gallery/event1.jpeg",
-  "/gallery/event2.jpeg",
-  "/gallery/event3.jpeg",
-  "/gallery/event4.jpeg"
+  "/gallery/event1.webp",
+  "/gallery/event2.webp",
+  "/gallery/event3.webp",
+  "/gallery/event4.webp"
 ];
 
 const communityImages = [
-  "/gallery/community1.jpeg",
-  "/gallery/community2.jpeg",
-  "/gallery/community3.jpeg",
-  "/gallery/community4.jpeg",
-  "/gallery/community5.jpeg",
-  "/gallery/community6.jpeg"
+  "/gallery/community1.webp",
+  "/gallery/community2.webp",
+  "/gallery/community3.webp",
+  "/gallery/community4.webp",
+  "/gallery/community5.webp",
+  "/gallery/community6.webp"
 ];
 
 const sessionImages = [
-  "/gallery/session1.jpeg",
-  "/gallery/session2.jpeg",
-  "/gallery/session3.jpeg",
-  "/gallery/session4.jpeg",
+  "/gallery/session1.webp",
+  "/gallery/session2.webp",
+  "/gallery/session3.webp",
+  "/gallery/session4.webp",
 ];
 
 function useReveal(threshold = 0.15) {

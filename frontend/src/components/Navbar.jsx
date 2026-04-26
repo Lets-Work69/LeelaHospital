@@ -187,7 +187,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
         <a href="#home" className="flex items-center"
           onClick={e => handleAnchorClick(e, '#home')}>
-          <img src="/Leela Hospital Final Logo👍-1.png" alt="Leela Hospital" 
+          <img src="/Leela Hospital Final Logo👍-1.webp" alt="Leela Hospital" 
             className="w-auto"
             style={{ height: '70px' }}
             onError={e => { e.target.onerror = null; e.target.src = '/logo.svg' }} />
