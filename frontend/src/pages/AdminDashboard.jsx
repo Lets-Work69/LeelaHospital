@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Calendar, Plus, Trash2, Loader2, CheckCircle, Stethoscope, Clock, Users, MoreVertical, Edit2, EyeOff, Eye, AlertTriangle, LayoutGrid, List, GripVertical } from 'lucide-react';
 import Navbar from '../components/Navbar';
+import { AdminDoctorCardSkeleton, AdminDoctorRowSkeleton } from '../components/AdminDoctorSkeleton';
 const url = import.meta.env.VITE_API_URL;
 
 function ConfirmDialog({ message, onConfirm, onCancel, confirmLabel = 'Confirm', danger = false }) {
@@ -405,9 +406,30 @@ export default function AdminDashboard() {
           </div>
 
           {loading ? (
-            <div className="flex items-center justify-center py-16">
-              <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-            </div>
+            viewMode === 'card' ? (
+              <div className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                {[...Array(9)].map((_, i) => (
+                  <AdminDoctorCardSkeleton key={`skeleton-${i}`} />
+                ))}
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-gray-50 border-b border-gray-100">
+                    <tr>
+                      {['Doctor', 'Specialty', 'Experience', 'Patients', 'Rating', 'Status', 'Actions'].map(h => (
+                        <th key={h} className="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {[...Array(9)].map((_, i) => (
+                      <AdminDoctorRowSkeleton key={`skeleton-${i}`} />
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )
           ) : doctors.length === 0 ? (
             <div className="text-center py-16 text-gray-400">No doctors added yet</div>
           ) : (
@@ -565,12 +587,25 @@ export default function AdminDashboard() {
           {/* Infinite scroll trigger and loading indicator */}
           {!loading && hasMore && <div ref={observerRef} className="h-10" />}
           {loadingMore && (
-            <div className="flex items-center justify-center py-8">
-              <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
-              <span className="ml-2 text-sm text-gray-500">Loading more doctors...</span>
-            </div>
+            viewMode === 'card' ? (
+              <div className="p-6 pt-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                {[...Array(3)].map((_, i) => (
+                  <AdminDoctorCardSkeleton key={`loading-skeleton-${i}`} />
+                ))}
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <tbody className="divide-y divide-gray-100">
+                    {[...Array(3)].map((_, i) => (
+                      <AdminDoctorRowSkeleton key={`loading-skeleton-${i}`} />
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )
           )}
-          {!loading && !hasMore && doctors.length > 0 && (
+          {!loading && !loadingMore && !hasMore && doctors.length > 0 && (
             <div className="text-center py-6 text-gray-400 text-sm">
               All doctors loaded
             </div>
