@@ -12,7 +12,7 @@ const contactInfo = [
   { icon: <MapPin className="w-5 h-5" />, label: 'Address', value: 'Leela Hospital, Near New Bus Stand, Mundaragi road, Gadag, Karnataka - 582101', color: '#17ae95' },
   { icon: <Phone className="w-5 h-5" />, label: 'Phone', value: '+91 08372234599, 9008371817, 9483467777', color: '#17ae95', link: null },
   { icon: <Mail className="w-5 h-5" />, label: 'Email', value: 'care@leelahospitals.in', color: '#17ae95', link: null },
-  { icon: <Clock className="w-5 h-5" />, label: 'Hours', value: 'Mon–Sat: 8AM–8PM | Emergency: 24/7', color: '#17ae95', link: null },
+  { icon: <Clock className="w-5 h-5" />, label: 'Hours', value: 'Mon–Sun: 8AM–8PM | Emergency: 24/7', color: '#17ae95', link: null },
 ]
 
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December']
