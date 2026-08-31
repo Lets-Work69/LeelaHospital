@@ -19,25 +19,25 @@ export default function Footer() {
 
   return (
     <footer id="contact" className="relative overflow-hidden bg-mesh">
-      
+
       <div className="absolute top-0 left-0 right-0">
         <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-          <path d="M0,30 C360,60 1080,0 1440,30 L1440,0 L0,0 Z" fill="#f9fafb"/>
+          <path d="M0,30 C360,60 1080,0 1440,30 L1440,0 L0,0 Z" fill="#f9fafb" />
         </svg>
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 pt-20 pb-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
 
-<div>
+        <div>
           <div className="relative inline-block mb-5 group">
             <div className="absolute inset-0 bg-gradient-to-r from-teal-500/30 to-blue-600/30 rounded-xl blur-xl group-hover:blur-2xl transition-all duration-500 opacity-0 group-hover:opacity-100" />
-            
+
             <div className="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl p-3 border border-white/20 hover:border-teal-400/50 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-teal-500/20">
               <img src="/Leela Hospital Final Logo👍-1.png" alt="Leela Hospital" className="h-12 w-auto relative z-10"
                 onError={e => { e.target.onerror = null; e.target.src = '/logo.svg' }} />
             </div>
           </div>
-          
+
           <p className="text-sm leading-relaxed text-blue-200 mb-6">
             Committed to delivering compassionate, world-class healthcare to every patient, every day.
           </p>
@@ -59,7 +59,7 @@ export default function Footer() {
           <ul className="space-y-3">
             {quickLinks.map(link => (
               <li key={link.label}>
-                <button 
+                <button
                   onClick={() => handleLinkClick(link.href)}
                   className="text-sm text-blue-200 hover:text-teal-400 transition-colors flex items-center gap-2 group">
                   <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -ml-5 group-hover:ml-0 transition-all duration-300" />
@@ -70,7 +70,7 @@ export default function Footer() {
           </ul>
         </div>
 
-<div>
+        <div>
           <h4 className="text-white font-bold mb-5 text-sm uppercase tracking-wider">Contact Us</h4>
           <div className="space-y-4">
             {[
@@ -114,7 +114,7 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-white border-opacity-10 py-6 text-center text-sm text-blue-300">
-        © {new Date().getFullYear()} Leela Hospital. All rights reserved. | Powered by DevForYou.
+        © {new Date().getFullYear()} Leela Hospital. All rights reserved. | Powered by Advaitas.
       </div>
     </footer>
   )
