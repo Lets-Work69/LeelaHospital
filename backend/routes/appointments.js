@@ -2,7 +2,7 @@
 import { body, validationResult } from 'express-validator';
 import Appointment from '../models/Appointment.js';
 import { protect, superadminOnly } from '../middleware/auth.js';
-import { createLog } from '../utils/logger.js';
+import { createLog, logger } from '../utils/logger.js';
 
 const router = express.Router();
 
@@ -60,7 +60,7 @@ router.post('/', [
       appointment
     });
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -70,7 +70,7 @@ router.get('/', protect, superadminOnly, async (req, res) => {
     const appointments = await Appointment.find().sort({ createdAt: -1 });
     res.json({ success: true, count: appointments.length, appointments });
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -87,7 +87,7 @@ router.put('/:id', protect, superadminOnly, async (req, res) => {
     await createLog('APPOINTMENT_STATUS_CHANGED', 'appointment', `Appointment status changed to "${status}" for ${appointment.name} (${appointment.department})`, { appointmentId: appointment._id, name: appointment.name, status }, req.user?.name);
     res.json({ success: true, appointment });
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -99,7 +99,7 @@ router.delete('/:id', protect, superadminOnly, async (req, res) => {
     await createLog('APPOINTMENT_DELETED', 'appointment', `Deleted appointment for ${appointment.name} (${appointment.department})`, { name: appointment.name }, req.user?.name);
     res.json({ success: true, message: 'Appointment deleted' });
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     res.status(500).json({ message: 'Server error' });
   }
 });

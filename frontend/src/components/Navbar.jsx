@@ -1,7 +1,7 @@
-﻿import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Phone, Menu, X, LogOut } from 'lucide-react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
-import { API_URL } from '../config/api'
+const url = import.meta.env.VITE_API_URL
 
 const navLinks = [
   { label: 'Home',         href: '#home' },
@@ -10,7 +10,7 @@ const navLinks = [
   { label: 'Doctors',      href: '/doctors' },
   { label: 'Facilities',   href: '/facilities' },
   { label: 'Gallery',      href: '/gallery' },
-  { label: 'Contact',      href: '#contact' },
+  { label: 'Contact',      href: '#contact-us' },
 ]
 
 export default function Navbar() {
@@ -44,7 +44,7 @@ export default function Navbar() {
       try {
         const token = localStorage.getItem('token')
         if (!token) return
-        const res = await fetch(`${API_URL}/api/appointments`, {
+        const res = await fetch(`${url}/api/appointments`, {
           headers: { Authorization: `Bearer ${token}` }
         })
         const data = await res.json()
@@ -98,14 +98,50 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  const scrollToAnchor = (href) => {
+    let attempts = 0
+    const maxAttempts = 40
+
+    const tryScroll = () => {
+      const el = document.querySelector(href)
+      if (el) {
+        setTimeout(() => {
+          const navbarHeight = 100 // Increased offset for navbar
+          const elementPosition = el.getBoundingClientRect().top + window.pageYOffset
+          const offsetPosition = elementPosition - navbarHeight
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          })
+        }, 50)
+        return
+      }
+
+      attempts += 1
+      if (attempts < maxAttempts) {
+        setTimeout(tryScroll, 100)
+      }
+    }
+
+    tryScroll()
+  }
+
   const handleAnchorClick = (e, href) => {
     e.preventDefault()
     setMenuOpen(false)
     if (location.pathname !== '/') {
-      navigate('/' + href)
+      if (href === '#contact-us') {
+        navigate('/', { state: { scrollToBottom: true } })
+      } else {
+        navigate('/', { state: { scrollTo: href.slice(1) } })
+      }
     } else {
-      const el = document.querySelector(href)
-      if (el) el.scrollIntoView({ behavior: 'smooth' })
+      if (href === '#contact-us') {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
+      } else {
+        scrollToAnchor(href)
+      }
     }
   }
 
@@ -149,8 +185,9 @@ export default function Navbar() {
       }}>
 
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
-        <a href="#home" className="flex items-center">
-          <img src="/Leela Hospital Final Logo👍-1.png" alt="Leela Hospital" 
+        <a href="#home" className="flex items-center"
+          onClick={e => handleAnchorClick(e, '#home')}>
+          <img src="/Leela Hospital Final Logo👍-1.webp" alt="Leela Hospital" 
             className="w-auto"
             style={{ height: '70px' }}
             onError={e => { e.target.onerror = null; e.target.src = '/logo.svg' }} />
@@ -179,22 +216,23 @@ export default function Navbar() {
           </nav>
         ) : (
           <nav className="hidden md:flex items-center gap-8">
-            {navLinks.map(link => (
-              link.href.startsWith('/') ? (
+            {navLinks.map(link => {
+              const isActive = link.href.startsWith('/') && location.pathname === link.href
+              return link.href.startsWith('/') ? (
                 <Link key={link.label} to={link.href}
-                  className="text-sm font-medium transition-all duration-300 hover:text-teal-500 relative group text-gray-700">
+                  className={`text-sm font-medium transition-all duration-300 hover:text-teal-500 relative group ${isActive ? 'text-teal-500' : 'text-gray-700'}`}>
                   {link.label}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-teal-400 group-hover:w-full transition-all duration-300 rounded-full" />
+                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-teal-400 transition-all duration-300 rounded-full ${isActive ? 'w-full' : 'w-0 group-hover:w-full'}`} />
                 </Link>
               ) : (
                 <a key={link.label} href={link.href}
                   onClick={e => handleAnchorClick(e, link.href)}
-                  className="text-sm font-medium transition-all duration-300 hover:text-teal-500 relative group text-gray-700">
+                  className={`text-sm font-medium transition-all duration-300 hover:text-teal-500 relative group ${location.pathname === '/' && link.href === '#home' ? 'text-teal-500' : 'text-gray-700'}`}>
                   {link.label}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-teal-400 group-hover:w-full transition-all duration-300 rounded-full" />
+                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-teal-400 transition-all duration-300 rounded-full ${location.pathname === '/' && link.href === '#home' ? 'w-full' : 'w-0 group-hover:w-full'}`} />
                 </a>
               )
-            ))}
+            })}
           </nav>
         )}
 
@@ -210,7 +248,9 @@ export default function Navbar() {
                 className="flex items-center gap-2 text-sm font-semibold transition-colors text-primary-600">
                 <Phone className="w-4 h-4" /> +91 9008371817
               </a>
-              <a href="#appointment" className="btn-primary text-sm py-2.5 px-5">Book Appointment</a>
+              <a href="#appointment" 
+                onClick={e => handleAnchorClick(e, '#appointment')}
+                className="btn-primary text-sm py-2.5 px-5">Book Appointment</a>
             </>
           )}
         </div>
@@ -254,21 +294,24 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              {navLinks.map(link => (
-                link.href.startsWith('/') ? (
+              {navLinks.map(link => {
+                const isActive = link.href.startsWith('/') && location.pathname === link.href
+                return link.href.startsWith('/') ? (
                   <Link key={link.label} to={link.href} onClick={() => setMenuOpen(false)}
-                    className="block py-3 text-gray-700 font-medium border-b border-gray-50 hover:text-primary-500 transition-colors">
+                    className={`block py-3 font-medium border-b border-gray-50 hover:text-teal-500 transition-colors ${isActive ? 'text-teal-500' : 'text-gray-700'}`}>
                     {link.label}
                   </Link>
                 ) : (
                   <a key={link.label} href={link.href}
                     onClick={e => handleAnchorClick(e, link.href)}
-                    className="block py-3 text-gray-700 font-medium border-b border-gray-50 hover:text-primary-500 transition-colors">
+                    className={`block py-3 font-medium border-b border-gray-50 hover:text-teal-500 transition-colors ${location.pathname === '/' && link.href === '#home' ? 'text-teal-500' : 'text-gray-700'}`}>
                     {link.label}
                   </a>
                 )
-              ))}
-              <a href="#appointment" className="btn-primary block text-center mt-4">Book Appointment</a>
+              })}
+              <a href="#appointment" 
+                onClick={e => handleAnchorClick(e, '#appointment')}
+                className="btn-primary block text-center mt-4">Book Appointment</a>
             </>
           )}
         </div>}

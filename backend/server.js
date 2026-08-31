@@ -8,6 +8,7 @@ import authRoutes from './routes/auth.js';
 import doctorRoutes from './routes/doctors.js';
 import appointmentRoutes, { setSSEClients } from './routes/appointments.js';
 import logRoutes from './routes/logs.js';
+import { logger } from './utils/logger.js';
 
 dotenv.config();
 
@@ -30,9 +31,9 @@ app.use(express.urlencoded({ limit: '10mb', extended: true }));
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGODB_URI);
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
+    logger.info(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
-    console.error(`Error: ${error.message}`);
+    logger.error(`Error: ${error.message}`);
     process.exit(1);
   }
 };
@@ -47,7 +48,7 @@ app.get('/api/notifications', (req, res) => {
 
   sseClients.add(res);
 
-const ping = setInterval(() => res.write(': ping\n\n'), 25000);
+  const ping = setInterval(() => res.write(': ping\n\n'), 25000);
 
   req.on('close', () => {
     clearInterval(ping);
@@ -69,11 +70,11 @@ app.get('/api/health', (req, res) => {
 });
 
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  logger.error(err.stack);
   res.status(500).json({ message: 'Something went wrong!' });
 });
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  logger.info(`Server running on port ${PORT}`);
 });

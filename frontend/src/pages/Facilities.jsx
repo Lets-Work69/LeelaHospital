@@ -8,21 +8,21 @@ import {
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 
-import imgAmbulance      from '../assets/facilities/ambulance.jpg'
-import imgOT             from '../assets/facilities/operation-theatre.jpg'
-import imgLab            from '../assets/facilities/laboratory.jpg'
-import imgRadiology      from '../assets/facilities/radiology.jpg'
-import imgEmergency      from '../assets/facilities/emergency.jpg'
-import imgICU            from '../assets/facilities/icu.jpg'
-import imgPharmacy       from '../assets/facilities/pharmacy.jpg'
-import imgPatientRoom    from '../assets/facilities/patient-room.jpg'
-import imgECG            from '../assets/facilities/ecg.jpg'
-import imgHealthCheckup  from '../assets/facilities/health-checkup.jpg'
-import imgUSG            from '../assets/facilities/usg.jpg'
-import imgPhysio         from '../assets/facilities/physiotherapy.jpg'
+import imgAmbulance      from '../assets/facilities/ambulance.webp'
+import imgOT             from '../assets/facilities/operation-theatre.webp'
+import imgLab            from '../assets/facilities/laboratory.webp'
+import imgRadiology      from '../assets/facilities/radiology.webp'
+import imgEmergency      from '../assets/facilities/emergency.webp'
+import imgICU            from '../assets/facilities/icu.webp'
+import imgPharmacy       from '../assets/facilities/pharmacy.webp'
+import imgPatientRoom    from '../assets/facilities/patient-room.webp'
+import imgECG            from '../assets/facilities/ecg.webp'
+import imgHealthCheckup  from '../assets/facilities/health-checkup.webp'
+import imgUSG            from '../assets/facilities/usg.webp'
+import imgPhysio         from '../assets/facilities/physiotherapy.webp'
 
 import iconSurgical      from '../assets/facilities/icon-surgical.svg'
-import iconRadiology     from '../assets/facilities/icon-radiology.png'
+import iconRadiology     from '../assets/facilities/icon-radiology.webp'
 import iconHeart         from '../assets/facilities/icon-heart.svg'
 import iconOrthopedics   from '../assets/facilities/icon-orthopedics.svg'
 
@@ -241,7 +241,10 @@ function FacilityModal({ facility, onClose }) {
                   src={facility.image}
                   alt={facility.title}
                   className="w-full h-full object-cover"
-                  style={{ minHeight: '220px' }}
+                  style={{ 
+                    minHeight: '220px',
+                    objectPosition: facility.title === '24/7 Ambulance Service' ? 'left center' : 'center'
+                  }}
                   onError={e => { e.target.style.display = 'none' }}
                 />
               </div>

@@ -24,19 +24,19 @@ const slugMap = {
 const services = [
   { title: 'General Medicine\n& Diabetology', icon: <img src="/medicine.svg" className="w-9 h-9" style={{ filter: 'brightness(0) invert(1)' }} /> },
   { title: 'Obstetrics &\nGynecology', icon: <img src="/services%20icons/obstetrics.svg" className="w-9 h-9" style={{ filter: 'brightness(0) invert(1)' }} /> },
-  { title: 'Paediatrics\n& Neonatology', icon: <img src="/services%20icons/pediatrics_17942024.png" className="w-9 h-9" style={{ filter: 'brightness(0) invert(1)' }} /> },
+  { title: 'Paediatrics\n& Neonatology', icon: <img src="/services%20icons/pediatrics_17942024.webp" className="w-9 h-9" style={{ filter: 'brightness(0) invert(1)' }} /> },
   { title: 'Orthopedics', icon: <img src="/services%20icons/orthopedics.svg" className="w-9 h-9" style={{ filter: 'brightness(0) invert(1)' }} /> },
   { title: 'General Surgery', icon: <img src="/services%20icons/surgical.svg" className="w-9 h-9" style={{ filter: 'brightness(0) invert(1)' }} /> },
-  { title: 'Urology', icon: <img src="/services%20icons/urinary_7857026.png" className="w-9 h-9" style={{ filter: 'brightness(0) invert(1)' }} /> },
+  { title: 'Urology', icon: <img src="/services%20icons/urinary_7857026.webp" className="w-9 h-9" style={{ filter: 'brightness(0) invert(1)' }} /> },
   { title: 'Cardiology', icon: <img src="/services%20icons/heart.svg" className="w-9 h-9" style={{ filter: 'brightness(0) invert(1)' }} /> },
   { title: 'Dermatology', icon: <img src="/services%20icons/dermatology.svg" className="w-9 h-9" style={{ filter: 'brightness(0) invert(1)' }} /> },
-  { title: 'ENT', icon: <img src="/services%20icons/nose.png" className="w-9 h-9" style={{ filter: 'brightness(0) invert(1)' }} /> },
+  { title: 'ENT', icon: <img src="/services%20icons/nose.webp" className="w-9 h-9" style={{ filter: 'brightness(0) invert(1)' }} /> },
   { title: 'Oncology', icon: <img src="/services%20icons/oncology.svg" className="w-9 h-9" style={{ filter: 'brightness(0) invert(1)' }} /> },
   { title: 'Neurology', icon: <Brain className="w-7 h-7" stroke="white" /> },
-  { title: 'Nephrology', icon: <img src="/services%20icons/organ.png" className="w-9 h-9" style={{ filter: 'brightness(0) invert(1)' }} /> },
+  { title: 'Nephrology', icon: <img src="/services%20icons/organ.webp" className="w-9 h-9" style={{ filter: 'brightness(0) invert(1)' }} /> },
   { title: 'Ophthalmology', icon: <img src="/services%20icons/ophthalmology.svg" className="w-9 h-9" style={{ filter: 'brightness(0) invert(1)' }} /> },
-  { title: 'Laparoscopy &\nEndoscopy', icon: <img src="/services%20icons/laparoscopy_8670713.png" className="w-9 h-9" style={{ filter: 'brightness(0) invert(1)' }} /> },
-  { title: 'Psychiatry', icon: <img src="/services%20icons/mental-health.png" className="w-9 h-9" style={{ filter: 'brightness(0) invert(1)' }} /> },
+  { title: 'Laparoscopy &\nEndoscopy', icon: <img src="/services%20icons/laparoscopy_8670713.webp" className="w-9 h-9" style={{ filter: 'brightness(0) invert(1)' }} /> },
+  { title: 'Psychiatry', icon: <img src="/services%20icons/mental-health.webp" className="w-9 h-9" style={{ filter: 'brightness(0) invert(1)' }} /> },
 ]
 
 const ServiceCard = memo(function ServiceCard({ service, index, onClick }) {

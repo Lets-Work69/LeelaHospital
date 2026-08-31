@@ -23,7 +23,7 @@ export default function PrivacyPolicy() {
           {/* Header with Logo and Hospital Name */}
           <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-8 pb-8 border-b border-gray-200">
             <img 
-              src="/Leela__Logo_-1-removebg-preview.png" 
+              src="/Leela__Logo_-1-removebg-preview.webp" 
               alt="Leela Hospital Logo" 
               className="h-10 sm:h-12 md:h-16 w-auto object-contain"
             />

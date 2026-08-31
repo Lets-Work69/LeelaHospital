@@ -1,6 +1,6 @@
 ﻿import { useState, useEffect, useRef } from 'react'
 import { Calendar, User, Phone, Stethoscope, Send, MapPin, Mail, Clock, ChevronLeft, ChevronRight } from 'lucide-react'
-import { API_URL } from '../config/api'
+const url = import.meta.env.VITE_API_URL
 
 const departments = [
   'Cardiology', 'Dermatology', 'Diabetology', 'Endoscopy', 'ENT',
@@ -12,7 +12,7 @@ const contactInfo = [
   { icon: <MapPin className="w-5 h-5" />, label: 'Address', value: 'Leela Hospital, Near New Bus Stand, Mundaragi road, Gadag, Karnataka - 582101', color: '#17ae95' },
   { icon: <Phone className="w-5 h-5" />, label: 'Phone', value: '+91 08372234599, 9008371817, 9483467777', color: '#17ae95', link: null },
   { icon: <Mail className="w-5 h-5" />, label: 'Email', value: 'care@leelahospitals.in', color: '#17ae95', link: null },
-  { icon: <Clock className="w-5 h-5" />, label: 'Hours', value: 'Mon–Sat: 8AM–8PM | Emergency: 24/7', color: '#17ae95', link: null },
+  { icon: <Clock className="w-5 h-5" />, label: 'Hours', value: 'Mon–Sun: 8AM–8PM | Emergency: 24/7', color: '#17ae95', link: null },
 ]
 
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December']
@@ -233,7 +233,7 @@ export default function Appointment() {
       return
     }
     try {
-      const res = await fetch(`${API_URL}/api/appointments`, {
+      const res = await fetch(`${url}/api/appointments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

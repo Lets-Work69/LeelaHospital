@@ -84,7 +84,7 @@ export default function Hero() {
 <div className="relative rounded-3xl overflow-hidden shadow-2xl"
             style={{ border: '2px solid rgba(255,255,255,0.15)' }}>
             <img
-              src="/hospital/WhatsApp Image 2026-03-30 at 12.32.59 PM.jpeg"
+              src="/hospital/WhatsApp Image 2026-03-30 at 12.32.59 PM.webp"
               alt="Leela Hospital"
               className="w-full h-auto block"
               loading="lazy"

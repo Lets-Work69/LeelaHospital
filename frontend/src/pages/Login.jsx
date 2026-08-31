@@ -1,7 +1,7 @@
 ﻿import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Loader2, Eye, EyeOff } from 'lucide-react';
-import { API_URL } from '../config/api';
+const url = import.meta.env.VITE_API_URL;
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -16,7 +16,7 @@ export default function Login() {
     setError('');
 
     try {
-      const response = await fetch(`${API_URL}/api/auth/login`, {
+      const response = await fetch(`${url}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
@@ -49,7 +49,7 @@ if (data.user.role === 'superadmin') {
         
         <div className="text-center mb-8">
           <img
-            src="/Leela Hospital Final Logo👍-1.png"
+            src="/Leela Hospital Final Logo👍-1.webp"
             alt="Leela Hospital"
             className="h-20 w-auto mx-auto mb-2"
             onError={e => { e.target.onerror = null; e.target.src = '/logo.svg' }}

@@ -1,5 +1,5 @@
-﻿import React, { useState, useEffect, lazy, Suspense } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+﻿import React, { useState, useEffect, useLayoutEffect, useRef, lazy, Suspense } from 'react'
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 import Intro from './components/Intro'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
@@ -11,9 +11,8 @@ import Testimonials from './components/Testimonials'
 import Appointment from './components/Appointment'
 import Footer from './components/Footer'
 import Facilities from './pages/Facilities'
-import { API_URL } from './config/api'
+const url = import.meta.env.VITE_API_URL
 
-// Lazy load pages
 const ServiceDetail = lazy(() => import('./pages/ServiceDetail'))
 const Specialities = lazy(() => import('./pages/Specialities'))
 const About = lazy(() => import('./pages/About'))
@@ -61,7 +60,24 @@ function OffersPopup() {
     sessionStorage.setItem('homeOffersSeen', 'true')
   }
 
-  if (!isOpen) return null
+  const reopenPopup = () => {
+    setIsOpen(true)
+  }
+
+  if (!isOpen) {
+    if (!isClosed) return null
+    return (
+      <button
+        type="button"
+        onClick={reopenPopup}
+        className="fixed bottom-6 right-6 z-[110] h-14 w-14 rounded-full bg-primary-600 text-white shadow-xl transition-transform hover:scale-105 hover:bg-primary-700"
+        aria-label="Open offers popup"
+        title="Open offers"
+      >
+        <span className="text-2xl leading-none" role="img" aria-hidden="true">🎁</span>
+      </button>
+    )
+  }
 
   return (
     <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center px-4 py-6">
@@ -127,21 +143,110 @@ function Home() {
   )
 }
 
-/** Keeps SSE open for superadmin; new bookings dispatch a window event (no modal). */
 function GlobalSSE() {
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user') || '{}')
-    if (user.role !== 'superadmin') return
+    if (user.role !== 'superadmin') return undefined
 
-    const es = new EventSource(`${API_URL}/api/notifications`)
-    es.addEventListener('new-appointment', (e) => {
+    const es = new EventSource(`${url}/api/notifications`)
+    
+    const handleNewAppointment = (e) => {
       try {
         const detail = JSON.parse(e.data)
         window.dispatchEvent(new CustomEvent('leela:new-appointment', { detail }))
-      } catch (_) {}
-    })
-    return () => es.close()
+      } catch (error) {
+        if (import.meta.env.DEV) {
+          console.error('Failed to parse SSE data:', error)
+        }
+      }
+    }
+    
+    es.addEventListener('new-appointment', handleNewAppointment)
+    
+    es.onerror = () => {
+      if (import.meta.env.DEV) {
+        console.warn('SSE connection error')
+      }
+    }
+    
+    return () => {
+      es.removeEventListener('new-appointment', handleNewAppointment)
+      es.close()
+    }
   }, [])
+  return null
+}
+
+function ScrollToTop() {
+  const { pathname, state } = useLocation()
+  const hasInitialized = useRef(false)
+
+  useLayoutEffect(() => {
+    if (!hasInitialized.current) {
+      hasInitialized.current = true
+      if ('scrollRestoration' in window.history) {
+        window.history.scrollRestoration = 'manual'
+      }
+      const historyState = window.history.state
+      if (historyState?.usr?.scrollTo) {
+        window.history.replaceState({ ...historyState, usr: null }, '', `${window.location.pathname}${window.location.search}`)
+      }
+      if (window.location.hash) {
+        window.history.replaceState(window.history.state, '', `${window.location.pathname}${window.location.search}`)
+      }
+      const forceTop = () => window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+      forceTop()
+      requestAnimationFrame(forceTop)
+      setTimeout(forceTop, 0)
+      setTimeout(forceTop, 120)
+      return
+    }
+
+    if (state?.scrollToBottom) {
+      const scrollBottom = () =>
+        window.scrollTo({ top: document.body.scrollHeight, left: 0, behavior: 'smooth' })
+
+      scrollBottom()
+      requestAnimationFrame(scrollBottom)
+      setTimeout(scrollBottom, 120)
+      return
+    }
+
+    if (state?.scrollTo) {
+      const id = state.scrollTo
+      let attempts = 0
+      const maxAttempts = 40
+
+      const scrollToHash = () => {
+        const element = document.getElementById(id)
+        if (element) {
+          // Wait a bit more for full render
+          setTimeout(() => {
+            const navbarHeight = 100 // Increased offset for navbar
+            const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
+            const offsetPosition = elementPosition - navbarHeight
+
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: 'smooth'
+            })
+          }, 100)
+          return
+        }
+
+        attempts += 1
+        if (attempts < maxAttempts) {
+          setTimeout(scrollToHash, 100)
+        }
+      }
+
+      setTimeout(scrollToHash, 200)
+      return
+    }
+
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+  }, [pathname, state])
+
   return null
 }
 
@@ -149,6 +254,7 @@ function AppInner({ introDone, setIntroDone }) {
   return (
     <>
       {!introDone && <Intro onDone={() => setIntroDone(true)} />}
+      <ScrollToTop />
       <GlobalSSE />
       <div className="min-h-screen bg-white">
         <Suspense fallback={
@@ -180,8 +286,8 @@ export default function App() {
   const [introDone, setIntroDone] = useState(false)
 
   return (
-    <BrowserRouter>
+    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <AppInner introDone={introDone} setIntroDone={setIntroDone} />
-    </BrowserRouter>
+    </Router>
   )
 }

@@ -42,5 +42,8 @@ const doctorSchema = new mongoose.Schema({
   }
 });
 
+// Create compound index for optimized queries
+doctorSchema.index({ isActive: 1, sortOrder: 1, createdAt: -1 });
+
 const Doctor = mongoose.model('Doctor', doctorSchema);
 export default Doctor;
